@@ -1,0 +1,54 @@
+
+CC			= cc
+CFLAGS		= -g3 -Wextra -Werror -Wall -I.
+LIBFT_DIR	= ./lib/libft
+LIBFT		= libft.a
+
+C_FILES		= src/ft_sample.c
+
+LIBS		= $(LIBFT_DIR)/$(LIBFT) \
+				-ldl -lglfw -pthread -lm
+
+HEADERS		= -I . \
+				-I $(LIBFT_DIR)
+
+TARGETS		= minishell
+
+# tests section
+TEST_DIR    = tests
+TEST_SRCS   = $(TEST_DIR)/test-ft_sample.c
+TEST_BINS   = $(TEST_SRCS:.c=.out)
+
+# Alvo principal de teste
+test: $(TEST_BINS)
+	@echo "Todos os testes concluídos com sucesso."
+
+# Regra para compilar e rodar cada teste individualmente
+$(TEST_DIR)/%.out: $(TEST_DIR)/%.c libft
+	@echo "Compilando e executando $<..."
+	@$(CC) $(CFLAGS) src/ft_sample.c $< $(LIBS) -o $@
+	@./$@ || (echo "Falha no teste: $@" && exit 1)
+	@rm -f $@
+
+all: $(TARGETS)
+
+$(TARGETS): $(C_FILES) libft
+	@$(CC) $(CFLAGS) $(C_FILES) $(HEADERS) $(LIBS) -o $@
+	@echo "==> Shelly was successfully compiled!"
+
+libft:
+	@make -C $(LIBFT_DIR)
+	@echo "==> libft successfully created!"
+
+clean:
+	@make -C $(LIBFT_DIR) clean
+	@echo "==> Simple clean done!"
+
+
+fclean: clean
+	@rm -rf $(TARGETS)
+	@make -C $(LIBFT_DIR) fclean
+	@echo "==> Full clean done!"
+
+
+re: fclean all
