@@ -1,3 +1,5 @@
 *.o
 ./minishell
 *.a
+.test_failures
+*.log
