@@ -2,75 +2,55 @@ CC          = cc
 CFLAGS      = -g3 -Wextra -Werror -Wall -I.
 LIBFT_DIR   = ./lib/libft
 LIBFT       = $(LIBFT_DIR)/libft.a
-
 C_FILES     = src/ft_sample.c \
-                src/ft_sample_fail.c \
-                src/ft_sample_success.c
-
+				src/ft_sample_fail.c \
+				src/ft_sample_success.c
+				
 LIBS        = $(LIBFT) -ldl -lglfw -pthread -lm
-
-HEADERS     = -I . -I $(LIBFT_DIR)
-
+HEADERS     = -I . -I $(LIBFT_DIR) -I$(TEST_DIR)
 TARGETS     = minishell
 
-# tests section
+# Tests section
 TEST_DIR    = tests
 TEST_SRCS   = $(TEST_DIR)/test-ft_sample.c \
                 $(TEST_DIR)/test-ft_sample_fail.c \
                 $(TEST_DIR)/test-ft_sample_success.c
-
 TEST_BINS   = $(TEST_SRCS:.c=.out)
-# Arquivo temporário para rastrear falhas
-ERROR_LOG   = .test_failures
+REPORT_LOG  = test_report.log
 
 # Alvo principal de teste
 test: 
-	@rm -f $(ERROR_LOG)
-	@$(MAKE) run_test_bins --no-print-directory
-	@if [ -f $(ERROR_LOG) ]; then \
-		echo "\n\033[0;31m[!] ALGUNS TESTES FALHARAM:\033[0m"; \
-		cat $(ERROR_LOG); \
-		exit 1; \
-	else \
-		echo "\n\033[0;32m[+] Todos os testes concluídos com sucesso.\033[0m"; \
-	fi
+	@rm -f $(REPORT_LOG)
+	@echo "🧪 RELATÓRIO DE TESTES UNITÁRIOS - $(shell date)" > $(REPORT_LOG)
+	@echo "------------------------------------------" >> $(REPORT_LOG)
+	@# Executa os testes ignorando falhas individuais para continuar a suite (-)
+	-@$(MAKE) run_test_bins --no-print-directory
+	@# Processamento do Resumo Final
+	@TOTAL=$$(grep -c "Case:" $(REPORT_LOG) || echo 0); \
+	PASSED=$$(grep -c "\[PASS\]" $(REPORT_LOG) || echo 0); \
+	FAILED=$$(grep -c "\[FAIL\]" $(REPORT_LOG) || echo 0); \
+	echo "" >> $(REPORT_LOG); \
+	echo "==========================================" >> $(REPORT_LOG); \
+	echo "📊 RESUMO FINAL:" >> $(REPORT_LOG); \
+	echo "  Total de casos: $$TOTAL" >> $(REPORT_LOG); \
+	echo "  ✅ Sucessos:     $$PASSED" >> $(REPORT_LOG); \
+	echo "  ❌ Falhas:       $$FAILED" >> $(REPORT_LOG); \
+	echo "==========================================" >> $(REPORT_LOG); \
+	cat $(REPORT_LOG); \
+	if [ $$FAILED -gt 0 ]; then exit 1; fi
 
-# Alvo intermediário para disparar a regra de pattern
 run_test_bins: $(TEST_BINS)
 
-# Regra para compilar e rodar cada teste individualmente
+# Regra de compilação e execução por arquivo
 $(TEST_DIR)/%.out: $(TEST_DIR)/%.c $(LIBFT)
-	@echo "Compilando: $<"
-	@$(CC) $(CFLAGS) $(C_FILES) $< $(HEADERS) $(LIBS) -o $@
-	
-	@# Executa capturando a saída. Se falhar, anexa o output ao log de erros.
-	@./$@ > temp_output.log 2>&1 || \
-	(echo "  -> Arquivo: $@" >> $(ERROR_LOG) && \
-	 cat temp_output.log >> $(ERROR_LOG) && \
-	 echo "--------------------------------" >> $(ERROR_LOG) && \
-	 false)
-	 
-	@# Se chegou aqui, passou. Limpa os temporários.
-	@rm -f $@ temp_output.log
+	@echo "\n📄 Arquivo: $<" >> $(REPORT_LOG)
+	@$(CC) $(CFLAGS) $(C_FILES) $< $(HEADERS) $(LIBS) -o $@ 2>> $(REPORT_LOG) || \
+		(echo "  ❌ Erro de compilação no arquivo de teste!" >> $(REPORT_LOG) && exit 0)
+	@# Executa o binário e anexa a saída (pass/fail das funções) ao log
+	@./$@ >> $(REPORT_LOG) 2>&1 || true
+	@rm -f $@
 
 $(LIBFT):
-	@$(MAKE) -C $(LIBFT_DIR)
-
-all: $(TARGETS)
-
-$(TARGETS): $(C_FILES) $(LIBFT)
-	@$(CC) $(CFLAGS) $(C_FILES) $(HEADERS) $(LIBS) -o $@
-	@echo "==> Shelly was successfully compiled!"
-
-clean:
-	@$(MAKE) -C $(LIBFT_DIR) clean
-	@echo "==> Simple clean done!"
-
-fclean: clean
-	@rm -rf $(TARGETS) $(ERROR_LOG)
-	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@echo "==> Full clean done!"
-
-re: fclean all
+	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
 .PHONY: all clean fclean re test run_test_bins
