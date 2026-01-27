@@ -1,14 +1,15 @@
 CC          = cc
-CFLAGS      = -g3 -Wextra -Werror -Wall -I.
+CFLAGS      = -g3 -Wextra -Werror -Wall
 LIBFT_DIR   = ./lib/libft
 LIBFT       = $(LIBFT_DIR)/libft.a
+
+# IMPORTANTE: Garanta que nenhum desses arquivos tenha uma função main()
 C_FILES     = src/ft_sample.c \
-				src/ft_sample_fail.c \
-				src/ft_sample_success.c
-				
+              src/ft_sample_fail.c \
+              src/ft_sample_success.c
+
 LIBS        = $(LIBFT) -ldl -lglfw -pthread -lm
-HEADERS     = -I . -I $(LIBFT_DIR) -I$(TEST_DIR)
-TARGETS     = minishell
+HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR)
 
 # Tests section
 TEST_DIR    = tests
@@ -19,11 +20,11 @@ TEST_BINS   = $(TEST_SRCS:.c=.out)
 REPORT_LOG  = test_report.log
 
 # Alvo principal de teste
-test: 
+test: $(LIBFT)
 	@rm -f $(REPORT_LOG)
-	@echo "🧪 RELATÓRIO DE TESTES UNITÁRIOS - $(shell date)" > $(REPORT_LOG)
+	@echo "TEST REPORT - $(shell date)" > $(REPORT_LOG)
 	@echo "------------------------------------------" >> $(REPORT_LOG)
-	@# Executa os testes ignorando falhas individuais para continuar a suite (-)
+	@# Executa os binários ignorando erros para não parar a suite
 	-@$(MAKE) run_test_bins --no-print-directory
 	@# Processamento do Resumo Final
 	@TOTAL=$$(grep -c "Case:" $(REPORT_LOG) || echo 0); \
@@ -31,10 +32,10 @@ test:
 	FAILED=$$(grep -c "\[FAIL\]" $(REPORT_LOG) || echo 0); \
 	echo "" >> $(REPORT_LOG); \
 	echo "==========================================" >> $(REPORT_LOG); \
-	echo "📊 RESUMO FINAL:" >> $(REPORT_LOG); \
-	echo "  Total de casos: $$TOTAL" >> $(REPORT_LOG); \
-	echo "  ✅ Sucessos:     $$PASSED" >> $(REPORT_LOG); \
-	echo "  ❌ Falhas:       $$FAILED" >> $(REPORT_LOG); \
+	echo "📊 Summary:" >> $(REPORT_LOG); \
+	echo "  Total cases: $$TOTAL" >> $(REPORT_LOG); \
+	echo "  ✅ Pass:      $$PASSED" >> $(REPORT_LOG); \
+	echo "  ❌ Fail:      $$FAILED" >> $(REPORT_LOG); \
 	echo "==========================================" >> $(REPORT_LOG); \
 	cat $(REPORT_LOG); \
 	if [ $$FAILED -gt 0 ]; then exit 1; fi
@@ -42,15 +43,26 @@ test:
 run_test_bins: $(TEST_BINS)
 
 # Regra de compilação e execução por arquivo
-$(TEST_DIR)/%.out: $(TEST_DIR)/%.c $(LIBFT)
-	@echo "\n📄 Arquivo: $<" >> $(REPORT_LOG)
-	@$(CC) $(CFLAGS) $(C_FILES) $< $(HEADERS) $(LIBS) -o $@ 2>> $(REPORT_LOG) || \
-		(echo "  ❌ Erro de compilação no arquivo de teste!" >> $(REPORT_LOG) && exit 0)
-	@# Executa o binário e anexa a saída (pass/fail das funções) ao log
-	@./$@ >> $(REPORT_LOG) 2>&1 || true
-	@rm -f $@
+$(TEST_DIR)/%.out: $(TEST_DIR)/%.c
+	@# Tenta compilar. Se falhar, registra no log.
+	@$(CC) $(CFLAGS) $(C_FILES) $< $(HEADERS) $(LIBS) -o $@ >> $(REPORT_LOG) 2>&1 || \
+		(echo "\nFile: $<" >> $(REPORT_LOG) && \
+		 echo "      [ERROR] Compilation failed" >> $(REPORT_LOG) && exit 0)
+	@# Se o binário foi criado, executa e limpa
+	@if [ -f $@ ]; then \
+		echo "\nFile: $<" >> $(REPORT_LOG); \
+		./$@ >> $(REPORT_LOG) 2>&1 || true; \
+		rm -f $@; \
+	fi
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
-.PHONY: all clean fclean re test run_test_bins
+clean:
+	@$(MAKE) -C $(LIBFT_DIR) clean --no-print-directory
+
+fclean: clean
+	@rm -rf minishell $(REPORT_LOG)
+	@$(MAKE) -C $(LIBFT_DIR) fclean --no-print-directory
+
+.PHONY: test run_test_bins clean fclean
