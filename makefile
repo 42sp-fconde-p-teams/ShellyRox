@@ -24,9 +24,9 @@ test: $(LIBFT)
 	@rm -f $(REPORT_LOG)
 	@echo "TEST REPORT - $(shell date)" > $(REPORT_LOG)
 	@echo "------------------------------------------" >> $(REPORT_LOG)
-	@# Executa os binários ignorando erros para não parar a suite
+	@# Run binaries ignoring errors for the jog to keep running
 	-@$(MAKE) run_test_bins --no-print-directory
-	@# Processamento do Resumo Final
+	@# Final summary processing
 	@TOTAL=$$(grep -c "Case:" $(REPORT_LOG) || echo 0); \
 	PASSED=$$(grep -c "\[PASS\]" $(REPORT_LOG) || echo 0); \
 	FAILED=$$(grep -c "\[FAIL\]" $(REPORT_LOG) || echo 0); \
@@ -44,11 +44,11 @@ run_test_bins: $(TEST_BINS)
 
 # Regra de compilação e execução por arquivo
 $(TEST_DIR)/%.out: $(TEST_DIR)/%.c
-	@# Tenta compilar. Se falhar, registra no log.
+	@# Tries to compile. If fail, log it to log file.
 	@$(CC) $(CFLAGS) $(C_FILES) $< $(HEADERS) $(LIBS) -o $@ >> $(REPORT_LOG) 2>&1 || \
 		(echo "\nFile: $<" >> $(REPORT_LOG) && \
 		 echo "      [ERROR] Compilation failed" >> $(REPORT_LOG) && exit 0)
-	@# Se o binário foi criado, executa e limpa
+	@# If binary was created, runs it and cleans it
 	@if [ -f $@ ]; then \
 		echo "\nFile: $<" >> $(REPORT_LOG); \
 		./$@ >> $(REPORT_LOG) 2>&1 || true; \
