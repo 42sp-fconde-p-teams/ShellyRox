@@ -8,7 +8,7 @@ C_FILES     = src/ft_sample.c \
               src/ft_sample_fail.c \
               src/ft_sample_success.c
 
-LIBS        = $(LIBFT) -ldl -lglfw -pthread -lm
+LIBS        = $(LIBFT) # -ldl -lglfw -pthread -lm
 HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR)
 
 # Tests section
