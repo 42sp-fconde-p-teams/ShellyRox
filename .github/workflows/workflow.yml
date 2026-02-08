@@ -4,30 +4,38 @@ on:
   workflow_dispatch: # Manual
 
 jobs:
-  build:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
+
+#       - name: Build project
+#         run: |
+#           echo "Executando: make all"
+#           # make all
+#           echo "Build finalizada."
+
+  unit-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build project
+      - name: Run unit tests
         run: |
-          echo "Executando: make all"
-          # make all
-          echo "Build finalizada."
+          echo "Starting unit regressive tests..."
+          echo "Running: make test"
 
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Functional testing
-        run: |
-          echo "Iniciando testes de regressão..."
-          echo "Executando: make test"
-          
-          # if make test returns 1, test fails. If returns 0, test succeeds.
+          make test
+          # if make test returns 1, test fails.
+          # If returns 0, test succeeds.
           
           echo "Saída: Todos os testes passaram (Simulado)."
+      - name: Upload test report log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report-log
+          path: test_report.log
+          retention-days: 5
