@@ -27,7 +27,7 @@ jobs:
           echo "Starting unit regressive tests..."
           echo "Running: make test"
 
-          make test
+          make unit-tests
           # if make test returns 1, test fails.
           # If returns 0, test succeeds.
           

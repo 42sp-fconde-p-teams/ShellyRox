@@ -1,5 +1,5 @@
 
-all:
+unit-tests:
 	@$(MAKE) -C ./tests
 
 clean:
