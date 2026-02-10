@@ -37,5 +37,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-report-log
-          path: test_report.log
+          path: ./tests/test_report.log
           retention-days: 5
