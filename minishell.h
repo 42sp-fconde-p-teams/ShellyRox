@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/02/20 21:44:06 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/02/21 15:57:08 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ typedef struct s_token
 	t_token			*next;
 } t_token;
 
+typedef struct s_cmd
+{
+	char	**cmd;
+	t_cmd	*next;
+} t_cmd;
 
 // def funny stuff here, friendo!
 int	ft_sample(void);			// REMOVE ASAP!
