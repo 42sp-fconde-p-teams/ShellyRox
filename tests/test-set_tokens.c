@@ -2,20 +2,29 @@
 #include "../minishell.h"
 #include "./tests.h"
 
-int	should_pass(void)
+int	put_value_to_a_new_token_node(void)
 {
-	char	*str_out;
 	char	str_in[] = "teste";
+	t_token	*token = NULL;
 
-	str_out = set_tokens(str_in);
-	if (ft_strncmp(str_in, str_out, 6) == 0)
-		return (0);
+	// token = ft_calloc(1, sizeof(t_token));
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->value, str_in, 6) == EXIT_SUCCESS)
+	{
+		free(token);
+		return (EXIT_SUCCESS);
+	}
 	else
-		return (1);
+	{
+		free(token);
+		return (EXIT_FAILURE);
+	}
 }
 
 int	main(void)
 {
-	RUN_TEST(should_pass);
+	RUN_TEST(temp_put_value_to_a_new_token_node);
 	return (0);
 }
