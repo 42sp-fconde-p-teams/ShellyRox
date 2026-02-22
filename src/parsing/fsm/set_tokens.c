@@ -6,11 +6,11 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/02/22 11:45:04 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/02/22 13:30:58 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../../minishell.h"
+#include "../../../minishell.h"
 
 static t_token	*create_token(char *value, t_token *next_t, t_token *prev_t)
 {
@@ -22,7 +22,6 @@ static t_token	*create_token(char *value, t_token *next_t, t_token *prev_t)
 	token_node->next = next_t;
 	token_node->prev = prev_t;
 	// TODO set token_type from enum
-
 	return (token_node);
 }
 
@@ -32,6 +31,5 @@ t_token	*set_tokens(char *s)
 
 	new_token = NULL;
 	new_token = create_token(s, NULL, NULL);
-
 	return (new_token);
 }
