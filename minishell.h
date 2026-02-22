@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/02/22 10:54:47 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/02/22 11:27:36 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ typedef struct s_token
 {
 	char			*value;
 	t_token_type	type;
-	struct t_token	*prev;
-	struct t_token	*next;
+	struct s_token	*prev;
+	struct s_token	*next;
 }	t_token;
 
 typedef struct s_cmd
 {
 	char			**cmd;
-	struct t_cmd	*next;
+	struct s_cmd	*next;
 }	t_cmd;
 
 // def funny stuff here, friendo!
