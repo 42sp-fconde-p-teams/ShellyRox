@@ -4,7 +4,6 @@
 
 int	first_token_must_be_lenght_5(void)
 {
-	// int		i = 0;
 	char	str[] = "token size test.";
 	if (get_token_len(str) == 5)
 		return (EXIT_SUCCESS);

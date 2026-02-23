@@ -6,24 +6,24 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/02/22 16:56:41 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/02/22 21:26:26 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-// static t_token	*create_token(char *value, t_token *next_t, t_token *prev_t)
-// {
-// 	t_token	*token_node;
+static t_token	*create_token(char *value, t_token *next_t, t_token *prev_t)
+{
+	t_token	*token_node;
 
-// 	token_node = NULL;
-// 	token_node = ft_calloc(1, sizeof(t_token));
-// 	token_node->value = value;
-// 	token_node->next = next_t;
-// 	token_node->prev = prev_t;
-// 	// TODO set token_type from enum
-// 	return (token_node);
-// }
+	token_node = NULL;
+	token_node = ft_calloc(1, sizeof(t_token));
+	token_node->value = value;
+	token_node->next = next_t;
+	token_node->prev = prev_t;
+	// TODO set token_type from enum
+	return (token_node);
+}
 
 t_token	*set_tokens(char *s)
 {
@@ -43,9 +43,10 @@ t_token	*set_tokens(char *s)
 		// get current token length (with FSM)
 		token_len = get_token_len(s);
 		// extract substring (ft_substr())
+		curr_token = create_token(ft_substr(s, 0, token_len), NULL, NULL);
 		// create and add node to tokens list
 		// go ahead on pointer
-		s++;
+		s += token_len;
 	}
 	return (curr_token);
 }
