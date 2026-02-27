@@ -6,20 +6,20 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/02/22 21:26:26 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/02/26 22:44:26 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
-static t_token	*create_token(char *value, t_token *next_t, t_token *prev_t)
+static t_token	*create_token(char *value, t_token *prev_t)
 {
 	t_token	*token_node;
 
 	token_node = NULL;
 	token_node = ft_calloc(1, sizeof(t_token));
 	token_node->value = value;
-	token_node->next = next_t;
+	token_node->next = NULL;
 	token_node->prev = prev_t;
 	// TODO set token_type from enum
 	return (token_node);
@@ -27,26 +27,28 @@ static t_token	*create_token(char *value, t_token *next_t, t_token *prev_t)
 
 t_token	*set_tokens(char *s)
 {
-	t_token	*curr_token;
-	t_token	*tmp_token;
+	t_token	*head_n;
+	t_token	*tail_n;
+	t_token	*new_n;
 	int		token_len;
 
 	token_len = 0;
-	curr_token = NULL;
-	tmp_token = NULL;
-	// curr_token = create_token(s, NULL, NULL);
-	while (*s)
+	head_n = NULL;
+	tail_n = NULL;
+	while (s && *s)
 	{
-		// bypass initial spaces
 		while (*s == ' ' || *s == '\t' || *s == '\n')
 			s++;
-		// get current token length (with FSM)
+		if (!*s)
+			break ;
 		token_len = get_token_len(s);
-		// extract substring (ft_substr())
-		curr_token = create_token(ft_substr(s, 0, token_len), NULL, NULL);
-		// create and add node to tokens list
-		// go ahead on pointer
+		new_n = create_token(ft_substr(s, 0, token_len), tail_n);
+		if (!head_n)
+			head_n = new_n;
+		if (tail_n)
+			tail_n->next = new_n;
+		tail_n = new_n;
 		s += token_len;
 	}
-	return (curr_token);
+	return (head_n);
 }
