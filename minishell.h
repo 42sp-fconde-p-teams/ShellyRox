@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/02/22 16:41:53 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/02/27 22:26:49 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,12 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
+
+typedef enum e_bool
+{
+	BOOL_FALSE,
+	BOOL_TRUE
+}	t_bool;
 
 typedef enum e_token_type
 {
@@ -33,6 +39,7 @@ typedef struct s_token
 {
 	char			*value;
 	t_token_type	type;
+	t_bool			quoted;
 	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
@@ -50,6 +57,5 @@ int	ft_sample_success(void);	// REMOVE ASAP!
 
 t_token	*set_tokens(char *s);
 int	get_token_len(char *str);
-
 
 #endif
