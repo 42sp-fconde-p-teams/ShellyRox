@@ -106,6 +106,28 @@ int	create_list_with_three_tokens(void)
 	}
 }
 
+int	create_quoted_chunk_as_one_token(void)
+{
+	char	str_in[] = "echo \"token size\" test";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->value, "echo", 4) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->value, "\"token size\"", 12) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->value, "test", 4) == EXIT_SUCCESS)
+	{
+		free(token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		free(token);
+		return (EXIT_FAILURE);
+	}
+}
+
 int	create_list_ignoring_spaces(void)
 {
 	char	str_in[] = "    token size   test     ";
@@ -160,6 +182,7 @@ int	main(void)
 	RUN_TEST(return_null_for_only_spaces_token);
 	// token list tests
 	RUN_TEST(create_list_with_three_tokens);
+	RUN_TEST(create_quoted_chunk_as_one_token);
 	RUN_TEST(create_list_ignoring_spaces);
 	RUN_TEST(set_correctly_reverse_link_for_list_of_three);
 	return (0);
