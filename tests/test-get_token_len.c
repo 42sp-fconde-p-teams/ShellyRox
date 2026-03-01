@@ -11,8 +11,18 @@ int	first_token_must_be_lenght_5(void)
 		return (EXIT_FAILURE);
 }
 
+int	first_token_must_be_lenght_12(void)
+{
+	char	str[] = "'token size' test.";
+	if (get_token_len(str) == 12)
+		return (EXIT_SUCCESS);
+	else
+		return (EXIT_FAILURE);
+}
+
 int	main(void)
 {
 	RUN_TEST(first_token_must_be_lenght_5);
+	RUN_TEST(first_token_must_be_lenght_12);
 	return (0);
 }
