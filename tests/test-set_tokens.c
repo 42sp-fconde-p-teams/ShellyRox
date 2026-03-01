@@ -174,6 +174,30 @@ int	create_list_with_input_containing_pipe_with_spaces(void)
 	}
 }
 
+int	create_list_with_simple_quotes_between_double_quotes(void)
+{
+	char	str_in[] = "echo \"let's que let's!\" | wc -l";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->value, "echo", 4) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->value, "\"let's que let's!\"", 18) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->value, "|", 1) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->next->value, "wc", 2) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->next->next->value, "-l", 2) == EXIT_SUCCESS)
+	{
+		free(token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		free(token);
+		return (EXIT_FAILURE);
+	}
+}
+
 int	set_correctly_reverse_link_for_list_of_three(void)
 {
 	char	str_in[] = "token size test";
@@ -209,6 +233,7 @@ int	main(void)
 	RUN_TEST(create_quoted_chunk_as_one_token);
 	RUN_TEST(create_list_ignoring_spaces);
 	RUN_TEST(create_list_with_input_containing_pipe_with_spaces);
+	RUN_TEST(create_list_with_simple_quotes_between_double_quotes);
 	RUN_TEST(set_correctly_reverse_link_for_list_of_three);
 	return (0);
 }
