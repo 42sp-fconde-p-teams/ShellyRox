@@ -221,6 +221,27 @@ int	set_correctly_reverse_link_for_list_of_three(void)
 	}
 }
 
+int	set_second_node_as_pipe(void)
+{
+	char	str_in[] = "command | size -test";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	ft_printf("\nTESTE: %d\n", token->next->type);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (token->next->type == 1)
+	{
+		free(token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		free(token);
+		return (EXIT_FAILURE);
+	}
+}
+
 int	main(void)
 {
 	// simple token creation tests
@@ -235,5 +256,8 @@ int	main(void)
 	RUN_TEST(create_list_with_input_containing_pipe_with_spaces);
 	RUN_TEST(create_list_with_simple_quotes_between_double_quotes);
 	RUN_TEST(set_correctly_reverse_link_for_list_of_three);
+	// token type tests
+	RUN_TEST(set_second_node_as_pipe);
+
 	return (0);
 }

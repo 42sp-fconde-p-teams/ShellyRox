@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/03/01 21:14:50 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/03/01 21:58:04 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static void	set_type(t_token *token)
 {
-	if (token->value == (char*)'|')
+	if (ft_strncmp(token->value, "|", 1))
 		token->type = TOKEN_PIPE;
 	else if (token->value[0] == '\"' || token->value[0] == '\'')
 		token->type = TOKEN_WORD;
@@ -27,6 +27,8 @@ static void	set_type(t_token *token)
 		token->type = TOKEN_HEREDOC;
 	else if (ft_strncmp(token->value, ">>", 2))
 		token->type = TOKEN_APPEND;
+	else
+		return ;
 	// else if (is_command(token->value))
 	// 	token->type = TOKEN_CMD;
 	// else if (is_flag(token->value))
@@ -42,6 +44,7 @@ static t_token	*create_token(char *value, t_token *prev_t)
 	token_node->next = NULL;
 	token_node->prev = prev_t;
 	// TODO set token_type from enum
+	set_type(token_node);
 	return (token_node);
 }
 
