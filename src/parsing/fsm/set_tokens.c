@@ -6,12 +6,32 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/02/26 22:44:26 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/03/01 21:14:50 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
 
+
+static void	set_type(t_token *token)
+{
+	if (token->value == (char*)'|')
+		token->type = TOKEN_PIPE;
+	else if (token->value[0] == '\"' || token->value[0] == '\'')
+		token->type = TOKEN_WORD;
+	else if (token->value == (char*)'<')
+		token->type = TOKEN_REDIR_IN;
+	else if (token->value == (char*)'>')
+		token->type = TOKEN_REDIR_OUT;
+	else if (ft_strncmp(token->value, "<<", 2))
+		token->type = TOKEN_HEREDOC;
+	else if (ft_strncmp(token->value, ">>", 2))
+		token->type = TOKEN_APPEND;
+	// else if (is_command(token->value))
+	// 	token->type = TOKEN_CMD;
+	// else if (is_flag(token->value))
+	// 	token->type = TOKEN_FLAG;
+}
 static t_token	*create_token(char *value, t_token *prev_t)
 {
 	t_token	*token_node;
