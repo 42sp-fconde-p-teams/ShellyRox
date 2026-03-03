@@ -10,15 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-
-// Iniciar uma copia do envp. (envp é a cópia de todas as variáveis de ambiente do sistema)
-// Iniicar o loop de leitura da linha .
-// 		capturar a entrada (se retornar NULL, o user mandou um CTRL + D.
-// 		se a linha e vazia da free() e continue.
-// 		add_history() pra adicionar a linha no historico.
-// 			(MOCK COM PRINTF PRA SABER SE ESTA CHEGANDO NO FLUXO DO LEXER).
-//		limpar a memoria.
+#include "../minishell.h"
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shelly;
@@ -34,7 +26,6 @@ int	main(int argc, char **argv, char **envp)
 		if (!line)
 			break ;
 		add_history(line);
-		printf("%s\n", line);
 		free(line);
 	}
 	free(shelly.envp);

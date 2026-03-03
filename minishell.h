@@ -37,11 +37,43 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+
+// Parser structures
 typedef struct s_cmd
 {
 	char			**cmd;
 	struct s_cmd	*next;
 }	t_cmd;
+	// thinking about the cmd struct use...
+
+typedef struct s_ast_node {
+	t_token_type	node_type;
+	union u_node_value
+	{
+		typedef struct s_command
+		{
+			char **cmd;
+		}	command;
+		typedef struct s_pipe
+		{
+			struct s_ast_node *left;
+		 	struct s_ast_node *right;
+		}	pipe;
+		typedef struct s_redir
+		{
+			char **cmd;
+			char *filename;
+			int fd;
+		}	redirect;
+		typedef struct s_and_or
+		{
+			struct s_ast_node *left;
+			struct s_ast_node *right;
+		}	and_or;
+	};
+} t_ast_node;
+
+
 
 // def funny stuff here, friendo!
 int	ft_sample(void);			// REMOVE ASAP!
