@@ -28,12 +28,10 @@ typedef enum e_token_type
 {
 	TOKEN_WORD,
 	TOKEN_PIPE,
-	TOKEN_REDIR_IN,
 	TOKEN_REDIR_OUT,
-	TOKEN_APPEND,
+	TOKEN_REDIR_IN,
 	TOKEN_HEREDOC,
-	TOKEN_CMD,
-	TOKEN_FLAG
+	TOKEN_APPEND,
 }	t_token_type;
 
 typedef struct s_token
@@ -54,30 +52,25 @@ typedef struct s_cmd
 }	t_cmd;
 	// thinking about the cmd struct use...
 
-typedef struct s_ast_node {
+typedef struct	s_ast_node
+{
 	t_token_type	node_type;
 	union u_node_value
 	{
-		typedef struct s_command
+		struct s_command
 		{
-			char **cmd;
+			char	**cmd;
 		}	command;
-		typedef struct s_pipe
+		struct s_pipe
 		{
-			struct s_ast_node *left;
-		 	struct s_ast_node *right;
+			struct s_ast_node	*left;
+		 	struct s_ast_node	*right;
 		}	pipe;
-		typedef struct s_redir
+		struct s_redir
 		{
-			char **cmd;
-			char *filename;
-			int fd;
+			char	**cmd;
+			char	*filename;
 		}	redirect;
-		typedef struct s_and_or
-		{
-			struct s_ast_node *left;
-			struct s_ast_node *right;
-		}	and_or;
 	};
 } t_ast_node;
 
