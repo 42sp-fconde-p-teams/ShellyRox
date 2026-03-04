@@ -1,4 +1,4 @@
-#include "../../includes/minishell.h"
+// #include "../../minishell.h"
 
 // test 1:
 // IN -> echo "Hello 'world'"
@@ -23,10 +23,10 @@
 //			"TOKEN_WORD"
 //}]
 //
-//OUT -> t_ast command_table 
+//OUT -> t_ast command_table
 //{
 //	t_cmd = {
 //		["echo", "hello 'world'", NULL]
 //		next = NULL;
 //	}
-//} 
+//}

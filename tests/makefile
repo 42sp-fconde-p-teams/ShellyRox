@@ -4,16 +4,14 @@ LIBFT_DIR   = ../lib/libft
 LIBFT       = $(LIBFT_DIR)/libft.a
 
 # IMPORTANTE: Garanta que nenhum desses arquivos tenha uma função main()
-C_FILES     = ../src/parsing/fsm/set_tokens.c \
-				../src/parsing/fsm/get_token_len.c
+C_FILES     = ../src/parsing/parser.c
 
 LIBS        = $(LIBFT) # -ldl -lglfw -pthread -lm
 HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR)
 
 # Tests section
 TEST_DIR    = ./
-TEST_SRCS   = $(TEST_DIR)/test-set_tokens.c \
-				$(TEST_DIR)/test-get_token_len.c
+TEST_SRCS   = $(TEST_DIR)/test-parser.c
 TEST_BINS   = $(TEST_SRCS:.c=.out)
 REPORT_LOG  = test_report.log
 

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shelly;
@@ -22,6 +23,8 @@ int	main(int argc, char **argv, char **envp)
 	shelly.envp = envp;
 	while (1)
 	{
+		t_token *tokens = NULL;
+		parser(tokens);
 		line = readline("shelly🎀> ");
 		if (!line)
 			break ;

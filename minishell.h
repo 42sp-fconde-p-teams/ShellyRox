@@ -14,9 +14,17 @@
 # define MINISHELL_H
 
 # include "./lib/libft/libft.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
+
+typedef struct s_shely
+{
+	char	**envp;
+	char	**argv;
+}	t_shell;
 
 typedef enum e_bool
 {
@@ -43,7 +51,6 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-
 // Parser structures
 typedef struct s_cmd
 {
@@ -52,36 +59,48 @@ typedef struct s_cmd
 }	t_cmd;
 	// thinking about the cmd struct use...
 
-typedef struct	s_ast_node
+typedef struct s_command
 {
-	t_token_type	node_type;
-	union u_node_value
-	{
-		struct s_command
-		{
-			char	**cmd;
-		}	command;
-		struct s_pipe
-		{
-			struct s_ast_node	*left;
-		 	struct s_ast_node	*right;
-		}	pipe;
-		struct s_redir
-		{
-			char	**cmd;
-			char	*filename;
-		}	redirect;
-	};
-} t_ast_node;
+	char	**cmd;
+}	t_command;
 
+typedef struct s_pipe
+{
+	struct s_ast_node	*left;
+	struct s_ast_node	*right;
+}	t_pipe;
 
+typedef struct s_redir
+{
+	char	**cmd;
+	char	*filename;
+}	t_redirect;
+
+union u_node_value
+{
+	t_command	*command;
+	t_pipe		*pipe;
+	t_redirect	*redirect;
+};
+
+typedef struct s_ast_node
+{
+	t_token_type		node_type;
+	union u_node_value	value;
+}	t_ast_node;
+
+// parser functions
+int	parser(t_token *tokens);
+void	print_ast(t_ast_node *node);
+t_ast_node	*create_ast_node_word(t_token *token);
+int	count_words_token(t_token *token);
 
 // def funny stuff here, friendo!
-int	ft_sample(void);			// REMOVE ASAP!
-int	ft_sample_fail(void);		// REMOVE ASAP!
-int	ft_sample_success(void);	// REMOVE ASAP!
+int		ft_sample(void);			// REMOVE ASAP!
+int		ft_sample_fail(void);		// REMOVE ASAP!
+int		ft_sample_success(void);	// REMOVE ASAP!
 
 t_token	*set_tokens(char *s);
-int	get_token_len(char *str);
+int		get_token_len(char *str);
 
 #endif
