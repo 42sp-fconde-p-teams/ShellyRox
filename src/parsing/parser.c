@@ -19,6 +19,5 @@ void	parser(t_token **tokens)
 	while (cpy_token[i])
 	{
 		if (cpy_token[i]->type == TOKEN_WORD)
-
 	}
 }
