@@ -227,10 +227,30 @@ int	set_second_node_as_pipe(void)
 	t_token	*token = NULL;
 
 	token = set_tokens(str_in);
-	ft_printf("\nTESTE: %d\n", token->next->type);
 	if (!token)
 		return (EXIT_FAILURE);
 	if (token->next->type == 1)
+	{
+		free(token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		free(token);
+		return (EXIT_FAILURE);
+	}
+}
+
+int	set_second_node_as_redirect_in(void)
+{
+	char	str_in[] = "command < size -test";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	ft_printf("\nTESTE: %d\n", token->next->type);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (token->next->type == 2)
 	{
 		free(token);
 		return (EXIT_SUCCESS);
@@ -258,6 +278,7 @@ int	main(void)
 	RUN_TEST(set_correctly_reverse_link_for_list_of_three);
 	// token type tests
 	RUN_TEST(set_second_node_as_pipe);
+	RUN_TEST(set_second_node_as_redirect_in);
 
 	return (0);
 }
