@@ -321,6 +321,26 @@ int	set_second_node_as_append(void)
 	}
 }
 
+int	set_second_node_as_word(void)
+{
+	char	str_in[] = "command >> size -test";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (token->type == TOKEN_WORD)
+	{
+		free(token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		free(token);
+		return (EXIT_FAILURE);
+	}
+}
+
 int	main(void)
 {
 	// simple token creation tests
@@ -341,6 +361,7 @@ int	main(void)
 	RUN_TEST(set_second_node_as_redirect_out);
 	RUN_TEST(set_second_node_as_heredoc);
 	RUN_TEST(set_second_node_as_append);
+	RUN_TEST(set_second_node_as_word);
 
 	return (0);
 }
