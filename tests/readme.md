@@ -43,3 +43,11 @@ The main commands/recipes are:
 **make clean** -> Simple clear of utilities like _LIBFT_ (if used).
 
 **make fclean** -> Full clean included compiled files and logs.
+
+## Extra
+
+This command can be run from the tests folder to get an executable file for debugging with more precision.
+
+```
+cc -g3 -Wextra -Werror -Wall ../src/parsing/fsm/*.c test-{TARGET_FILE}.c -I. -I../lib/libft -I./ ../lib/libft/libft.a -o unit_test.out
+```
