@@ -2,6 +2,9 @@ name: Workflow CI
 
 on:
   workflow_dispatch: # Manual
+  pull_request:
+    branches:
+      - main
 
 jobs:
 #   build:
