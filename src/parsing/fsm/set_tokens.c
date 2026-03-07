@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_tokens.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/03/01 21:58:04 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/03/04 22:02:56 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 
 static void	set_type(t_token *token)
 {
-	if (ft_strncmp(token->value, "|", 1))
+	if (ft_strncmp(token->value, "|", 1) == EXIT_SUCCESS)
 		token->type = TOKEN_PIPE;
+	else if (ft_strncmp(token->value, "<<", 2) == EXIT_SUCCESS)
+		token->type = TOKEN_HEREDOC;
+	else if (ft_strncmp(token->value, ">>", 2) == EXIT_SUCCESS)
+		token->type = TOKEN_APPEND;
+	else if (ft_strncmp(token->value, "<", 1) == EXIT_SUCCESS)
+		token->type = TOKEN_REDIR_IN;
+	else if (ft_strncmp(token->value, ">", 1) == EXIT_SUCCESS)
+		token->type = TOKEN_REDIR_OUT;
 	else if (token->value[0] == '\"' || token->value[0] == '\'')
 		token->type = TOKEN_WORD;
-	else if (token->value == (char*)'<')
-		token->type = TOKEN_REDIR_IN;
-	else if (token->value == (char*)'>')
-		token->type = TOKEN_REDIR_OUT;
-	else if (ft_strncmp(token->value, "<<", 2))
-		token->type = TOKEN_HEREDOC;
-	else if (ft_strncmp(token->value, ">>", 2))
-		token->type = TOKEN_APPEND;
 	else
 		return ;
 	// else if (is_command(token->value))

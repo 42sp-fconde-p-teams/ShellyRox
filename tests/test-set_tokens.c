@@ -227,10 +227,109 @@ int	set_second_node_as_pipe(void)
 	t_token	*token = NULL;
 
 	token = set_tokens(str_in);
-	ft_printf("\nTESTE: %d\n", token->next->type);
 	if (!token)
 		return (EXIT_FAILURE);
-	if (token->next->type == 1)
+	if (token->next->type == TOKEN_PIPE)
+	{
+		free(token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		free(token);
+		return (EXIT_FAILURE);
+	}
+}
+
+int	set_second_node_as_redirect_in(void)
+{
+	char	str_in[] = "command < size -test";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (token->next->type == TOKEN_REDIR_IN)
+	{
+		free(token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		free(token);
+		return (EXIT_FAILURE);
+	}
+}
+
+int	set_second_node_as_redirect_out(void)
+{
+	char	str_in[] = "command > size -test";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (token->next->type == TOKEN_REDIR_OUT)
+	{
+		free(token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		free(token);
+		return (EXIT_FAILURE);
+	}
+}
+
+int	set_second_node_as_heredoc(void)
+{
+	char	str_in[] = "command << size -test";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (token->next->type == TOKEN_HEREDOC)
+	{
+		free(token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		free(token);
+		return (EXIT_FAILURE);
+	}
+}
+
+int	set_second_node_as_append(void)
+{
+	char	str_in[] = "command >> size -test";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (token->next->type == TOKEN_APPEND)
+	{
+		free(token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		free(token);
+		return (EXIT_FAILURE);
+	}
+}
+
+int	set_second_node_as_word(void)
+{
+	char	str_in[] = "command >> size -test";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (token->type == TOKEN_WORD)
 	{
 		free(token);
 		return (EXIT_SUCCESS);
@@ -258,6 +357,11 @@ int	main(void)
 	RUN_TEST(set_correctly_reverse_link_for_list_of_three);
 	// token type tests
 	RUN_TEST(set_second_node_as_pipe);
+	RUN_TEST(set_second_node_as_redirect_in);
+	RUN_TEST(set_second_node_as_redirect_out);
+	RUN_TEST(set_second_node_as_heredoc);
+	RUN_TEST(set_second_node_as_append);
+	RUN_TEST(set_second_node_as_word);
 
 	return (0);
 }
