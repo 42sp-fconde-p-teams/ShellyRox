@@ -12,30 +12,6 @@
 
 #include "../../minishell.h"
 
-t_ast_node	*create_ast_node_word(t_token *token)
-{
-	int i;
-	t_token *tmp;
-	t_ast_node *node;
-
-	i = 0;
-	tmp = token;
-	node = malloc(sizeof(t_ast_node));
-	node->value.command = malloc(sizeof(t_command));
-	node->value.command->cmd = malloc(sizeof(char *) * (count_words_token(token) + 1));
-	if (tmp->type == TOKEN_WORD)
-	{
-		node->node_type = TOKEN_WORD;
-		while (tmp != NULL && tmp->type == TOKEN_WORD)
-		{
-			node->value.command->cmd[i++] = tmp->value;
-			tmp = tmp->next;
-		}
-		node->value.command->cmd[i] = NULL;
-	}
-	return (node);
-}
-
 int	count_words_token(t_token *token)
 {
 	int count = 0;
@@ -48,31 +24,70 @@ int	count_words_token(t_token *token)
 	return (count);
 }
 
-void	print_ast(t_ast_node *node)
+t_redir	*add_node_linked(t_redir *redir, t_redir *redir_node)
 {
-	if (node == NULL)
-		return;
-	if (node->node_type == TOKEN_WORD)
-	{
-		int i = 0;
-		while (node->value.command->cmd[i])
-			printf("%s ", node->value.command->cmd[i++]);
-		printf("\n");
-	}
-	else if (node->node_type == TOKEN_PIPE)
-	{
-		print_ast(node->value.pipe->left);
-		print_ast(node->value.pipe->right);
-	}
+	t_redir *tmp;
+
+	tmp = redir;
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	tmp->next = redir_node;
+	return (redir);
 }
 
-int	parser(t_token *tokens)
+void	add_redir_command(t_ast_node **node, t_token **token)
 {
-	t_ast_node *root = create_ast_node_word(tokens);
-	if (root != NULL)
+	t_redir *redir;
+
+	redir = malloc(sizeof(t_redir));
+	redir->type = (*token)->type;
+	redir->filename = (*token)->value;
+	(*node)->value.command->redir = add_node_linked((*node)->value.command->redir, redir);
+}
+
+t_ast_node	*parse_command(t_token	*token)
+{
+	t_ast_node	*node;
+	t_token	*tmp;
+	int	i;
+
+	node = malloc(sizeof(t_ast_node));
+	tmp = token;
+	i = 0;
+	if(token->type != TOKEN_PIPE)
 	{
-		print_ast(root);
-		return (0);
+		node->node_type = token->type;
+		node->value.command = malloc(sizeof(t_command));
+		node->value.command->cmd = malloc(sizeof(char *) * (count_words_token(tmp) + 1));
+		while (tmp && tmp->type != TOKEN_PIPE)
+		{
+			if (tmp->type == TOKEN_REDIR_IN || tmp->type == TOKEN_REDIR_OUT
+				|| tmp->type == TOKEN_HEREDOC || tmp->type == TOKEN_APPEND)
+				add_redir_command(&node, &tmp);
+			else
+				node->value.command->cmd[i++] = tmp->value;
+			tmp = tmp->next;
+		}
+		node->value.command->cmd[i] = NULL;
 	}
-	return (1);
+	return (node);
+}
+
+t_ast_node	*parser(t_token *tokens)
+{
+	t_ast_node	*node;
+	t_token	*tmp;
+
+	tmp = tokens;
+	node = malloc(sizeof(t_ast_node));
+	node->node_type = tokens->type;
+	if (node->node_type == TOKEN_PIPE)
+	{
+		node->value.pipe = malloc(sizeof(t_pipe));
+		node->value.pipe->left = parse_command(tmp);
+		node->value.pipe->right = parser(tmp->next);
+	}
+	else
+		node = parse_command(tmp);
+	return (node);
 }

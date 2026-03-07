@@ -52,16 +52,17 @@ typedef struct s_token
 }	t_token;
 
 // Parser structures
-typedef struct s_cmd
+typedef struct s_redir
 {
-	char			**cmd;
-	struct s_cmd	*next;
-}	t_cmd;
-	// thinking about the cmd struct use...
+	t_token_type	type;
+	char			*filename;
+	struct	s_redir	*next;
+}	t_redir;
 
 typedef struct s_command
 {
 	char	**cmd;
+	t_redir	*redir;
 }	t_command;
 
 typedef struct s_pipe
@@ -70,17 +71,10 @@ typedef struct s_pipe
 	struct s_ast_node	*right;
 }	t_pipe;
 
-typedef struct s_redir
-{
-	char	**cmd;
-	char	*filename;
-}	t_redirect;
-
 union u_node_value
 {
 	t_command	*command;
 	t_pipe		*pipe;
-	t_redirect	*redirect;
 };
 
 typedef struct s_ast_node
@@ -90,10 +84,12 @@ typedef struct s_ast_node
 }	t_ast_node;
 
 // parser functions
-int	parser(t_token *tokens);
-void	print_ast(t_ast_node *node);
-t_ast_node	*create_ast_node_word(t_token *token);
+t_ast_node	*parser(t_token *tokens);
+t_ast_node	*parse_command(t_token	*token);
 int	count_words_token(t_token *token);
+void	add_redir_command(t_ast_node **node, t_token **token);
+t_ast_node	*parse_command(t_token	*token);
+t_ast_node	*parser(t_token *tokens);
 
 // def funny stuff here, friendo!
 int		ft_sample(void);			// REMOVE ASAP!
