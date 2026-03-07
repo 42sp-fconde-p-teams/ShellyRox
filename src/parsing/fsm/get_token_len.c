@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/03/01 19:47:28 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/03/07 18:21:14 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ int	get_token_len(char *str)
 	}
 	while (str[i] != '\0')
 	{
-		if (str[i] == ' ')
+		if (str[i] == ' ' || str[i] == '|')
 			break ;
 		i++;
 	}
+	if (i == 0)
+		i++;
 	return (i);
 }
