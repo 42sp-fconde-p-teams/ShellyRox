@@ -22,7 +22,7 @@ t_ast_node	*create_ast_node_word(t_token *token)
 	tmp = token;
 	node = malloc(sizeof(t_ast_node));
 	node->value.command = malloc(sizeof(t_command));
-	node->value.command->cmd = malloc(sizeof(char *) * count_words_token(token) + 1);
+	node->value.command->cmd = malloc(sizeof(char *) * (count_words_token(token) + 1));
 	if (tmp->type == TOKEN_WORD)
 	{
 		node->node_type = TOKEN_WORD;
