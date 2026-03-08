@@ -43,10 +43,25 @@ int	should_create_node_with_redirection(void)
 	return (EXIT_SUCCESS);
 }
 
+int	shoul_create_pipe_and_redirections(void)
+{
+	t_token *token;
+	t_ast_node *ast;
+	char *line = "echo 'hello' | wc -l > output.txt";
+	token = set_tokens(line);
+	ast = parser(&token);
+	if (ast->value.pipe->left->value.command->cmd[0] == NULL &&
+	 ast->value.pipe->right->value.command->cmd[0] == NULL &&
+	 ast->value.pipe->right->value.command->redir == NULL)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
 int	main(void)
 {
 	RUN_TEST(should_create_ast_node);
 	RUN_TEST(should_create_pipe_ast_node);
 	RUN_TEST(should_create_node_with_redirection);
+	RUN_TEST(shoul_create_pipe_and_redirections);
 	return (0);
 }

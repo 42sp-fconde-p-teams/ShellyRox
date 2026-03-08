@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <stdlib.h>
 
 int	count_words_token(t_token *token)
 {
