@@ -3,24 +3,50 @@
 
 int should_create_ast_node(void)
 {
-	t_token *token = malloc(sizeof(t_token));
-	t_token *token2 = malloc(sizeof(t_token));
-	token->prev = NULL;
-	token->next = token2;
-	token->type = TOKEN_WORD;
-	token->value = "echo";
-	token2->type = TOKEN_WORD;
-	token2->prev = token;
-	token2->next = NULL;
-	token2->value = "'hello'";
-	if (parser(token) == 0)
-		return (EXIT_SUCCESS);
-	else
+	t_token *token;
+	t_ast_node *ast;
+	char *line = "echo 'hello'";
+	token = set_tokens(line);
+	ast = parser(&token);
+	if (ast->value.command->cmd[0] == NULL)
 		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
+int should_create_pipe_ast_node(void)
+{
+	t_token *token;
+	t_ast_node *ast;
+	int i = 0;
+	char *line = "echo 'hello' | wc -l";
+	token = set_tokens(line);
+	ast = parser(&token);
+	if (ast->value.pipe->left->value.command->cmd[0] == NULL && ast->value.pipe->right->value.command->cmd[0] == NULL)
+		return (EXIT_FAILURE);
+	while (ast->value.pipe->left->value.command->cmd[i] != NULL)
+		ft_printf("%s\n", ast->value.pipe->left->value.command->cmd[i++]);
+	i = 0;
+	while (ast->value.pipe->right->value.command->cmd[i] != NULL)
+		ft_printf("%s\n", ast->value.pipe->right->value.command->cmd[i++]);
+	return (EXIT_SUCCESS);
+}
+
+int	should_create_node_with_redirection(void)
+{
+	t_token *token;
+	t_ast_node *ast;
+	char *line = "echo 'hello' > output.txt";
+	token = set_tokens(line);
+	ast = parser(&token);
+	if (ast->value.command->cmd[0] == NULL && ast->value.command->redir == NULL)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 int	main(void)
 {
 	RUN_TEST(should_create_ast_node);
+	RUN_TEST(should_create_pipe_ast_node);
+	RUN_TEST(should_create_node_with_redirection);
 	return (0);
 }

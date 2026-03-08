@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+// #include "../../minishell.h"
 
-void	expander(t_cmd *cmd)
-{
-	(void)cmd;
-}
+// void	expander(t_cmd *cmd)
+// {
+// 	(void)cmd;
+// }

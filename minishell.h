@@ -84,12 +84,10 @@ typedef struct s_ast_node
 }	t_ast_node;
 
 // parser functions
-t_ast_node	*parser(t_token *tokens);
-t_ast_node	*parse_command(t_token	*token);
+t_ast_node	*parser(t_token **tokens);
+t_ast_node	*parse_command(t_token	**token);
 int	count_words_token(t_token *token);
 void	add_redir_command(t_ast_node **node, t_token **token);
-t_ast_node	*parse_command(t_token	*token);
-t_ast_node	*parser(t_token *tokens);
 
 // def funny stuff here, friendo!
 int		ft_sample(void);			// REMOVE ASAP!

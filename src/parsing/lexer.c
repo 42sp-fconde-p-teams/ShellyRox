@@ -10,10 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+// #include "../../minishell.h"
 
-t_token	*lexer(char *input)
-{
-	(void)input;
-	return (NULL);
-}
+// t_token	*lexer(char *input)
+// {
+// 	(void)input;
+// 	return (NULL);
+// }

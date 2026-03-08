@@ -4,8 +4,9 @@ LIBFT_DIR   = ../lib/libft
 LIBFT       = $(LIBFT_DIR)/libft.a
 
 # IMPORTANTE: Garanta que nenhum desses arquivos tenha uma função main()
-C_FILES     = ../src/parsing/parser.c
-
+C_FILES     = ../src/parsing/parser.c \
+              ../src/parsing/fsm/set_tokens.c \
+              ../src/parsing/fsm/get_token_len.c
 LIBS        = $(LIBFT) # -ldl -lglfw -pthread -lm
 HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR)
 
