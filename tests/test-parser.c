@@ -43,7 +43,7 @@ int	should_create_node_with_redirection(void)
 	return (EXIT_SUCCESS);
 }
 
-int	shoul_create_pipe_and_redirections(void)
+int	should_create_pipe_and_redirections(void)
 {
 	t_token *token;
 	t_ast_node *ast;
@@ -62,6 +62,6 @@ int	main(void)
 	RUN_TEST(should_create_ast_node);
 	RUN_TEST(should_create_pipe_ast_node);
 	RUN_TEST(should_create_node_with_redirection);
-	RUN_TEST(shoul_create_pipe_and_redirections);
+	RUN_TEST(should_create_pipe_and_redirections);
 	return (0);
 }
