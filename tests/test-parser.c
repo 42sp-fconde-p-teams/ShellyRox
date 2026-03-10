@@ -122,7 +122,7 @@ int	should_create_node_with_append_redirection(void)
 	if (ast->node_type != TOKEN_WORD || ast->value.command->cmd[0] == NULL ||
 		ft_strncmp(ast->value.command->cmd[0], "echo", 4) != 0 ||
 		ast->value.command->cmd[1] == NULL ||
-		ft_strncmp(ast->value.command->cmd[1], "'hello'", 7) != 0 ||
+		ft_strncmp(ast->value.command->cmd[1], "hello", 5) != 0 ||
 		ast->value.command->cmd[2] != NULL ||
 		ast->value.command->redir == NULL ||
 		ast->value.command->redir->type != TOKEN_APPEND ||
