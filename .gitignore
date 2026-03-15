@@ -3,3 +3,4 @@
 *.a
 .test_failures
 *.log
+*.out
