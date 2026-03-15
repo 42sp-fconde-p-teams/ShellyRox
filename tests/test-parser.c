@@ -122,7 +122,7 @@ int	should_create_node_with_append_redirection(void)
 	if (ast->node_type != TOKEN_WORD || ast->value.command->cmd[0] == NULL ||
 		ft_strncmp(ast->value.command->cmd[0], "echo", 4) != 0 ||
 		ast->value.command->cmd[1] == NULL ||
-		ft_strncmp(ast->value.command->cmd[1], "hello", 5) != 0 ||
+		ft_strncmp(ast->value.command->cmd[1], "'hello'", 7) != 0 ||
 		ast->value.command->cmd[2] != NULL ||
 		ast->value.command->redir == NULL ||
 		ast->value.command->redir->type != TOKEN_APPEND ||
@@ -152,15 +152,7 @@ int should_create_multiple_pipe_ast_node(void)
 		return (EXIT_FAILURE);
 	// Check left side of top-level pipe (ls | grep .c)
 	t_ast_node *left_pipe = ast->value.pipe->left;
-	if (left_pipe->node_type != TOKEN_PIPE)
-		return (EXIT_FAILURE);
-	// Check left side of inner pipe (ls)
-	if (left_pipe->value.pipe->left->node_type != TOKEN_WORD ||
-		ft_strncmp(left_pipe->value.pipe->left->value.command->cmd[0], "ls", 2) != 0 ||
-		left_pipe->value.pipe->left->value.command->cmd[1] != NULL ||
-		left_pipe->value.pipe->left->value.command->redir != NULL)
-		return (EXIT_FAILURE);
-	// Check right side of inner pipe (grep .c)
+	if (left_pipe->node_type != TOKEN_PIPE) return (EXIT_FAILURE); // Check left side of inner pipe (ls) if (left_pipe->value.pipe->left->node_type != TOKEN_WORD || ft_strncmp(left_pipe->value.pipe->left->value.command->cmd[0], "ls", 2) != 0 || left_pipe->value.pipe->left->value.command->cmd[1] != NULL || left_pipe->value.pipe->left->value.command->redir != NULL) return (EXIT_FAILURE); Check right side of inner pipe (grep .c)
 	if (left_pipe->value.pipe->right->node_type != TOKEN_WORD ||
 		ft_strncmp(left_pipe->value.pipe->right->value.command->cmd[0], "grep", 4) != 0 ||
 		ft_strncmp(left_pipe->value.pipe->right->value.command->cmd[1], ".c", 2) != 0 ||

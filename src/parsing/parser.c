@@ -6,7 +6,7 @@
 /*   By: csila-s <csila-s@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 00:00:00 by csila-s         #+#    #+#             */
-/*   Updated: 2024/01/01 00:00:00 by csila-s        ###   ########.fr       */
+/*   Updated: 2026/03/15 18:52:19 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,6 @@ t_ast_node	*parser(t_token **tokens)
 	node->node_type = TOKEN_PIPE;
 	node->value.pipe = malloc(sizeof(t_pipe));
 	node->value.pipe->left = left;
-	node->value.pipe->right = parse_command(tokens);
+	node->value.pipe->right = parser(tokens);
 	return (node);
 }
