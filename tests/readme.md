@@ -40,7 +40,9 @@ The main commands/recipes are:
 
 **make test** -> Run all unit tests registered.
 
-**make clean** -> Simple clear of utilities like _LIBFT_ (if used).
+**make single T={FILE_NAME}** -> create an executable file for the file passed as the _T_ value. This file can be used in GDB for debugging.
+
+**make clean** -> Simple clear of utilities like _LIBFT_ (if used) and _.out_ files (if them do exist).
 
 **make fclean** -> Full clean included compiled files and logs.
 

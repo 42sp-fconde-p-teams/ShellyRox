@@ -38,6 +38,10 @@ test: $(LIBFT)
 	cat $(REPORT_LOG); \
 	if [ $$FAILED -gt 0 ]; then exit 1; fi
 
+single: $(LIBFT)
+	@echo "Compiling individual test file for: $(T)"
+	$(CC) $(CFLAGS) $(C_FILES) test-$(T).c $(HEADERS) $(LIBS) -o unit_test.out
+
 run_test_bins: $(TEST_BINS)
 
 # Regra de compilação e execução por arquivo
@@ -58,6 +62,7 @@ $(LIBFT):
 
 clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean --no-print-directory
+	rm *.out
 
 fclean: clean
 	@rm -rf minishell $(REPORT_LOG)
