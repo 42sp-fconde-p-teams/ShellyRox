@@ -1,6 +1,7 @@
 *.o
 ./minishell
 *.a
+*.out
 .test_failures
 *.log
 *.out

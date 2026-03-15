@@ -24,18 +24,30 @@ test: $(LIBFT)
 	@# Run binaries ignoring errors for the jog to keep running
 	-@$(MAKE) run_test_bins --no-print-directory
 	@# Final summary processing
-	@TOTAL=$$(grep -c "Case:" $(REPORT_LOG) || echo 0); \
-	PASSED=$$(grep -c "\[PASS\]" $(REPORT_LOG) || echo 0); \
-	FAILED=$$(grep -c "\[FAIL\]" $(REPORT_LOG) || echo 0); \
+	@TOTAL=$$(grep -c "Case:" $(REPORT_LOG)); \
+	PASSED=$=$$(grep -c "\[PASS\]" $(REPORT_LOG)); \
+	FAILS=$$(grep -c "\[FAIL\]" $(REPORT_LOG)); \
+	ERRORS=$$(grep -c "\[ERROR\]" $(REPORT_LOG)); \
 	echo "" >> $(REPORT_LOG); \
 	echo "==========================================" >> $(REPORT_LOG); \
 	echo "📊 Summary:" >> $(REPORT_LOG); \
-	echo "  Total cases: $$TOTAL" >> $(REPORT_LOG); \
+	echo "  Total cases:  $$TOTAL" >> $(REPORT_LOG); \
 	echo "  ✅ Pass:      $$PASSED" >> $(REPORT_LOG); \
-	echo "  ❌ Fail:      $$FAILED" >> $(REPORT_LOG); \
+	echo "  ❌ Fail:      $$FAILS" >> $(REPORT_LOG); \
+	echo "  ⚠️  Errors:    $$ERRORS" >> $(REPORT_LOG); \
 	echo "==========================================" >> $(REPORT_LOG); \
 	cat $(REPORT_LOG); \
-	if [ $$FAILED -gt 0 ]; then exit 1; fi
+	if grep -qE "\[FAIL\]|\[ERROR\]" $(REPORT_LOG); then \
+		echo "\033[0;31m\n[!] Test suite failed.\033[0m"; \
+		exit 1; \
+	else \
+		echo "\033[0;32m\n[+] Test suite passed successfully.\033[0m"; \
+		exit 0; \
+	fi
+
+single: $(LIBFT)
+	@echo "Compiling individual test file for: $(T)"
+	$(CC) $(CFLAGS) $(C_FILES) test-$(T).c $(HEADERS) $(LIBS) -o unit_test.out
 
 run_test_bins: $(TEST_BINS)
 
@@ -57,6 +69,7 @@ $(LIBFT):
 
 clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean --no-print-directory
+	rm *.out
 
 fclean: clean
 	@rm -rf minishell $(REPORT_LOG)

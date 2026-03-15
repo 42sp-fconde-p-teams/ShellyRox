@@ -40,6 +40,16 @@ The main commands/recipes are:
 
 **make test** -> Run all unit tests registered.
 
-**make clean** -> Simple clear of utilities like _LIBFT_ (if used).
+**make single T={FILE_NAME}** -> create an executable file for the file passed as the _T_ value. This file can be used in GDB for debugging.
+
+**make clean** -> Simple clear of utilities like _LIBFT_ (if used) and _.out_ files (if them do exist).
 
 **make fclean** -> Full clean included compiled files and logs.
+
+## Extra
+
+This command can be run from the tests folder to get an executable file for debugging with more precision.
+
+```
+cc -g3 -Wextra -Werror -Wall ../src/parsing/fsm/*.c test-{TARGET_FILE}.c -I. -I../lib/libft -I./ ../lib/libft/libft.a -o unit_test.out
+```

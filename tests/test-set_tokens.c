@@ -221,6 +221,111 @@ int	set_correctly_reverse_link_for_list_of_three(void)
 	}
 }
 
+int	set_correctly_list_for_input_with_pipe_and_no_space(void)
+{
+	char	str_in[] = "echo test|wc -l";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->next->next->value, "|", 1) == EXIT_SUCCESS
+		&& token->next->next->type == TOKEN_PIPE)
+	{
+		free(token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		free(token);
+		return (EXIT_FAILURE);
+	}
+}
+
+int	set_correctly_list_for_input_with_redirect_in_and_no_space(void)
+{
+	char	str_in[] = "echo test<wc -l";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->next->next->value, "<", 1) == EXIT_SUCCESS
+		&& token->next->next->type == TOKEN_REDIR_IN)
+	{
+		free(token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		free(token);
+		return (EXIT_FAILURE);
+	}
+}
+
+int	set_correctly_list_for_input_with_redirect_out_and_no_space(void)
+{
+	char	str_in[] = "echo test>wc -l";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->next->next->value, ">", 1) == EXIT_SUCCESS
+		&& token->next->next->type == TOKEN_REDIR_OUT)
+	{
+		free(token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		free(token);
+		return (EXIT_FAILURE);
+	}
+}
+
+int	set_correctly_list_for_input_with_append_and_no_space(void)
+{
+	char	str_in[] = "echo test>>wc -l";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->next->next->value, ">>", 2) == EXIT_SUCCESS
+		&& token->next->next->type == TOKEN_APPEND)
+	{
+		free(token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		free(token);
+		return (EXIT_FAILURE);
+	}
+}
+
+int	set_correctly_list_for_input_with_heredoc_and_no_space(void)
+{
+	char	str_in[] = "echo test<<wc -l";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->next->next->value, "<<", 2) == EXIT_SUCCESS
+		&& token->next->next->type == TOKEN_HEREDOC)
+	{
+		free(token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		free(token);
+		return (EXIT_FAILURE);
+	}
+}
+
 int	set_second_node_as_pipe(void)
 {
 	char	str_in[] = "command | size -test";
@@ -355,6 +460,12 @@ int	main(void)
 	RUN_TEST(create_list_with_input_containing_pipe_with_spaces);
 	RUN_TEST(create_list_with_simple_quotes_between_double_quotes);
 	RUN_TEST(set_correctly_reverse_link_for_list_of_three);
+	RUN_TEST(set_correctly_list_for_input_with_pipe_and_no_space);
+	RUN_TEST(set_correctly_list_for_input_with_redirect_in_and_no_space);
+	RUN_TEST(set_correctly_list_for_input_with_redirect_out_and_no_space);
+	RUN_TEST(set_correctly_list_for_input_with_append_and_no_space);
+	RUN_TEST(set_correctly_list_for_input_with_heredoc_and_no_space);
+
 	// token type tests
 	RUN_TEST(set_second_node_as_pipe);
 	RUN_TEST(set_second_node_as_redirect_in);
