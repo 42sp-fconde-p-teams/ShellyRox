@@ -17,7 +17,6 @@ int should_create_pipe_ast_node(void)
 {
 	t_token *token;
 	t_ast_node *ast;
-	int i = 0;
 	char *line = "echo 'hello' | wc -l";
 	token = set_tokens(line);
 	ast = parser(&token);
@@ -134,25 +133,27 @@ int should_create_multiple_pipe_ast_node(void)
 	char *line = "ls | grep .c | wc -l";
 	token = set_tokens(line);
 	ast = parser(&token);
-	// Expected: (ls | grep .c) | wc -l
-	// Check the top-level pipe
 	if (ast->node_type != TOKEN_PIPE)
 		return (EXIT_FAILURE);
-	// Check right side of top-level pipe (wc -l)
-	if (ast->value.pipe->right->node_type != TOKEN_WORD ||
-		ft_strncmp(ast->value.pipe->right->value.command->cmd[0], "wc", 2) != EXIT_SUCCESS ||
-		ft_strncmp(ast->value.pipe->right->value.command->cmd[1], "-l", 2) != EXIT_SUCCESS ||
-		ast->value.pipe->right->value.command->cmd[2] != NULL ||
-		ast->value.pipe->right->value.command->redir != NULL)
+	if (ast->value.pipe->left->node_type != TOKEN_WORD ||
+		ft_strncmp(ast->value.pipe->left->value.command->cmd[0], "ls", 2) != 0 ||
+		ast->value.pipe->left->value.command->cmd[1] != NULL ||
+		ast->value.pipe->left->value.command->redir != NULL)
 		return (EXIT_FAILURE);
-	// Check left side of top-level pipe (ls | grep .c)
-	t_ast_node *left_pipe = ast->value.pipe->left;
-	if (left_pipe->node_type != TOKEN_PIPE) return (EXIT_FAILURE); // Check left side of inner pipe (ls) if (left_pipe->value.pipe->left->node_type != TOKEN_WORD || ft_strncmp(left_pipe->value.pipe->left->value.command->cmd[0], "ls", 2) != 0 || left_pipe->value.pipe->left->value.command->cmd[1] != NULL || left_pipe->value.pipe->left->value.command->redir != NULL) return (EXIT_FAILURE); Check right side of inner pipe (grep .c)
-	if (left_pipe->value.pipe->right->node_type != TOKEN_WORD ||
-		ft_strncmp(left_pipe->value.pipe->right->value.command->cmd[0], "grep", 4) != EXIT_SUCCESS	||
-		ft_strncmp(left_pipe->value.pipe->right->value.command->cmd[1], ".c", 2) != EXIT_SUCCESS ||
-		left_pipe->value.pipe->right->value.command->cmd[2] != NULL ||
-		left_pipe->value.pipe->right->value.command->redir != NULL)
+	t_ast_node *inner_pipe = ast->value.pipe->right;
+	if (inner_pipe->node_type != TOKEN_PIPE)
+		return (EXIT_FAILURE);
+	if (inner_pipe->value.pipe->left->node_type != TOKEN_WORD ||
+		ft_strncmp(inner_pipe->value.pipe->left->value.command->cmd[0], "grep", 4) != 0 ||
+		ft_strncmp(inner_pipe->value.pipe->left->value.command->cmd[1], ".c", 2) != 0 ||
+		inner_pipe->value.pipe->left->value.command->cmd[2] != NULL ||
+		inner_pipe->value.pipe->left->value.command->redir != NULL)
+		return (EXIT_FAILURE);
+	if (inner_pipe->value.pipe->right->node_type != TOKEN_WORD ||
+		ft_strncmp(inner_pipe->value.pipe->right->value.command->cmd[0], "wc", 2) != 0 ||
+		ft_strncmp(inner_pipe->value.pipe->right->value.command->cmd[1], "-l", 2) != 0 ||
+		inner_pipe->value.pipe->right->value.command->cmd[2] != NULL ||
+		inner_pipe->value.pipe->right->value.command->redir != NULL)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -164,11 +165,9 @@ int should_create_complex_pipe_and_redirections(void)
 	char *line = "grep 'test' < input.txt | wc -l >> output.txt";
 	token = set_tokens(line);
 	ast = parser(&token);
-	// Expected: (grep 'test' < input.txt) | (wc -l >> output.txt)
 	if (ast->node_type != TOKEN_PIPE)
 		return (EXIT_FAILURE);
 
-	// Check left side of the pipe (grep 'test' < input.txt)
 	t_ast_node *left_cmd = ast->value.pipe->left;
 	if (left_cmd->node_type != TOKEN_WORD ||
 		ft_strncmp(left_cmd->value.command->cmd[0], "grep", 4) != 0 ||
@@ -180,7 +179,6 @@ int should_create_complex_pipe_and_redirections(void)
 		left_cmd->value.command->redir->next != NULL)
 		return (EXIT_FAILURE);
 
-	// Check right side of the pipe (wc -l >> output.txt)
 	t_ast_node *right_cmd = ast->value.pipe->right;
 	if (right_cmd->node_type != TOKEN_WORD ||
 		ft_strncmp(right_cmd->value.command->cmd[0], "wc", 2) != 0 ||

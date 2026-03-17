@@ -16,10 +16,15 @@ int	count_words_token(t_token *token)
 {
 	int count = 0;
 	t_token *tmp = token;
-	while (tmp && tmp->type == TOKEN_WORD)
+	while (tmp && tmp->type != TOKEN_PIPE)
 	{
-		count++;
-		tmp = tmp->next;
+		if (tmp->type == TOKEN_REDIR_IN || tmp->type == TOKEN_REDIR_OUT
+			|| tmp->type == TOKEN_HEREDOC || tmp->type == TOKEN_APPEND)
+			tmp = tmp->next;
+		else if (tmp->type == TOKEN_WORD)
+			count++;
+		if (tmp)
+			tmp = tmp->next;
 	}
 	return (count);
 }
@@ -50,6 +55,7 @@ void	add_redir_command(t_ast_node **node, t_token **token)
 
 	redir = malloc(sizeof(t_redir));
 	redir->type = (*token)->type;
+	redir->next = NULL;
 	redir->filename = get_redir_filename(*token);
 	(*node)->value.command->redir = add_node_linked((*node)->value.command->redir, redir);
 	*token = (*token)->next;
@@ -70,12 +76,16 @@ t_ast_node	*parse_command(t_token	**token)
 	{
 		node->node_type = (*token)->type;
 		node->value.command = malloc(sizeof(t_command));
+		node->value.command->redir = NULL;
 		node->value.command->cmd = malloc(sizeof(char *) * (count_words_token(tmp) + 1));
 		while (tmp && tmp->type != TOKEN_PIPE)
 		{
 			if (tmp->type == TOKEN_REDIR_IN || tmp->type == TOKEN_REDIR_OUT
 				|| tmp->type == TOKEN_HEREDOC || tmp->type == TOKEN_APPEND)
+			{
 				add_redir_command(&node, &tmp);
+				continue ;
+			}
 			else
 				node->value.command->cmd[i++] = tmp->value;
 			if (tmp)
