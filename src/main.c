@@ -23,13 +23,16 @@ int	main(int argc, char **argv, char **envp)
 	shelly.envp = envp;
 	while (1)
 	{
-		t_token *tokens = NULL;
-		parser(tokens);
-		line = readline("shelly🎀> ");
+		t_token **tokens = NULL;
+		line = readline("🎀shelly🎀> ");
 		if (!line)
 			break ;
+		tokens = set_tokens(line);
+		parser(&tokens);
+		// executor start here
 		add_history(line);
 		free(line);
+		// free everything function here
 	}
 	free(shelly.envp);
 	return (0);

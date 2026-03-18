@@ -171,7 +171,7 @@ int should_create_complex_pipe_and_redirections(void)
 	t_ast_node *left_cmd = ast->value.pipe->left;
 	if (left_cmd->node_type != TOKEN_WORD ||
 		ft_strncmp(left_cmd->value.command->cmd[0], "grep", 4) != 0 ||
-		ft_strncmp(left_cmd->value.command->cmd[1], "test", 4) != 0 ||
+		ft_strncmp(left_cmd->value.command->cmd[1], "'test'", 6) != 0 ||
 		left_cmd->value.command->cmd[2] != NULL ||
 		left_cmd->value.command->redir == NULL ||
 		left_cmd->value.command->redir->type != TOKEN_REDIR_IN ||
