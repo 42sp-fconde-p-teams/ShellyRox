@@ -3,7 +3,7 @@
 ## Estado atual
 
 - Lexer: implementado
-- Parser: implementado — retorna `t_ast_node *`
+- Parser: implementado — retorna `t_ast_node *ast`
 - Executor: stubs vazios com tipos errados (`t_cmd *` não existe)
 - Builtins: stubs vazios
 - Signals: vazio
@@ -12,16 +12,16 @@
 
 ## Etapa 1 — Corrigir base antes de executar qualquer coisa
 
-- [ ] Corrigir assinatura em `executor.c`, `pipes.c` e `redirections.c` de `t_cmd *cmd` para `t_ast_node *ast`
+- [x] Corrigir assinatura em `executor.c`, `pipes.c` e `redirections.c` de `t_cmd *cmd` para `t_ast_node *ast`
 - [ ] Adicionar `last_exit_status` na struct `t_shell` em `minishell.h`
 
 ```c
-typedef struct s_shely
+typedef struct s_shelly
 {
     char    **envp;
     char    **argv;
     int     last_exit_status;
-}   t_shell;
+}   t_shelly;
 ```
 
 - [ ] Atualizar `main.c` para capturar o retorno do executor e salvar em `shelly.last_exit_status`
@@ -32,7 +32,7 @@ typedef struct s_shely
 
 Objetivo: `ls` ou `echo hello` funcionando.
 
-- [ ] Implementar resolução de PATH em `src/utils/` — busca o executável nas entradas de `PATH` no `envp`
+- [x] Implementar resolução de PATH em `src/utils/` — busca o executável nas entradas de `PATH` no `envp`
 - [ ] Implementar execução de comando simples em `executor.c`:
   - `fork()`
   - No filho: `execve(path, cmd->cmd, shell->envp)`
