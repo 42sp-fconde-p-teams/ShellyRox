@@ -4,3 +4,6 @@
 *.out
 .test_failures
 *.log
+*.json
+*.swp
+GEMINI.md
