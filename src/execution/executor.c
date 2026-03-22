@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csila-s <csila-s@student.42.fr>        +#+  +:+       +#+        */
+/*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/01 00:00:00 by csila-s         #+#    #+#             */
-/*   Updated: 2024/01/01 00:00:00 by csila-s        ###   ########.fr       */
+/*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
+/*   Updated: 2026/03/21 23:38:38 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,11 @@ char	**find_path(char **envp)
 
 void	executor(t_ast_node *ast, t_shelly shelly)
 {
-	// Se tiver pipe ou redirs no comando
-	// fazer os dups
-	// 	- Aplicar os redirects (se tiver) (setup_redirections)
 	char	**path;
+	// Aplicar os redirects (se tiver) (setup_redirections)
 
 	path = find_path(shelly.envp);
-
+	
 	// executar o comando atual
 	// se tiver pipe chama a recursão
-	//
 }

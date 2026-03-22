@@ -24,7 +24,6 @@ typedef struct s_shelly
 {
 	char	**envp;
 	char	**argv;
-	char	*path;
 }	t_shelly;
 
 typedef enum e_bool
