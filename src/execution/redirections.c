@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../minishell.h"
 
-void	setup_redirections(t_cmd *cmd)
+void	setup_redirections(t_ast_node *ast)
 {
-	(void)cmd;
+	// Estabelecer os redirections com base na lista de redirs do command
 }

@@ -20,11 +20,12 @@
 # include <fcntl.h>
 # include <stdlib.h>
 
-typedef struct s_shely
+typedef struct s_shelly
 {
 	char	**envp;
 	char	**argv;
-}	t_shell;
+	char	*path;
+}	t_shelly;
 
 typedef enum e_bool
 {
@@ -83,18 +84,27 @@ typedef struct s_ast_node
 	union u_node_value	value;
 }	t_ast_node;
 
+// lexer functions
+t_token	*set_tokens(char *s);
+int		get_token_len(char *str);
+
 // parser functions
 t_ast_node	*parser(t_token **tokens);
 t_ast_node	*parse_command(t_token	**token);
 int	count_words_token(t_token *token);
 void	add_redir_command(t_ast_node **node, t_token **token);
 
+// executor funstions
+void	executor(t_ast_node *ast, t_shelly shelly);
+void	setup_redirections(t_ast_node *ast);
+void	execute_pipes(t_ast_node *ast);
+char	**find_path(char **envp);
+
 // def funny stuff here, friendo!
 int		ft_sample(void);			// REMOVE ASAP!
 int		ft_sample_fail(void);		// REMOVE ASAP!
 int		ft_sample_success(void);	// REMOVE ASAP!
 
-t_token	*set_tokens(char *s);
-int		get_token_len(char *str);
+
 
 #endif

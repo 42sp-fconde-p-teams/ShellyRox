@@ -16,6 +16,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shelly;
 	char	*line;
+	t_token	**tokens;
 
 	if (argc < 1)
 		return (1);
@@ -27,8 +28,8 @@ int	main(int argc, char **argv, char **envp)
 		line = readline("🎀shelly🎀> ");
 		if (!line)
 			break ;
-		tokens = set_tokens(line);
-		parser(&tokens);
+		*tokens = set_tokens(line);
+		parser(tokens);
 		// executor start here
 		add_history(line);
 		free(line);

@@ -10,10 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../minishell.h"
 
-void	execute_pipes(t_cmd *cmd, t_shell *shell)
+void	execute_pipes(t_ast_node *ast)
 {
-	(void)cmd;
-	(void)shell;
+	// Fluxo de execução quando houver pipe
 }
