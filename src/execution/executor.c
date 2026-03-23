@@ -23,12 +23,16 @@ char	**find_path(char **envp)
 	}
 	return (NULL);
 }
+void	find_command(char **path, char *cmd)
+{
+	// Search by command and check if cmd is a binary
+}
 
 void	executor(t_ast_node *ast, t_shelly shelly)
 {
 	char	**path;
 	// Aplicar os redirects (se tiver) (setup_redirections)
-
+	
 	path = find_path(shelly.envp);
 	
 	// executar o comando atual

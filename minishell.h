@@ -24,6 +24,7 @@ typedef struct s_shelly
 {
 	char	**envp;
 	char	**argv;
+	int		last_exit_status;
 }	t_shelly;
 
 typedef enum e_bool
@@ -94,7 +95,7 @@ int	count_words_token(t_token *token);
 void	add_redir_command(t_ast_node **node, t_token **token);
 
 // executor funstions
-void	executor(t_ast_node *ast, t_shelly shelly);
+int		executor(t_ast_node *ast, t_shelly shelly);
 void	setup_redirections(t_ast_node *ast);
 void	execute_pipes(t_ast_node *ast);
 char	**find_path(char **envp);

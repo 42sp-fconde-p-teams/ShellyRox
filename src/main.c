@@ -17,6 +17,7 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	shelly;
 	char	*line;
 	t_token	**tokens;
+	t_ast_node	*ast;
 
 	if (argc < 1)
 		return (1);
@@ -29,8 +30,9 @@ int	main(int argc, char **argv, char **envp)
 		if (!line)
 			break ;
 		*tokens = set_tokens(line);
-		parser(tokens);
+		ast = parser(tokens);
 		// executor start here
+		shelly = executor(ast);
 		add_history(line);
 		free(line);
 		// free everything function here
