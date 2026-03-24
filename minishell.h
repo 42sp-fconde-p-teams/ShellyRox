@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/03/01 21:10:40 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/03/23 23:39:31 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "./lib/libft/libft.h"
+#include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <unistd.h>
@@ -94,17 +95,16 @@ t_ast_node	*parse_command(t_token	**token);
 int	count_words_token(t_token *token);
 void	add_redir_command(t_ast_node **node, t_token **token);
 
-// executor funstions
+// executor functions
 int		executor(t_ast_node *ast, t_shelly shelly);
 void	setup_redirections(t_ast_node *ast);
 void	execute_pipes(t_ast_node *ast);
 char	**find_path(char **envp);
+char	*find_command(char **path, char *cmd);
 
 // def funny stuff here, friendo!
 int		ft_sample(void);			// REMOVE ASAP!
 int		ft_sample_fail(void);		// REMOVE ASAP!
 int		ft_sample_success(void);	// REMOVE ASAP!
-
-
 
 #endif
