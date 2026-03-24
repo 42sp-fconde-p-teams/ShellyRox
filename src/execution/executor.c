@@ -6,7 +6,7 @@
 /*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/03/23 23:37:35 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/03/23 23:58:41 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,12 @@ char	*find_command(char **path, char *cmd)
 	char	*command_with_path;
 	int		i;
 
-	if (access(cmd, F_OK | X_OK) != 0)
+	if (ft_strchr(cmd, '/'))
+	{
+		if(access(cmd, F_OK | X_OK) == 0)
+			return (cmd);
 		return (NULL);
-	if (ft_strchr(cmd, '/') && (access(cmd, F_OK | X_OK) != 0))
-		return (cmd);
+	}
 	command = ft_strjoin("/", cmd);
 	i = 0;
 	while (path[i] != NULL)
