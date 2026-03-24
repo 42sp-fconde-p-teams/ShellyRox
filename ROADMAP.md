@@ -13,7 +13,7 @@
 ## Etapa 1 — Corrigir base antes de executar qualquer coisa
 
 - [x] Corrigir assinatura em `executor.c`, `pipes.c` e `redirections.c` de `t_cmd *cmd` para `t_ast_node *ast`
-- [ ] Adicionar `last_exit_status` na struct `t_shell` em `minishell.h`
+- [x] Adicionar `last_exit_status` na struct `t_shell` em `minishell.h`
 
 ```c
 typedef struct s_shelly
@@ -24,7 +24,7 @@ typedef struct s_shelly
 }   t_shelly;
 ```
 
-- [ ] Atualizar `main.c` para capturar o retorno do executor e salvar em `shelly.last_exit_status`
+- [x] Atualizar `main.c` para capturar o retorno do executor e salvar em `shelly.last_exit_status`
 
 ---
 
@@ -33,7 +33,7 @@ typedef struct s_shelly
 Objetivo: `ls` ou `echo hello` funcionando.
 
 - [x] Implementar resolução de PATH em `src/utils/` — busca o executável nas entradas de `PATH` no `envp`
-- [ ] Implementar execução de comando simples em `executor.c`:
+- [x] Implementar execução de comando simples em `executor.c`:
   - `fork()`
   - No filho: `execve(path, cmd->cmd, shell->envp)`
   - No pai: `waitpid()` e salvar exit status
