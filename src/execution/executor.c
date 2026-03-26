@@ -70,6 +70,16 @@ int	executor(t_ast_node *ast, t_shelly shelly)
 	pid = fork();
 	if (pid == 0)
 	{
+		if (shelly.suppress_output)
+		{
+			int dev_null_fd = open("/dev/null", O_WRONLY);
+			if (dev_null_fd != -1)
+			{
+				dup2(dev_null_fd, STDOUT_FILENO);
+				dup2(dev_null_fd, STDERR_FILENO);
+				close(dev_null_fd);
+			}
+		}
 		execve(command_line, ast->value.command->cmd, shelly.envp);
 		perror("Failed");
 		exit(EXIT_FAILURE);

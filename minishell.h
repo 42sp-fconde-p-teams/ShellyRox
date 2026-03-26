@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/03/23 23:39:31 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/03/26 16:14:24 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,19 @@
 # include <fcntl.h>
 # include <stdlib.h>
 
-typedef struct s_shelly
-{
-	char	**envp;
-	char	**argv;
-	int		last_exit_status;
-}	t_shelly;
-
 typedef enum e_bool
 {
 	BOOL_FALSE,
 	BOOL_TRUE
 }	t_bool;
+
+typedef struct s_shelly
+{
+	char	**envp;
+	char	**argv;
+	int		last_exit_status;
+	t_bool	suppress_output;
+}	t_shelly;
 
 typedef enum e_token_type
 {
