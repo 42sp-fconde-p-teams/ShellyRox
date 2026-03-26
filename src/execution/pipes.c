@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csila-s <csila-s@student.42.fr>        +#+  +:+       +#+        */
+/*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/01 00:00:00 by csila-s         #+#    #+#             */
-/*   Updated: 2026/02/17 14:52:11 by csilva-s         ###   ########.fr       */
+/*   Created: 2026/03/21 23:38:50 by csilva-s          #+#    #+#             */
+/*   Updated: 2026/03/21 23:38:51 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../minishell.h"
 
-void	execute_pipes(t_cmd *cmd, t_shell *shell)
+void	execute_pipes(t_ast_node *ast)
 {
-	(void)cmd;
-	(void)shell;
+	// Fluxo de execução quando houver pipe
 }
