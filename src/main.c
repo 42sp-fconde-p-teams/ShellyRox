@@ -6,7 +6,7 @@
 /*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:39:21 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/03/21 23:39:22 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/03/27 00:48:11 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell	shelly;
-	char	*line;
-	t_token	**tokens;
+	t_shelly	shelly;
+	char		*line;
 	t_ast_node	*ast;
 
 	if (argc < 1)
@@ -25,14 +24,14 @@ int	main(int argc, char **argv, char **envp)
 	shelly.envp = envp;
 	while (1)
 	{
-		t_token **tokens = NULL;
+		t_token *tokens = NULL;
 		line = readline("🎀shelly🎀> ");
 		if (!line)
 			break ;
-		*tokens = set_tokens(line);
-		ast = parser(tokens);
+		tokens = set_tokens(line);
+		ast = parser(&tokens);
 		// executor start here
-		shelly = executor(ast);
+		shelly.last_exit_status = executor(ast, shelly);
 		add_history(line);
 		free(line);
 		// free everything function here
