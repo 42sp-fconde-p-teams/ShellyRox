@@ -6,7 +6,7 @@
 /*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/03/23 23:58:41 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/03/27 00:30:58 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int	executor(t_ast_node *ast, t_shelly shelly)
 	int		pid;
 	int		status; // código de saída
 	// Aplicar os redirects (se tiver) (setup_redirections) <--
-	
 	path = find_path(shelly.envp);
 	command_line = find_command(path, ast->value.command->cmd[0]);
 	if (!command_line)
@@ -70,6 +69,11 @@ int	executor(t_ast_node *ast, t_shelly shelly)
 	pid = fork();
 	if (pid == 0)
 	{
+		if (ast->value.command->redir)
+		{
+			if (setup_redirections(ast->value.command->redir) != 0)
+				exit (1);
+		}
 		if (shelly.suppress_output)
 		{
 			int dev_null_fd = open("/dev/null", O_WRONLY);
