@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/03/26 16:14:24 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/03/26 23:26:08 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	add_redir_command(t_ast_node **node, t_token **token);
 
 // executor functions
 int		executor(t_ast_node *ast, t_shelly shelly);
-void	setup_redirections(t_ast_node *ast);
+int		setup_redirections(t_redir *redir);
 void	execute_pipes(t_ast_node *ast);
 char	**find_path(char **envp);
 char	*find_command(char **path, char *cmd);
