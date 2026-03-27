@@ -74,7 +74,7 @@ $(LIBFT):
 
 clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean --no-print-directory
-	rm *.out
+	rm -f *.out
 
 fclean: clean
 	@rm -rf minishell $(REPORT_LOG)
