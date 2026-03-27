@@ -2,18 +2,131 @@
 
 ## Estado atual
 
-- Lexer: implementado
-- Parser: implementado — retorna `t_ast_node *ast`
-- Executor: stubs vazios com tipos errados (`t_cmd *` não existe)
-- Builtins: stubs vazios
-- Signals: vazio
+- **Lexer**: implementado (`set_tokens` + `get_token_len` funcionais)
+- **Parser**: implementado — retorna `t_ast_node *ast` com comandos e pipes
+- **Executor**: executa comandos simples via `fork` + `execve` com resolução de PATH
+- **Redirections**: stub vazio em `redirections.c`
+- **Pipes**: stub vazio em `pipes.c`
+- **Builtins**: stubs vazios (assinaturas com tipos incorretos: `t_shell`, `t_env`)
+- **Signals**: stub vazio em `signals.c`
 
 ---
 
-## Etapa 1 — Corrigir base antes de executar qualquer coisa
+## Etapa 1 — Corrigir assinaturas e struct base ✅
 
 - [x] Corrigir assinatura em `executor.c`, `pipes.c` e `redirections.c` de `t_cmd *cmd` para `t_ast_node *ast`
-- [x] Adicionar `last_exit_status` na struct `t_shell` em `minishell.h`
+- [x] Adicionar `last_exit_status` e `suppress_output` na struct `t_shelly`
+- [x] Atualizar `main.c` para capturar o retorno do executor e salvar em `shelly.last_exit_status`
+
+---
+
+## Etapa 2 — Executar comando externo simples ✅
+
+- [x] `find_path()` — extrair e splitar `PATH` do `envp`
+- [x] `find_command()` — resolver caminho absoluto do executável (busca em PATH + caminhos absolutos)
+- [x] `executor()` — `fork()` → `execve()` no filho, `waitpid()` no pai
+
+---
+
+## Etapa 3 — Implementar redirections
+
+**Resultado esperado**: `cat < input.txt`, `echo hello > out.txt`, `echo hello >> out.txt` funcionando.
+
+### 3.1 — Implementar `setup_redirections()` em `redirections.c`
+
+A função recebe `t_redir *redir` (lista encadeada de redirections do comando).
+Percorre a lista e aplica cada redirection em sequência:
+
+- [ ] `TOKEN_REDIR_IN` (`<`):
+  - `open(filename, O_RDONLY)`
+  - `dup2(fd, STDIN_FILENO)`
+  - `close(fd)`
+- [ ] `TOKEN_REDIR_OUT` (`>`):
+  - `open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644)`
+  - `dup2(fd, STDOUT_FILENO)`
+  - `close(fd)`
+- [ ] `TOKEN_APPEND` (`>>`):
+  - `open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644)`
+  - `dup2(fd, STDOUT_FILENO)`
+  - `close(fd)`
+- [ ] `TOKEN_HEREDOC` (`<<`):
+  - `pipe(fd)`
+  - `write(fd[1], heredoc_content, len)`
+  - `close(fd[1])`
+  - `dup2(fd[0], STDIN_FILENO)`
+  - `close(fd[0])`
+- [ ] Tratar erros: se `open()` falhar, imprimir mensagem com `perror` e retornar código de erro
+
+### 3.2 — Alterar assinatura de `setup_redirections()`
+
+- [ ] Mudar de `void setup_redirections(t_ast_node *ast)` para `int setup_redirections(t_redir *redir)`
+  - Recebe a lista de redirs diretamente (não o nó inteiro)
+  - Retorna `0` em sucesso, `-1` em erro
+- [ ] Atualizar protótipo em `minishell.h`
+
+### 3.3 — Integrar no `executor()`
+
+- [ ] Chamar `setup_redirections(ast->value.command->redir)` dentro do processo filho, **antes** do `execve()`
+- [ ] Se `setup_redirections()` retornar erro, fazer `exit(1)` no filho
+
+### 3.4 — Testes manuais
+
+- [ ] `echo hello > /tmp/test_out.txt` → arquivo criado com "hello"
+- [ ] `cat < /tmp/test_out.txt` → imprime "hello"
+- [ ] `echo world >> /tmp/test_out.txt` → arquivo contém "hello\nworld"
+- [ ] `cat < arquivo_inexistente` → mensagem de erro, exit status != 0
+
+---
+
+## Etapa 4 — Implementar pipes
+
+**Resultado esperado**: `ls | grep .c | wc -l` funcionando.
+
+- [ ] Implementar `execute_pipes()` em `pipes.c`:
+  - Verificar `ast->node_type == TOKEN_PIPE`
+  - Criar `pipe(fd)` para conectar esquerda → direita
+  - `fork()` filho esquerdo: `dup2(fd[1], STDOUT_FILENO)`, executar `ast->value.pipe->left`
+  - `fork()` filho direito: `dup2(fd[0], STDIN_FILENO)`, executar `ast->value.pipe->right`
+  - Fechar `fd[0]` e `fd[1]` no pai
+  - `waitpid()` para ambos os filhos, retornar status do último (direito)
+- [ ] Suportar pipes encadeados (recursão: se `right` for outro `TOKEN_PIPE`)
+- [ ] Integrar com redirections: chamar `setup_redirections()` em cada filho antes do `execve`
+- [ ] Atualizar `executor()` para despachar: se `node_type == TOKEN_PIPE` → `execute_pipes()`
+
+---
+
+## Etapa 5 — Builtins
+
+Builtins rodam no processo atual (sem `fork`), exceto dentro de pipeline.
+
+- [ ] Corrigir tipos nos stubs: trocar `t_shell` → `t_shelly`, remover `t_env` (usar `char **envp`)
+- [ ] Criar função `is_builtin(char *cmd)` que retorna `1` se for builtin
+- [ ] No `executor()`: se `is_builtin()`, executar direto sem fork
+- [ ] Implementar cada builtin:
+  - [ ] `echo` — com flag `-n`
+  - [ ] `cd` — `chdir()` + atualizar `PWD`/`OLDPWD` no envp
+  - [ ] `pwd` — `getcwd()` + imprimir
+  - [ ] `env` — iterar e imprimir `shelly.envp`
+  - [ ] `export` — adicionar/atualizar variável em `shelly.envp`
+  - [ ] `unset` — remover variável de `shelly.envp`
+  - [ ] `exit` — `exit()` com código correto, liberar memória
+
+---
+
+## Etapa 6 — Signals
+
+- [ ] Loop principal (sem filho rodando):
+  - `SIGINT` → nova linha, limpar input, `last_exit_status = 130`
+  - `SIGQUIT` → `SIG_IGN`
+- [ ] Durante execução de filho:
+  - `SIGINT` → esperar filho morrer, `last_exit_status = 130`
+  - `SIGQUIT` → esperar filho morrer, imprimir `Quit (core dumped)`, `last_exit_status = 131`
+- [ ] Durante heredoc:
+  - `SIGINT` → cancelar heredoc, voltar ao prompt
+
+---
+
+## Referência rápida das structs (conforme `minishell.h`)
 
 ```c
 typedef struct s_shelly
@@ -21,108 +134,31 @@ typedef struct s_shelly
     char    **envp;
     char    **argv;
     int     last_exit_status;
+    t_bool  suppress_output;
 }   t_shelly;
-```
 
-- [x] Atualizar `main.c` para capturar o retorno do executor e salvar em `shelly.last_exit_status`
-
----
-
-## Etapa 2 — Executar um comando simples
-
-Objetivo: `ls` ou `echo hello` funcionando.
-
-- [x] Implementar resolução de PATH em `src/utils/` — busca o executável nas entradas de `PATH` no `envp`
-- [x] Implementar execução de comando simples em `executor.c`:
-  - `fork()`
-  - No filho: `execve(path, cmd->cmd, shell->envp)`
-  - No pai: `waitpid()` e salvar exit status
-
-Resultado esperado: comandos externos simples funcionando no terminal.
-
----
-
-## Etapa 3 — Redirections
-
-Objetivo: `cat < input.txt` e `echo hello > out.txt` funcionando.
-
-- [ ] Implementar `setup_redirections()` em `redirections.c`:
-  - `TOKEN_REDIR_IN` → `open()` + `dup2(fd, STDIN_FILENO)`
-  - `TOKEN_REDIR_OUT` → `open()` + `dup2(fd, STDOUT_FILENO)`
-  - `TOKEN_APPEND` → `open()` com `O_APPEND` + `dup2(fd, STDOUT_FILENO)`
-  - `TOKEN_HEREDOC` → escrever em pipe + `dup2(fd[0], STDIN_FILENO)`
-- [ ] Chamar `setup_redirections()` dentro do processo filho antes do `execve`
-
----
-
-## Etapa 4 — Pipes
-
-Objetivo: `ls | grep .c | wc -l` funcionando.
-
-- [ ] Implementar `execute_pipes()` em `pipes.c`:
-  - Percorrer a árvore recursivamente (nó `TOKEN_PIPE` tem `left` e `right`)
-  - Criar pipe com `pipe()`
-  - `fork()` para cada lado
-  - Conectar `stdout` do filho esquerdo ao `stdin` do filho direito com `dup2()`
-  - Fechar file descriptors não usados
-  - Aguardar todos os filhos com `waitpid()`
-- [ ] Integrar com redirections (redirections têm prioridade sobre o pipe)
-
----
-
-## Etapa 5 — Builtins
-
-Builtins rodam no processo atual (sem `fork`), exceto em pipeline.
-
-- [ ] Detectar se o comando é builtin antes do `fork`
-- [ ] Implementar cada builtin:
-  - [ ] `echo` — com suporte a `-n`
-  - [ ] `cd` — atualizar `PWD` e `OLDPWD` no `envp`
-  - [ ] `pwd` — imprimir diretório atual
-  - [ ] `env` — listar variáveis de ambiente
-  - [ ] `export` — adicionar/atualizar variável no `envp`
-  - [ ] `unset` — remover variável do `envp`
-  - [ ] `exit` — sair com código correto
-
-> `cd`, `export` e `unset` precisam modificar o `envp` — o `t_shell` precisa de uma cópia própria do envp (não apontar direto pro envp do main).
-
----
-
-## Etapa 6 — Signals
-
-- [ ] Implementar handlers em `src/utils/signals.c`
-- [ ] No loop principal (sem filho rodando):
-  - `SIGINT` → nova linha, limpar input, exit status 130
-  - `SIGQUIT` → ignorar
-- [ ] Durante execução de filho:
-  - `SIGINT` → matar filho, salvar exit status 130
-  - `SIGQUIT` → matar filho, imprimir `Quit (core dumped)`, exit status 131
-- [ ] Durante heredoc:
-  - `SIGINT` → cancelar heredoc
-
----
-
-## Referência rápida das structs
-
-```c
-// Nó da AST — output do parser
-typedef struct s_ast_node
+typedef struct s_redir
 {
-    t_token_type        node_type;   // TOKEN_WORD ou TOKEN_PIPE
-    union u_node_value  value;       // .command ou .pipe
-}   t_ast_node;
+    t_token_type    type;       // TOKEN_REDIR_IN, TOKEN_REDIR_OUT, TOKEN_APPEND, TOKEN_HEREDOC
+    char            *filename;  // arquivo alvo (ou delimitador no heredoc)
+    struct s_redir  *next;      // próximo redirection
+}   t_redir;
 
-// Comando simples
 typedef struct s_command
 {
     char    **cmd;    // ex: ["echo", "hello", NULL]
-    t_redir *redir;   // lista de redirections
+    t_redir *redir;   // lista encadeada de redirections
 }   t_command;
 
-// Pipe — dois lados da árvore
 typedef struct s_pipe
 {
     t_ast_node  *left;
     t_ast_node  *right;
 }   t_pipe;
+
+typedef struct s_ast_node
+{
+    t_token_type        node_type;   // TOKEN_WORD ou TOKEN_PIPE
+    union u_node_value  value;       // .command ou .pipe
+}   t_ast_node;
 ```
