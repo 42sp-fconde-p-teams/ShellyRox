@@ -27,6 +27,9 @@ SRC_FILES	= main.c \
 			  parsing/lexer.c \
 			  parsing/parser.c \
 			  parsing/expander.c \
+			  parsing/fsm.c \
+			  parsing/fsm/get_token_len.c \
+			  parsing/fsm/set_tokens.c \
 			  execution/executor.c \
 			  execution/redirections.c \
 			  execution/pipes.c \
