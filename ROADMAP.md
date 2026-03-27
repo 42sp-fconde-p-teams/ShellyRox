@@ -5,9 +5,9 @@
 - **Lexer**: implementado (`set_tokens` + `get_token_len` funcionais)
 - **Parser**: implementado — retorna `t_ast_node *ast` com comandos e pipes
 - **Executor**: executa comandos simples via `fork` + `execve` com resolução de PATH
-- **Redirections**: stub vazio em `redirections.c`
+- **Redirections**: `setup_redirections()` implementado (`<`, `>`, `>>`) com error handling; heredoc como stub; integrado no executor
 - **Pipes**: stub vazio em `pipes.c`
-- **Builtins**: stubs vazios (assinaturas com tipos incorretos: `t_shell`, `t_env`)
+- **Builtins**: stubs vazios (assinaturas corrigidas para `t_shelly`)
 - **Signals**: stub vazio em `signals.c`
 
 ---
@@ -32,42 +32,23 @@
 
 **Resultado esperado**: `cat < input.txt`, `echo hello > out.txt`, `echo hello >> out.txt` funcionando.
 
-### 3.1 — Implementar `setup_redirections()` em `redirections.c`
+### 3.1 — Implementar `setup_redirections()` em `redirections.c` ✅
 
-A função recebe `t_redir *redir` (lista encadeada de redirections do comando).
-Percorre a lista e aplica cada redirection em sequência:
+- [x] `TOKEN_REDIR_IN` (`<`): `open` + `dup2(fd, STDIN_FILENO)` + `close`
+- [x] `TOKEN_REDIR_OUT` (`>`): `open(O_TRUNC)` + `dup2(fd, STDOUT_FILENO)` + `close`
+- [x] `TOKEN_APPEND` (`>>`): `open(O_APPEND)` + `dup2(fd, STDOUT_FILENO)` + `close`
+- [ ] `TOKEN_HEREDOC` (`<<`): stub — falta implementar com `pipe` + `write`
+- [x] Tratar erros: `perror` + retorno `-1` se `open()` falhar
 
-- [ ] `TOKEN_REDIR_IN` (`<`):
-  - `open(filename, O_RDONLY)`
-  - `dup2(fd, STDIN_FILENO)`
-  - `close(fd)`
-- [ ] `TOKEN_REDIR_OUT` (`>`):
-  - `open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644)`
-  - `dup2(fd, STDOUT_FILENO)`
-  - `close(fd)`
-- [ ] `TOKEN_APPEND` (`>>`):
-  - `open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644)`
-  - `dup2(fd, STDOUT_FILENO)`
-  - `close(fd)`
-- [ ] `TOKEN_HEREDOC` (`<<`):
-  - `pipe(fd)`
-  - `write(fd[1], heredoc_content, len)`
-  - `close(fd[1])`
-  - `dup2(fd[0], STDIN_FILENO)`
-  - `close(fd[0])`
-- [ ] Tratar erros: se `open()` falhar, imprimir mensagem com `perror` e retornar código de erro
+### 3.2 — Alterar assinatura de `setup_redirections()` ✅
 
-### 3.2 — Alterar assinatura de `setup_redirections()`
+- [x] Assinatura: `int setup_redirections(t_redir *redir)` — retorna `0` sucesso, `-1` erro
+- [x] Protótipo atualizado em `minishell.h`
 
-- [ ] Mudar de `void setup_redirections(t_ast_node *ast)` para `int setup_redirections(t_redir *redir)`
-  - Recebe a lista de redirs diretamente (não o nó inteiro)
-  - Retorna `0` em sucesso, `-1` em erro
-- [ ] Atualizar protótipo em `minishell.h`
+### 3.3 — Integrar no `executor()` ✅
 
-### 3.3 — Integrar no `executor()`
-
-- [ ] Chamar `setup_redirections(ast->value.command->redir)` dentro do processo filho, **antes** do `execve()`
-- [ ] Se `setup_redirections()` retornar erro, fazer `exit(1)` no filho
+- [x] Chamar `setup_redirections(ast->value.command->redir)` no filho, antes do `execve()`
+- [x] Se retornar erro, `exit(1)` no filho
 
 ### 3.4 — Testes manuais
 
@@ -99,7 +80,7 @@ Percorre a lista e aplica cada redirection em sequência:
 
 Builtins rodam no processo atual (sem `fork`), exceto dentro de pipeline.
 
-- [ ] Corrigir tipos nos stubs: trocar `t_shell` → `t_shelly`, remover `t_env` (usar `char **envp`)
+- [x] Corrigir tipos nos stubs: trocar `t_shell` → `t_shelly`, remover `t_env` (usar `char **envp`)
 - [ ] Criar função `is_builtin(char *cmd)` que retorna `1` se for builtin
 - [ ] No `executor()`: se `is_builtin()`, executar direto sem fork
 - [ ] Implementar cada builtin:
