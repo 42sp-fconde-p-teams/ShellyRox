@@ -8,3 +8,4 @@
 *.swp
 GEMINI.md
 *.out
+docker-nvim/
