@@ -37,7 +37,7 @@
 - [x] `TOKEN_REDIR_IN` (`<`): `open` + `dup2(fd, STDIN_FILENO)` + `close`
 - [x] `TOKEN_REDIR_OUT` (`>`): `open(O_TRUNC)` + `dup2(fd, STDOUT_FILENO)` + `close`
 - [x] `TOKEN_APPEND` (`>>`): `open(O_APPEND)` + `dup2(fd, STDOUT_FILENO)` + `close`
-- [ ] `TOKEN_HEREDOC` (`<<`): stub — falta implementar com `pipe` + `write`
+- [x] `TOKEN_HEREDOC` (`<<`): implementado com arquivo temporário (`/tmp/.shelly_heredoc`), leitura via `get_next_line` antes do `fork`
 - [x] Tratar erros: `perror` + retorno `-1` se `open()` falhar
 
 ### 3.2 — Alterar assinatura de `setup_redirections()` ✅
@@ -72,7 +72,7 @@
   - `waitpid()` para ambos os filhos, retornar status do último (direito)
 - [ ] Suportar pipes encadeados (recursão: se `right` for outro `TOKEN_PIPE`)
 - [ ] Integrar com redirections: chamar `setup_redirections()` em cada filho antes do `execve`
-- [ ] Atualizar `executor()` para despachar: se `node_type == TOKEN_PIPE` → `execute_pipes()`
+- [x] Atualizar `executor()` para despachar: se `node_type == TOKEN_PIPE` → `exec_pipe()`, senão → `exec_simple_command()`
 
 ---
 
