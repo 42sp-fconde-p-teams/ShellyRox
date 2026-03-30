@@ -102,6 +102,8 @@ int		setup_redirections(t_redir *redir);
 void	execute_pipes(t_ast_node *ast);
 char	**find_path(char **envp);
 char	*find_command(char **path, char *cmd);
+void	exec_simple_command(t_ast_node *ast, t_shelly shelly);
+void	exec_pipe(t_ast_node *ast, t_shelly shelly);
 
 // def funny stuff here, friendo!
 int		ft_sample(void);			// REMOVE ASAP!

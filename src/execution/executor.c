@@ -52,19 +52,19 @@ char	*find_command(char **path, char *cmd)
 	return (NULL);
 }
 
-int	executor(t_ast_node *ast, t_shelly shelly)
+int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 {
 	char	**path;
 	char	*command_line;
-	int		pid;
-	int		status; // código de saída
-	// Aplicar os redirects (se tiver) (setup_redirections) <--
+	int		status;
+	pid_t	pid;
+
 	path = find_path(shelly.envp);
 	command_line = find_command(path, ast->value.command->cmd[0]);
 	if (!command_line)
 	{
 		// Free em tudo aqui <--
-		return (1);
+		return (127);
 	}
 	pid = fork();
 	if (pid == 0)
@@ -74,6 +74,7 @@ int	executor(t_ast_node *ast, t_shelly shelly)
 			if (setup_redirections(ast->value.command->redir) != 0)
 				exit (1);
 		}
+		// Remover: Feat do framework de teste
 		if (shelly.suppress_output)
 		{
 			int dev_null_fd = open("/dev/null", O_WRONLY);
@@ -90,6 +91,23 @@ int	executor(t_ast_node *ast, t_shelly shelly)
 	}
 	waitpid(pid, &status, 0);
 	return (status);
-	// executar o comando atual
-	// se tiver pipe chama a recursão
+}
+void	exec_pipe(t_ast_node *ast, t_shelly shelly)
+{
+	(void)ast;
+	(void)shelly;
+	return ;
+}
+
+int	executor(t_ast_node *ast, t_shelly shelly)
+{
+	int	status;
+
+	if (ast->node_type == TOKEN_PIPE)
+	{
+		exec_pipe(ast, shelly);
+	}
+	else if (ast->node_type == TOKEN_WORD)
+		status = exec_simple_command(ast, shelly);
+	return (status);
 }
