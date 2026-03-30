@@ -198,6 +198,30 @@ int	create_list_with_simple_quotes_between_double_quotes(void)
 	}
 }
 
+int	should_create_list_with_quotes_combination(void)
+{
+	char	str_in[] = "echo 'mixed\"quotes'and\"more\"";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->value, "echo", 4) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->value, "\'mixed\"quotes\'", 14) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->value, "and", 3) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->next->value, "\"more\"", 6) == EXIT_SUCCESS
+		&& token->next->next->next->next == NULL)
+	{
+		clear_token_list(&token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		clear_token_list(&token);
+		return (EXIT_FAILURE);
+	}
+}
+
 int	set_correctly_reverse_link_for_list_of_three(void)
 {
 	char	str_in[] = "token size test";
@@ -459,6 +483,7 @@ int	main(void)
 	RUN_TEST(create_list_ignoring_spaces);
 	RUN_TEST(create_list_with_input_containing_pipe_with_spaces);
 	RUN_TEST(create_list_with_simple_quotes_between_double_quotes);
+	RUN_TEST(should_create_list_with_quotes_combination);
 	RUN_TEST(set_correctly_reverse_link_for_list_of_three);
 	RUN_TEST(set_correctly_list_for_input_with_pipe_and_no_space);
 	RUN_TEST(set_correctly_list_for_input_with_redirect_in_and_no_space);
