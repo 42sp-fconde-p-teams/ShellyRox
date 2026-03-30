@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/03/26 16:14:24 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/03/29 17:55:20 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef struct s_ast_node
 // lexer functions
 t_token	*set_tokens(char *s);
 int		get_token_len(char *str);
-
+void	clear_token_list(t_token **head);
 // parser functions
 t_ast_node	*parser(t_token **tokens);
 t_ast_node	*parse_command(t_token	**token);
