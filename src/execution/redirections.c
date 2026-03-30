@@ -54,13 +54,6 @@ static	int	redirect_append(t_redir *redir)
 	return (0);
 }
 
-static	int	redirect_heredoc(t_redir *redir)
-{
-	// Planejar como fazer isso aqui
-	(void)redir;
-	return (0);
-}
-
 int	setup_redirections(t_redir *redir)
 {
 	int		status;
@@ -75,8 +68,6 @@ int	setup_redirections(t_redir *redir)
 			status = redirect_out(tmp);
 		else if (tmp->type == TOKEN_APPEND)
 			status = redirect_append(tmp);
-		else if (tmp->type == TOKEN_HEREDOC)
-			status = redirect_heredoc(tmp);
 		if (status != 0)
 			return (-1);
 		tmp = tmp->next;

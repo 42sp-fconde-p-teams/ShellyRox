@@ -52,12 +52,59 @@ char	*find_command(char **path, char *cmd)
 	return (NULL);
 }
 
+int	check_here_doc(t_redir *redir)
+{
+	int	fd;
+	t_redir	*tmp;
+
+	tmp = redir;
+	fd = -1;
+	while (tmp)
+	{
+		if (tmp->type == TOKEN_HEREDOC)
+		{
+			fd = open("/tmp/.shelly_heredoc", O_WRONLY | O_CREAT | O_TRUNC , 0600);
+			if (fd == -1)
+				return (-1);
+			read_and_write_here_doc(fd, tmp);
+		}
+		tmp = tmp->next;
+	}
+	return (fd);
+}
+
+static void	read_and_write_here_doc(int fd, t_redir *redir)
+{
+	char *line;
+
+	while ((line = get_next_line(0)))
+	{
+		if (ft_strncmp(line, redir->filename, ft_strlen(redir->filename)) == 0)
+		{
+			free(line);
+			break ;
+		}
+		ft_putstr_fd(line, fd);
+	}
+	close (fd);
+}
+
+static void	set_here_doc_fd(void)
+{
+	int fd;
+
+	fd = open("/tmp/.shelly_heredoc", O_RDONLY);
+	dup2(fd, STDIN_FILENO);
+	close(fd);
+}
+
 int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 {
 	char	**path;
 	char	*command_line;
 	int		status;
 	pid_t	pid;
+	int		here_doc;
 
 	path = find_path(shelly.envp);
 	command_line = find_command(path, ast->value.command->cmd[0]);
@@ -66,11 +113,19 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 		// Free em tudo aqui <--
 		return (127);
 	}
+	here_doc = check_here_doc(ast->value.command->redir);
+	if (here_doc == -1)
+	{
+		free(command_line);
+		return (1);
+	}
 	pid = fork();
 	if (pid == 0)
 	{
 		if (ast->value.command->redir)
 		{
+			if (here_doc >= 0)
+				set_here_doc_fd();
 			if (setup_redirections(ast->value.command->redir) != 0)
 				exit (1);
 		}
@@ -90,8 +145,10 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 		exit(EXIT_FAILURE);
 	}
 	waitpid(pid, &status, 0);
+	unlink("/tmp/.shelly_heredoc");
 	return (status);
 }
+
 void	exec_pipe(t_ast_node *ast, t_shelly shelly)
 {
 	(void)ast;
