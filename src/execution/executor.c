@@ -6,7 +6,7 @@
 /*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/03/30 22:10:38 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/03/30 22:42:58 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,16 +133,16 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 				exit (1);
 		}
 		// Remover: Feat do framework de teste
-		// if (shelly.suppress_output)
-		// {
-		// 	int dev_null_fd = open("/dev/null", O_WRONLY);
-		// 	if (dev_null_fd != -1)
-		// 	{
-		// 		dup2(dev_null_fd, STDOUT_FILENO);
-		// 		dup2(dev_null_fd, STDERR_FILENO);
-		// 		close(dev_null_fd);
-		// 	}
-		// }
+		if (shelly.suppress_output)
+		{
+			int dev_null_fd = open("/dev/null", O_WRONLY);
+			if (dev_null_fd != -1)
+			{
+				dup2(dev_null_fd, STDOUT_FILENO);
+				dup2(dev_null_fd, STDERR_FILENO);
+				close(dev_null_fd);
+			}
+		}
 		execve(command_line, ast->value.command->cmd, shelly.envp);
 		perror("Failed");
 		exit(EXIT_FAILURE);
