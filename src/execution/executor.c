@@ -152,20 +152,13 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 	return (status);
 }
 
-void	exec_pipe(t_ast_node *ast, t_shelly shelly)
-{
-	(void)ast;
-	(void)shelly;
-	return ;
-}
-
 int	executor(t_ast_node *ast, t_shelly shelly)
 {
 	int	status;
 
 	status = 0;
 	if (ast->node_type == TOKEN_PIPE)
-		exec_pipe(ast, shelly);
+		exec_pipe(ast, shelly, 0);
 	else
 		status = exec_simple_command(ast, shelly);
 	return (status);

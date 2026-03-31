@@ -103,7 +103,7 @@ void	execute_pipes(t_ast_node *ast);
 char	**find_path(char **envp);
 char	*find_command(char **path, char *cmd);
 int		exec_simple_command(t_ast_node *ast, t_shelly shelly);
-void	exec_pipe(t_ast_node *ast, t_shelly shelly);
+void	exec_pipe(t_ast_node *ast, t_shelly shelly, int fd_in);
 //	heredoc functions
 int		check_here_doc(t_redir *redir);
 void	read_and_write_here_doc(int fd, t_redir *redir);
