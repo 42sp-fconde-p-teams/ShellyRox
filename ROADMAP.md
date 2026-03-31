@@ -63,16 +63,33 @@
 
 **Resultado esperado**: `ls | grep .c | wc -l` funcionando.
 
-- [ ] Implementar `execute_pipes()` em `pipes.c`:
-  - Verificar `ast->node_type == TOKEN_PIPE`
-  - Criar `pipe(fd)` para conectar esquerda → direita
-  - `fork()` filho esquerdo: `dup2(fd[1], STDOUT_FILENO)`, executar `ast->value.pipe->left`
-  - `fork()` filho direito: `dup2(fd[0], STDIN_FILENO)`, executar `ast->value.pipe->right`
+- [x] Implementar `exec_pipe()` em `executor.c`:
+  - `pipe(fd)` para conectar esquerda → direita
+  - `fork()` filho esquerdo: `dup2(fd[1], STDOUT_FILENO)`, executar via `exec_pipe_command()`
+  - Último comando: `fork()` + `dup2(fd[0], STDIN_FILENO)` + `exec_pipe_command()`
   - Fechar `fd[0]` e `fd[1]` no pai
-  - `waitpid()` para ambos os filhos, retornar status do último (direito)
-- [ ] Suportar pipes encadeados (recursão: se `right` for outro `TOKEN_PIPE`)
-- [ ] Integrar com redirections: chamar `setup_redirections()` em cada filho antes do `execve`
+  - `waitpid(-1, NULL, 0)` para todos os filhos
+- [x] Suportar pipes encadeados (recursão: se `right` for outro `TOKEN_PIPE`, passa `fd[0]` como `fd_in`)
+- [x] Integrar com redirections: `exec_pipe_command()` chama `setup_redirections()` e heredoc antes do `execve`
 - [x] Atualizar `executor()` para despachar: se `node_type == TOKEN_PIPE` → `exec_pipe()`, senão → `exec_simple_command()`
+
+---
+
+## Etapa 4.5 — Refatoração do executor (norma 42: max 25 linhas por função)
+
+### 4.5.1 — Separar `executor.c` em arquivos por responsabilidade
+
+- [ ] Criar `heredoc.c` — mover `check_here_doc()`, `read_and_write_here_doc()`, `set_here_doc_fd()`
+- [ ] Mover `exec_pipe()` e `exec_pipe_command()` para `pipes.c`
+- [ ] Manter em `executor.c` — `find_path()`, `find_command()`, `exec_simple_command()`, `executor()`
+- [ ] Atualizar `Makefile` com os novos arquivos
+- [ ] Atualizar protótipos em `minishell.h`
+
+### 4.5.2 — Quebrar funções que excedem 25 linhas
+
+- [ ] `exec_simple_command()` (49 linhas) — extrair lógica do processo filho para `child_simple_command()`
+- [ ] `exec_pipe()` (30 linhas) — extrair fork do filho esquerdo para `fork_left_pipe()`
+- [ ] `find_command()` (27 linhas) — extrair loop de busca no PATH para `search_in_path()`
 
 ---
 
