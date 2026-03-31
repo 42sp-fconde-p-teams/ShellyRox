@@ -6,7 +6,7 @@
 /*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:59 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/03/27 00:35:41 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/03/30 22:18:25 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ int	setup_redirections(t_redir *redir)
 			status = redirect_out(tmp);
 		else if (tmp->type == TOKEN_APPEND)
 			status = redirect_append(tmp);
+		else if (tmp->type == TOKEN_HEREDOC)
+			status = 0;
 		if (status != 0)
 			return (-1);
 		tmp = tmp->next;

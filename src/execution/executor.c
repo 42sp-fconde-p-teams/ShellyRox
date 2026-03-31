@@ -6,7 +6,7 @@
 /*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/03/27 00:30:58 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/03/30 22:10:38 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	check_here_doc(t_redir *redir)
 	t_redir	*tmp;
 
 	tmp = redir;
-	fd = -1;
+	fd = 0;
 	while (tmp)
 	{
 		if (tmp->type == TOKEN_HEREDOC)
@@ -73,23 +73,26 @@ int	check_here_doc(t_redir *redir)
 	return (fd);
 }
 
-static void	read_and_write_here_doc(int fd, t_redir *redir)
+void	read_and_write_here_doc(int fd, t_redir *redir)
 {
 	char *line;
 
+	ft_putstr_fd("> ", 0);
 	while ((line = get_next_line(0)))
 	{
-		if (ft_strncmp(line, redir->filename, ft_strlen(redir->filename)) == 0)
+		if (ft_strncmp(line, ft_strjoin(redir->filename, "\n\0"),
+			ft_strlen(redir->filename) + 2) == 0)
 		{
 			free(line);
 			break ;
 		}
 		ft_putstr_fd(line, fd);
+		ft_putstr_fd("> ", 0);
 	}
 	close (fd);
 }
 
-static void	set_here_doc_fd(void)
+void	set_here_doc_fd(void)
 {
 	int fd;
 
@@ -106,40 +109,40 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 	pid_t	pid;
 	int		here_doc;
 
+	here_doc = check_here_doc(ast->value.command->redir);
 	path = find_path(shelly.envp);
 	command_line = find_command(path, ast->value.command->cmd[0]);
-	if (!command_line)
-	{
-		// Free em tudo aqui <--
-		return (127);
-	}
-	here_doc = check_here_doc(ast->value.command->redir);
 	if (here_doc == -1)
 	{
 		free(command_line);
 		return (1);
+	}
+	if (!command_line)
+	{
+		// Free em tudo aqui <--
+		return (127);
 	}
 	pid = fork();
 	if (pid == 0)
 	{
 		if (ast->value.command->redir)
 		{
-			if (here_doc >= 0)
+			if (here_doc > 0)
 				set_here_doc_fd();
 			if (setup_redirections(ast->value.command->redir) != 0)
 				exit (1);
 		}
 		// Remover: Feat do framework de teste
-		if (shelly.suppress_output)
-		{
-			int dev_null_fd = open("/dev/null", O_WRONLY);
-			if (dev_null_fd != -1)
-			{
-				dup2(dev_null_fd, STDOUT_FILENO);
-				dup2(dev_null_fd, STDERR_FILENO);
-				close(dev_null_fd);
-			}
-		}
+		// if (shelly.suppress_output)
+		// {
+		// 	int dev_null_fd = open("/dev/null", O_WRONLY);
+		// 	if (dev_null_fd != -1)
+		// 	{
+		// 		dup2(dev_null_fd, STDOUT_FILENO);
+		// 		dup2(dev_null_fd, STDERR_FILENO);
+		// 		close(dev_null_fd);
+		// 	}
+		// }
 		execve(command_line, ast->value.command->cmd, shelly.envp);
 		perror("Failed");
 		exit(EXIT_FAILURE);
@@ -160,11 +163,10 @@ int	executor(t_ast_node *ast, t_shelly shelly)
 {
 	int	status;
 
+	status = 0;
 	if (ast->node_type == TOKEN_PIPE)
-	{
 		exec_pipe(ast, shelly);
-	}
-	else if (ast->node_type == TOKEN_WORD)
+	else
 		status = exec_simple_command(ast, shelly);
 	return (status);
 }

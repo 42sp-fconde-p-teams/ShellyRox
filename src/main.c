@@ -6,7 +6,7 @@
 /*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:39:21 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/03/27 00:48:11 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/03/30 22:15:57 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,11 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		t_token *tokens = NULL;
-		line = readline("🎀shelly🎀> ");
+		line = readline("shelly🎀> ");
 		if (!line)
 			break ;
 		tokens = set_tokens(line);
 		ast = parser(&tokens);
-		// executor start here
 		shelly.last_exit_status = executor(ast, shelly);
 		add_history(line);
 		free(line);
