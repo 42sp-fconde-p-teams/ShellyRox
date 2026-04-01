@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/03/31 22:34:48 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/03/31 22:42:22 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	simple_command_routine(t_ast_node *ast, char *command_line, char **envp, in
 // pipe functions
 void	execute_pipes(t_ast_node *ast);
 void	exec_pipe(t_ast_node *ast, t_shelly shelly, int fd_in);
-void	exec_simple_pipe_left(t_ast_node *ast, t_shelly shelly, int fd_in);
+void	exec_simple_pipe_left(t_ast_node *ast, t_shelly shelly, int fd_in, int *fd);
 //	heredoc functions
 int		check_here_doc(t_redir *redir);
 void	read_and_write_here_doc(int fd, t_redir *redir);

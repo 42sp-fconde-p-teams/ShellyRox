@@ -6,7 +6,7 @@
 /*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:50 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/03/31 22:35:40 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/03/31 22:43:25 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	exec_pipe_command(t_ast_node *ast, t_shelly shelly)
 	return ;
 }
 
-void	exec_simple_pipe_left(t_ast_node *ast, t_shelly shelly, int fd_in)
+void	exec_simple_pipe_left(t_ast_node *ast, t_shelly shelly, int fd_in, int *fd)
 {
 	if (fd_in != 0)
 		dup2(fd_in, STDIN_FILENO);
@@ -55,7 +55,7 @@ void	exec_pipe(t_ast_node *ast, t_shelly shelly, int fd_in)
 
 	pipe(fd);
 	if (fork() == 0)
-		exec_simple_pipe_left(ast, shelly);
+		exec_simple_pipe_left(ast, shelly, fd_in, fd);
 	close(fd[1]);
 	if (fd_in != 0)
 		close(fd_in);
