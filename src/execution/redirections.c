@@ -6,7 +6,7 @@
 /*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:59 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/03/30 22:18:25 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/03/31 22:28:41 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static	int	redirect_in(t_redir *redir)
 {
 	int	fd;
 
-	if ((fd = open(redir->filename, O_RDONLY)) < 0)
+	fd = open(redir->filename, O_RDONLY);
+	if (fd < 0)
 	{
 		perror (redir->filename);
 		return (-1);
@@ -30,7 +31,8 @@ static	int	redirect_out(t_redir *redir)
 {
 	int	fd;
 
-	if ((fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0)
+	fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd < 0)
 	{
 		perror (redir->filename);
 		return (-1);
@@ -44,7 +46,8 @@ static	int	redirect_append(t_redir *redir)
 {
 	int	fd;
 
-	if ((fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644)) < 0)
+	fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd < 0)
 	{
 		perror (redir->filename);
 		return (-1);

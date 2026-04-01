@@ -6,7 +6,7 @@
 /*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:50 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/03/27 00:36:09 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/03/31 22:35:40 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	exec_pipe_command(t_ast_node *ast, t_shelly shelly)
 
 	here_doc = check_here_doc(ast->value.command->redir);
 	cmd_line = find_command(find_path(shelly.envp),
-						 ast->value.command->cmd[0]);
+			ast->value.command->cmd[0]);
 	if (cmd_line == NULL || here_doc == -1)
 	{
 		// Free em tudo aqui <--
@@ -39,20 +39,23 @@ void	exec_pipe_command(t_ast_node *ast, t_shelly shelly)
 	return ;
 }
 
+void	exec_simple_pipe_left(t_ast_node *ast, t_shelly shelly, int fd_in)
+{
+	if (fd_in != 0)
+		dup2(fd_in, STDIN_FILENO);
+	dup2(fd[1], STDOUT_FILENO);
+	close(fd[0]);
+	close(fd[1]);
+	exec_pipe_command(ast->value.pipe->left, shelly);
+}
+
 void	exec_pipe(t_ast_node *ast, t_shelly shelly, int fd_in)
 {
 	int	fd[2];
 
 	pipe(fd);
 	if (fork() == 0)
-	{
-		if (fd_in != 0)
-			dup2(fd_in, STDIN_FILENO);
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[0]);
-		close(fd[1]);
-		exec_pipe_command(ast->value.pipe->left, shelly);
-	}
+		exec_simple_pipe_left(ast, shelly);
 	close(fd[1]);
 	if (fd_in != 0)
 		close(fd_in);
@@ -68,5 +71,6 @@ void	exec_pipe(t_ast_node *ast, t_shelly shelly, int fd_in)
 		}
 		close(fd[0]);
 	}
-	while (waitpid(-1, NULL, 0) > 0);
+	while (waitpid(-1, NULL, 0) > 0)
+		;
 }

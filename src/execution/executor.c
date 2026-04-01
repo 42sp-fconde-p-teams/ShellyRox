@@ -6,7 +6,7 @@
 /*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/03/30 22:42:58 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/03/31 22:19:23 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 char	**find_path(char **envp)
 {
-	size_t i = 0;
+	size_t	i;
+
+	i = 0;
 	while (envp[i] != NULL)
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
@@ -25,7 +27,6 @@ char	**find_path(char **envp)
 }
 char	*find_command(char **path, char *cmd)
 {
-	char	*command;
 	char	*command_with_path;
 	int		i;
 
@@ -35,83 +36,51 @@ char	*find_command(char **path, char *cmd)
 			return (cmd);
 		return (NULL);
 	}
-	command = ft_strjoin("/", cmd);
-	i = 0;
-	while (path[i] != NULL)
+	i = -1;
+	while (path[++i] != NULL)
 	{
-		command_with_path = ft_strjoin(path[i], command);
+		command_with_path = ft_strjoin(path[i], ft_strjoin("/", cmd));
 		if (access(command_with_path, F_OK | X_OK) == 0)
-		{
-			free(command);
 			return (command_with_path);
-		}
 		free(command_with_path);
-		i++;
 	}
-	free(command);
 	return (NULL);
 }
 
-int	check_here_doc(t_redir *redir)
+void	simple_command_routine(t_ast_node *ast, char *command_line, char **envp, int here_doc)
 {
-	int	fd;
-	t_redir	*tmp;
-
-	tmp = redir;
-	fd = 0;
-	while (tmp)
+	if (ast->value.command->redir)
 	{
-		if (tmp->type == TOKEN_HEREDOC)
-		{
-			fd = open("/tmp/.shelly_heredoc", O_WRONLY | O_CREAT | O_TRUNC , 0600);
-			if (fd == -1)
-				return (-1);
-			read_and_write_here_doc(fd, tmp);
-		}
-		tmp = tmp->next;
+		if (here_doc > 0)
+			set_here_doc_fd();
+		if (setup_redirections(ast->value.command->redir) != 0)
+			exit (1);
 	}
-	return (fd);
-}
-
-void	read_and_write_here_doc(int fd, t_redir *redir)
-{
-	char *line;
-
-	ft_putstr_fd("> ", 0);
-	while ((line = get_next_line(0)))
-	{
-		if (ft_strncmp(line, ft_strjoin(redir->filename, "\n\0"),
-			ft_strlen(redir->filename) + 2) == 0)
-		{
-			free(line);
-			break ;
-		}
-		ft_putstr_fd(line, fd);
-		ft_putstr_fd("> ", 0);
-	}
-	close (fd);
-}
-
-void	set_here_doc_fd(void)
-{
-	int fd;
-
-	fd = open("/tmp/.shelly_heredoc", O_RDONLY);
-	dup2(fd, STDIN_FILENO);
-	close(fd);
+	// Remover: Feat do framework de teste
+	// if (shelly.suppress_output)
+	// {
+	// 	int dev_null_fd = open("/dev/null", O_WRONLY);
+	// 	if (dev_null_fd != -1)
+	// 	{
+	// 		dup2(dev_null_fd, STDOUT_FILENO);
+	// 		dup2(dev_null_fd, STDERR_FILENO);
+	// 		close(dev_null_fd);
+	// 	}
+	// }
+	execve(command_line, ast->value.command->cmd, envp);
+	perror("Failed");
+	exit(EXIT_FAILURE);
 }
 
 int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 {
-	char	**path;
 	char	*command_line;
 	int		status;
 	pid_t	pid;
 	int		here_doc;
 
 	here_doc = check_here_doc(ast->value.command->redir);
-	path = find_path(shelly.envp);
-	command_line = find_command(path, ast->value.command->cmd[0]);
+	command_line = find_command(find_path(shelly.envp), ast->value.command->cmd[0]);
 	if (here_doc == -1)
 	{
 		free(command_line);
@@ -124,29 +93,7 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 	}
 	pid = fork();
 	if (pid == 0)
-	{
-		if (ast->value.command->redir)
-		{
-			if (here_doc > 0)
-				set_here_doc_fd();
-			if (setup_redirections(ast->value.command->redir) != 0)
-				exit (1);
-		}
-		// Remover: Feat do framework de teste
-		if (shelly.suppress_output)
-		{
-			int dev_null_fd = open("/dev/null", O_WRONLY);
-			if (dev_null_fd != -1)
-			{
-				dup2(dev_null_fd, STDOUT_FILENO);
-				dup2(dev_null_fd, STDERR_FILENO);
-				close(dev_null_fd);
-			}
-		}
-		execve(command_line, ast->value.command->cmd, shelly.envp);
-		perror("Failed");
-		exit(EXIT_FAILURE);
-	}
+		simple_command_routine(ast, command_line, shelly.envp, here_doc);
 	waitpid(pid, &status, 0);
 	unlink("/tmp/.shelly_heredoc");
 	return (status);
