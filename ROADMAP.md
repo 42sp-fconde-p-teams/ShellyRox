@@ -79,17 +79,17 @@
 
 ### 4.5.1 — Separar `executor.c` em arquivos por responsabilidade
 
-- [ ] Criar `heredoc.c` — mover `check_here_doc()`, `read_and_write_here_doc()`, `set_here_doc_fd()`
-- [ ] Mover `exec_pipe()` e `exec_pipe_command()` para `pipes.c`
-- [ ] Manter em `executor.c` — `find_path()`, `find_command()`, `exec_simple_command()`, `executor()`
-- [ ] Atualizar `Makefile` com os novos arquivos
-- [ ] Atualizar protótipos em `minishell.h`
+- [x] Criar `heredoc.c` — mover `check_here_doc()`, `read_and_write_here_doc()`, `set_here_doc_fd()`
+- [x] Mover `exec_pipe()` e `exec_pipe_command()` para `pipes.c`
+- [x] Manter em `executor.c` — `find_path()`, `find_command()`, `exec_simple_command()`, `executor()`
+- [x] Atualizar `Makefile` com os novos arquivos
+- [x] Atualizar protótipos em `minishell.h`
 
 ### 4.5.2 — Quebrar funções que excedem 25 linhas
 
-- [ ] `exec_simple_command()` (49 linhas) — extrair lógica do processo filho para `child_simple_command()`
-- [ ] `exec_pipe()` (30 linhas) — extrair fork do filho esquerdo para `fork_left_pipe()`
-- [ ] `find_command()` (27 linhas) — extrair loop de busca no PATH para `search_in_path()`
+- [x] `exec_simple_command()` (49 linhas) — extrair lógica do processo filho para `simple_command_routine()`
+- [x] `exec_pipe()` (30 linhas) — extrair fork do filho esquerdo para `exec_simple_pipe_left()`
+- [x] `find_command()` — já cabe em 25 linhas após refatoração, extração desnecessária
 
 ---
 
