@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/03/26 23:26:08 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/03/31 22:42:22 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,18 @@ void	add_redir_command(t_ast_node **node, t_token **token);
 // executor functions
 int		executor(t_ast_node *ast, t_shelly shelly);
 int		setup_redirections(t_redir *redir);
-void	execute_pipes(t_ast_node *ast);
 char	**find_path(char **envp);
 char	*find_command(char **path, char *cmd);
+int		exec_simple_command(t_ast_node *ast, t_shelly shelly);
+void	simple_command_routine(t_ast_node *ast, char *command_line, char **envp, int here_doc);
+// pipe functions
+void	execute_pipes(t_ast_node *ast);
+void	exec_pipe(t_ast_node *ast, t_shelly shelly, int fd_in);
+void	exec_simple_pipe_left(t_ast_node *ast, t_shelly shelly, int fd_in, int *fd);
+//	heredoc functions
+int		check_here_doc(t_redir *redir);
+void	read_and_write_here_doc(int fd, t_redir *redir);
+void	set_here_doc_fd(void);
 
 // def funny stuff here, friendo!
 int		ft_sample(void);			// REMOVE ASAP!

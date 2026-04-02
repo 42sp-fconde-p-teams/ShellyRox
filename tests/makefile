@@ -7,7 +7,10 @@ LIBFT       = $(LIBFT_DIR)/libft.a
 C_FILES     = ../src/parsing/parser.c \
               ../src/parsing/fsm/set_tokens.c \
               ../src/parsing/fsm/get_token_len.c \
-              ../src/execution/executor.c
+			  ../src/execution/redirections.c \
+              ../src/execution/executor.c \
+              ../src/execution/pipes.c	\
+			  ../src/execution/heredoc.c
 
 LIBS        = $(LIBFT) # -ldl -lglfw -pthread -lm
 HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR)
@@ -17,7 +20,9 @@ TEST_DIR    = ./
 TEST_SRCS   = $(TEST_DIR)/test-parser.c \
 				$(TEST_DIR)/test-set_tokens.c \
 				$(TEST_DIR)/test-get_token_len.c \
-				$(TEST_DIR)/test-executor.c
+				$(TEST_DIR)/test-executor.c \
+				$(TEST_DIR)/test-heredoc.c \
+				$(TEST_DIR)/test-pipe.c
 TEST_BINS   = $(TEST_SRCS:.c=.out)
 REPORT_LOG  = test_report.log
 
@@ -74,7 +79,7 @@ $(LIBFT):
 
 clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean --no-print-directory
-	rm *.out
+	rm -f *.out
 
 fclean: clean
 	@rm -rf minishell $(REPORT_LOG)
