@@ -174,6 +174,33 @@ int	create_list_with_input_containing_pipe_with_spaces(void)
 	}
 }
 
+int	should_tokenize_string_with_special_caracters(void)
+{
+	char	str_in[] = "echo \"test $VAR\" \"-flag\" \"path/to/file\" \"file.name.ext\" | wc -l";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->value, "echo", 4) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->value, "\"test $VAR\"", 11) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->value, "\"-flag\"", 7) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->next->value, "\"path/to/file\"", 14) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->next->next->value, "\"file.name.ext\"", 15) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->next->next->next->value, "|", 1) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->next->next->next->next->value, "wc", 2) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->next->next->next->next->next->value, "-l", 2) == EXIT_SUCCESS
+		&& token->next->next->next->next->next->next->next->next == NULL)
+	{
+		clear_token_list(&token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		clear_token_list(&token);
+		return (EXIT_FAILURE);
+	}
+}
 int	create_list_with_simple_quotes_between_double_quotes(void)
 {
 	char	str_in[] = "echo \"let's que let's!\" | wc -l";
@@ -204,8 +231,6 @@ int	should_tokenize_empty_string_between_double_quotes_as_token_word(void)
 	t_token	*token = NULL;
 
 	token = set_tokens(str_in);
-	printf("\ntoken value: %s\n", token->next->value);
-	printf("\ntoken type: %d\n", token->next->type);
 	if (!token)
 		return (EXIT_FAILURE);
 	if (ft_strncmp(token->value, "echo", 4) == EXIT_SUCCESS
@@ -229,8 +254,6 @@ int	should_tokenize_empty_string_between_simple_quotes_as_token_word(void)
 	t_token	*token = NULL;
 
 	token = set_tokens(str_in);
-	printf("\ntoken value: %s\n", token->next->value);
-	printf("\ntoken type: %d\n", token->next->type);
 	if (!token)
 		return (EXIT_FAILURE);
 	if (ft_strncmp(token->value, "echo", 4) == EXIT_SUCCESS
@@ -247,7 +270,7 @@ int	should_tokenize_empty_string_between_simple_quotes_as_token_word(void)
 		return (EXIT_FAILURE);
 	}
 }
-// WIP
+
 int	should_create_list_with_quotes_combination(void)
 {
 	char	str_in[] = "echo 'mixed\"quotes'and\"more\"";
@@ -527,12 +550,14 @@ int	main(void)
 	RUN_TEST(create_new_node_with_null_prev_and_next);
 	RUN_TEST(return_null_for_empty_token);
 	RUN_TEST(return_null_for_only_spaces_token);
+
 	// token list tests
 	RUN_TEST(create_list_with_three_tokens);
 	RUN_TEST(create_quoted_chunk_as_one_token);
 	RUN_TEST(create_list_ignoring_spaces);
 	RUN_TEST(create_list_with_input_containing_pipe_with_spaces);
 	RUN_TEST(create_list_with_simple_quotes_between_double_quotes);
+	RUN_TEST(should_tokenize_string_with_special_caracters);
 	RUN_TEST(should_create_list_with_quotes_combination);
 	RUN_TEST(should_tokenize_empty_string_between_double_quotes_as_token_word);
 	RUN_TEST(should_tokenize_empty_string_between_simple_quotes_as_token_word);
