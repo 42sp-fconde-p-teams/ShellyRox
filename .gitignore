@@ -7,5 +7,6 @@
 *.json
 *.swp
 GEMINI.md
+CLAUDE.md
 *.out
 docker-nvim/
