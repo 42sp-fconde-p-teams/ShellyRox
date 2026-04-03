@@ -174,6 +174,33 @@ int	create_list_with_input_containing_pipe_with_spaces(void)
 	}
 }
 
+int	should_tokenize_string_with_special_caracters(void)
+{
+	char	str_in[] = "echo \"test $VAR\" \"-flag\" \"path/to/file\" \"file.name.ext\" | wc -l";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->value, "echo", 4) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->value, "\"test $VAR\"", 11) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->value, "\"-flag\"", 7) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->next->value, "\"path/to/file\"", 14) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->next->next->value, "\"file.name.ext\"", 15) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->next->next->next->value, "|", 1) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->next->next->next->next->value, "wc", 2) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->next->next->next->next->next->value, "-l", 2) == EXIT_SUCCESS
+		&& token->next->next->next->next->next->next->next->next == NULL)
+	{
+		clear_token_list(&token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		clear_token_list(&token);
+		return (EXIT_FAILURE);
+	}
+}
 int	create_list_with_simple_quotes_between_double_quotes(void)
 {
 	char	str_in[] = "echo \"let's que let's!\" | wc -l";
@@ -187,6 +214,52 @@ int	create_list_with_simple_quotes_between_double_quotes(void)
 		&& ft_strncmp(token->next->next->value, "|", 1) == EXIT_SUCCESS
 		&& ft_strncmp(token->next->next->next->value, "wc", 2) == EXIT_SUCCESS
 		&& ft_strncmp(token->next->next->next->next->value, "-l", 2) == EXIT_SUCCESS)
+	{
+		clear_token_list(&token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		clear_token_list(&token);
+		return (EXIT_FAILURE);
+	}
+}
+
+int	should_tokenize_empty_string_between_double_quotes_as_token_word(void)
+{
+	char	str_in[] = "echo \"\" test";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->value, "echo", 4) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->value, "\"\"", 1) == EXIT_SUCCESS
+		&& token->next->type == TOKEN_WORD
+		&& ft_strncmp(token->next->next->value, "test", 4) == EXIT_SUCCESS)
+	{
+		clear_token_list(&token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		clear_token_list(&token);
+		return (EXIT_FAILURE);
+	}
+}
+
+int	should_tokenize_empty_string_between_simple_quotes_as_token_word(void)
+{
+	char	str_in[] = "echo \'\' test";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->value, "echo", 4) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->value, "\'\'", 1) == EXIT_SUCCESS
+		&& token->next->type == TOKEN_WORD
+		&& ft_strncmp(token->next->next->value, "test", 4) == EXIT_SUCCESS)
 	{
 		clear_token_list(&token);
 		return (EXIT_SUCCESS);
@@ -350,6 +423,58 @@ int	set_correctly_list_for_input_with_heredoc_and_no_space(void)
 	}
 }
 
+int	should_tokenize_correctly_input_with_pipe_and_redir_in_with_no_space(void)
+{
+	char	str_in[] = "echo test|<file";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->value, "echo", 4) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->value, "test", 4) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->value, "|", 1) == EXIT_SUCCESS
+		&& token->next->next->type == TOKEN_PIPE
+		&& ft_strncmp(token->next->next->next->value, "<", 1) == EXIT_SUCCESS
+		&& token->next->next->next->type == TOKEN_REDIR_IN
+		&& ft_strncmp(token->next->next->next->next->value, "file", 4) == EXIT_SUCCESS)
+	{
+		clear_token_list(&token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		clear_token_list(&token);
+		return (EXIT_FAILURE);
+	}
+}
+
+int	should_tokenize_correctly_input_with_append_and_redir_out(void)
+{
+	char	str_in[] = "echo test>> >file";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->value, "echo", 4) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->value, "test", 4) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->next->value, ">>", 2) == EXIT_SUCCESS
+		&& token->next->next->type == TOKEN_APPEND
+		&& ft_strncmp(token->next->next->next->value, ">", 1) == EXIT_SUCCESS
+		&& token->next->next->next->type == TOKEN_REDIR_OUT
+		&& ft_strncmp(token->next->next->next->next->value, "file", 4) == EXIT_SUCCESS)
+	{
+		clear_token_list(&token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		clear_token_list(&token);
+		return (EXIT_FAILURE);
+	}
+}
+
 int	set_second_node_as_pipe(void)
 {
 	char	str_in[] = "command | size -test";
@@ -477,20 +602,26 @@ int	main(void)
 	RUN_TEST(create_new_node_with_null_prev_and_next);
 	RUN_TEST(return_null_for_empty_token);
 	RUN_TEST(return_null_for_only_spaces_token);
+
 	// token list tests
 	RUN_TEST(create_list_with_three_tokens);
 	RUN_TEST(create_quoted_chunk_as_one_token);
 	RUN_TEST(create_list_ignoring_spaces);
 	RUN_TEST(create_list_with_input_containing_pipe_with_spaces);
 	RUN_TEST(create_list_with_simple_quotes_between_double_quotes);
+	RUN_TEST(should_tokenize_string_with_special_caracters);
 	RUN_TEST(should_create_list_with_quotes_combination);
+	RUN_TEST(should_tokenize_empty_string_between_double_quotes_as_token_word);
+	RUN_TEST(should_tokenize_empty_string_between_simple_quotes_as_token_word);
 	RUN_TEST(set_correctly_reverse_link_for_list_of_three);
 	RUN_TEST(set_correctly_list_for_input_with_pipe_and_no_space);
 	RUN_TEST(set_correctly_list_for_input_with_redirect_in_and_no_space);
 	RUN_TEST(set_correctly_list_for_input_with_redirect_out_and_no_space);
 	RUN_TEST(set_correctly_list_for_input_with_append_and_no_space);
 	RUN_TEST(set_correctly_list_for_input_with_heredoc_and_no_space);
-
+	RUN_TEST(should_tokenize_correctly_input_with_pipe_and_redir_in_with_no_space);
+	RUN_TEST(should_tokenize_correctly_input_with_append_and_redir_out);
+	
 	// token type tests
 	RUN_TEST(set_second_node_as_pipe);
 	RUN_TEST(set_second_node_as_redirect_in);
