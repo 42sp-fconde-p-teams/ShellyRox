@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   get_token_len.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/03/15 14:54:39 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/03/29 22:47:54 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
+
+static int	is_token_delimiter(char c)
+{
+	if (c == ' ' || c == '|' || c == '<' || c == '>'
+		|| c == '\t' || c == '\n'
+		|| c == '\"' || c == '\'')
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
+}
 
 int	get_token_len(char *str)
 {
@@ -32,7 +41,7 @@ int	get_token_len(char *str)
 		return (2);
 	while (str[i] != '\0')
 	{
-		if (str[i] == ' ' || str[i] == '|' || str[i] == '<' || str[i] == '>')
+		if (is_token_delimiter(str[i]) == EXIT_SUCCESS)
 			break ;
 		i++;
 	}
