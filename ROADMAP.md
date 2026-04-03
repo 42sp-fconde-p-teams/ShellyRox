@@ -93,6 +93,50 @@
 
 ---
 
+## Etapa 4.8 — Expander
+
+O expander percorre a AST **antes** da execução e transforma o texto bruto dos tokens no texto final. Faz duas coisas: expansão de variáveis (`$`) e remoção de aspas. Usa 3 estados internos: `NORMAL`, `SINGLE_QUOTE`, `DOUBLE_QUOTE`.
+
+### 4.8.1 — Função core: `expand_str()`
+
+Recebe uma string bruta e retorna a string expandida (nova alocação).
+
+- [ ] Implementar máquina de 3 estados (`int state`) com loop caractere a caractere
+- [ ] **NORMAL**: `'` → entra em `SINGLE_QUOTE` (não copia aspa); `"` → entra em `DOUBLE_QUOTE` (não copia aspa); `$` → expande variável; outro → copia literal
+- [ ] **SINGLE_QUOTE**: `'` → volta pra `NORMAL` (não copia aspa); qualquer outro → copia literal (sem expandir `$`)
+- [ ] **DOUBLE_QUOTE**: `"` → volta pra `NORMAL` (não copia aspa); `$` → expande variável; outro → copia literal
+
+### 4.8.2 — Expansão de variáveis
+
+- [ ] Extrair nome da variável após `$`: caracteres `[a-zA-Z_][a-zA-Z0-9_]*`
+- [ ] `$?` → converter `shelly.last_exit_status` para string (`ft_itoa`)
+- [ ] `$VAR` → buscar em `shelly.envp` (formato `VAR=valor`), retornar valor ou string vazia se não existir
+- [ ] `$` sozinho (seguido de espaço, `\0`, aspas) → manter `$` literal
+
+### 4.8.3 — Integrar na AST
+
+- [ ] Criar `expand_ast(t_ast_node *ast, t_shelly *shelly)` que percorre a árvore recursivamente
+- [ ] Para nós `TOKEN_WORD`: expandir cada string em `cmd[]` e cada `redir->filename`
+- [ ] Para nós `TOKEN_PIPE`: chamar recursivamente em `left` e `right`
+- [ ] **Não expandir** o delimitador do heredoc (o filename do `TOKEN_HEREDOC` é literal)
+
+### 4.8.4 — Chamar no fluxo principal
+
+- [ ] No `main.c`, chamar `expand_ast()` entre `parser()` e `executor()`
+- [ ] Isso exige que `executor()` receba `t_shelly *shelly` (ponteiro) — ajustar assinaturas
+
+### 4.8.5 — Testes manuais
+
+- [ ] `echo $USER` → imprime o username
+- [ ] `echo "$USER"` → imprime o username
+- [ ] `echo '$USER'` → imprime literal `$USER`
+- [ ] `echo $?` → imprime último exit status
+- [ ] `echo $INEXISTENTE` → imprime linha vazia
+- [ ] `echo "hello $USER world"` → imprime `hello <username> world`
+- [ ] `echo "'$USER'"` → imprime `'<username>'`
+
+---
+
 ## Etapa 5 — Builtins
 
 Builtins rodam no processo atual (sem `fork`), exceto dentro de pipeline.
