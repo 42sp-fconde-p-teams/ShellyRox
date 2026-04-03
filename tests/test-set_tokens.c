@@ -198,6 +198,56 @@ int	create_list_with_simple_quotes_between_double_quotes(void)
 	}
 }
 
+int	should_tokenize_empty_string_between_double_quotes_as_token_word(void)
+{
+	char	str_in[] = "echo \"\" test";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	printf("\ntoken value: %s\n", token->next->value);
+	printf("\ntoken type: %d\n", token->next->type);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->value, "echo", 4) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->value, "\"\"", 1) == EXIT_SUCCESS
+		&& token->next->type == TOKEN_WORD
+		&& ft_strncmp(token->next->next->value, "test", 4) == EXIT_SUCCESS)
+	{
+		clear_token_list(&token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		clear_token_list(&token);
+		return (EXIT_FAILURE);
+	}
+}
+
+int	should_tokenize_empty_string_between_simple_quotes_as_token_word(void)
+{
+	char	str_in[] = "echo \'\' test";
+	t_token	*token = NULL;
+
+	token = set_tokens(str_in);
+	printf("\ntoken value: %s\n", token->next->value);
+	printf("\ntoken type: %d\n", token->next->type);
+	if (!token)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(token->value, "echo", 4) == EXIT_SUCCESS
+		&& ft_strncmp(token->next->value, "\'\'", 1) == EXIT_SUCCESS
+		&& token->next->type == TOKEN_WORD
+		&& ft_strncmp(token->next->next->value, "test", 4) == EXIT_SUCCESS)
+	{
+		clear_token_list(&token);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		clear_token_list(&token);
+		return (EXIT_FAILURE);
+	}
+}
+// WIP
 int	should_create_list_with_quotes_combination(void)
 {
 	char	str_in[] = "echo 'mixed\"quotes'and\"more\"";
@@ -484,6 +534,8 @@ int	main(void)
 	RUN_TEST(create_list_with_input_containing_pipe_with_spaces);
 	RUN_TEST(create_list_with_simple_quotes_between_double_quotes);
 	RUN_TEST(should_create_list_with_quotes_combination);
+	RUN_TEST(should_tokenize_empty_string_between_double_quotes_as_token_word);
+	RUN_TEST(should_tokenize_empty_string_between_simple_quotes_as_token_word);
 	RUN_TEST(set_correctly_reverse_link_for_list_of_three);
 	RUN_TEST(set_correctly_list_for_input_with_pipe_and_no_space);
 	RUN_TEST(set_correctly_list_for_input_with_redirect_in_and_no_space);
