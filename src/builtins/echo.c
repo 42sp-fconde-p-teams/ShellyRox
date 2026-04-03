@@ -6,11 +6,11 @@
 /*   By: csila-s <csila-s@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 00:00:00 by csila-s         #+#    #+#             */
-/*   Updated: 2024/01/01 00:00:00 by csila-s        ###   ########.fr       */
+/*   Updated: 2026/03/27 00:36:38 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../minishell.h"
 
 int	builtin_echo(char **args)
 {

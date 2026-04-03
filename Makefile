@@ -6,7 +6,7 @@
 #    By: csilva-s <csilva-s@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#              #
-#    Updated: 2026/02/18 12:13:17 by csilva-s         ###   ########.fr        #
+#    Updated: 2026/03/31 21:50:01 by csilva-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,12 @@ SRC_FILES	= main.c \
 			  parsing/lexer.c \
 			  parsing/parser.c \
 			  parsing/expander.c \
+			  parsing/fsm.c \
+			  parsing/fsm/get_token_len.c \
+			  parsing/fsm/set_tokens.c \
 			  execution/executor.c \
 			  execution/redirections.c \
+			  execution/heredoc.c	\
 			  execution/pipes.c \
 			  builtins/cd.c \
 			  builtins/echo.c \
