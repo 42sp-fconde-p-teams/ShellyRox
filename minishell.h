@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/03 17:41:11 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/03 19:30:01 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,9 @@ typedef struct s_ast_node
 t_token	*set_tokens(char *s);
 int		get_token_len(char *str);
 void	clear_token_list(t_token **head);
+// expander functions
+t_token	*expander(t_token *tokens, t_shelly *shelly);
+void	insert_new_tokens(t_token **head, t_token *current, char **words);
 // parser functions
 t_ast_node	*parser(t_token **tokens);
 t_ast_node	*parse_command(t_token	**token);
@@ -111,6 +114,9 @@ void	exec_simple_pipe_left(t_ast_node *ast, t_shelly shelly, int fd_in, int *fd)
 int		check_here_doc(t_redir *redir);
 void	read_and_write_here_doc(int fd, t_redir *redir);
 void	set_here_doc_fd(void);
+
+// environment functions
+char	*get_env_value(char *name, char **envp);
 
 // def funny stuff here, friendo!
 int		ft_sample(void);			// REMOVE ASAP!
