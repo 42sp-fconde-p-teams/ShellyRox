@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: csilva-s <csilva-s@student.42.fr>          +#+  +:+       +#+         #
+#    By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#              #
-#    Updated: 2026/03/31 21:50:01 by csilva-s         ###   ########.fr        #
+#    Updated: 2026/04/03 21:10:06 by fconde-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,10 +24,8 @@ LIBFT_DIR	= lib/libft
 
 # Source files
 SRC_FILES	= main.c \
-			  parsing/lexer.c \
 			  parsing/parser.c \
 			  parsing/expander.c \
-			  parsing/fsm.c \
 			  parsing/fsm/get_token_len.c \
 			  parsing/fsm/set_tokens.c \
 			  execution/executor.c \
