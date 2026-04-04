@@ -50,7 +50,7 @@ test: $(LIBFT)
 	echo "  Total cases:  $$TOTAL" >> $(REPORT_LOG); \
 	echo "  ✅ Pass:      $$PASSED" >> $(REPORT_LOG); \
 	echo "  ❌ Fail:      $$FAILS" >> $(REPORT_LOG); \
-	echo "  ⚠️ Errors:    $$ERRORS" >> $(REPORT_LOG); \
+	echo "  ⚠️  Errors:    $$ERRORS" >> $(REPORT_LOG); \
 	echo "==========================================" >> $(REPORT_LOG); \
 	cat $(REPORT_LOG); \
 	if grep -qE "\[FAIL\]|\[ERROR\]" $(REPORT_LOG); then \
