@@ -29,6 +29,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!line)
 			break ;
 		tokens = set_tokens(line);
+		tokens = expander(tokens, &shelly);
 		ast = parser(&tokens);
 		shelly.last_exit_status = executor(ast, shelly);
 		add_history(line);
