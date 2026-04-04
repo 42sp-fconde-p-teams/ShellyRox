@@ -5,16 +5,19 @@ LIBFT       = $(LIBFT_DIR)/libft.a
 
 # IMPORTANTE: Garanta que nenhum desses arquivos tenha uma função main()
 C_FILES     = ../src/parsing/parser.c \
+              ../src/parsing/expander.c \
               ../src/parsing/fsm/set_tokens.c \
               ../src/parsing/fsm/get_token_len.c \
               ../src/execution/redirections.c \
               ../src/execution/executor.c \
               ../src/execution/pipes.c	\
               ../src/execution/heredoc.c \
+              ../src/utils/environment.c \
+              ../src/utils/cleanup.c \
               ../src/parsing/fsm/clear_token_list.c
 
 LIBS        = $(LIBFT) # -ldl -lglfw -pthread -lm
-HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR)
+HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR) -I..
 
 # Tests section
 TEST_DIR    = ./
@@ -22,6 +25,7 @@ TEST_SRCS   = $(TEST_DIR)/test-parser.c \
 				$(TEST_DIR)/test-set_tokens.c \
 				$(TEST_DIR)/test-get_token_len.c \
 				$(TEST_DIR)/test-executor.c \
+				$(TEST_DIR)/test-expander.c \
 				$(TEST_DIR)/test-heredoc.c \
 				$(TEST_DIR)/test-pipe.c \
 				$(TEST_DIR)/test-clear_token_list.c
