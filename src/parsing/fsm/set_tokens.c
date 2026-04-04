@@ -26,9 +26,15 @@ static void	set_type(t_token *token)
 	else if (ft_strncmp(token->value, ">", 1) == EXIT_SUCCESS)
 		token->type = TOKEN_REDIR_OUT;
 	else if (token->value[0] == '\"' || token->value[0] == '\'')
+	{
 		token->type = TOKEN_WORD;
+		token->quoted = BOOL_TRUE;
+	}
 	else
-		return ;
+	{
+		token->type = TOKEN_WORD;
+		token->quoted = BOOL_FALSE;
+	}
 	// else if (is_command(token->value))
 	// 	token->type = TOKEN_CMD;
 	// else if (is_flag(token->value))
