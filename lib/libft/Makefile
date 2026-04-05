@@ -6,7 +6,7 @@
 #    By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/20 19:20:11 by fconde-p          #+#    #+#              #
-#    Updated: 2026/01/03 13:34:12 by fconde-p         ###   ########.fr        #
+#    Updated: 2026/04/05 10:14:10 by fconde-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,8 @@ SRCS = ft_isalpha.c \
 	ft_calloc.c \
 	ft_substr.c \
 	ft_strjoin.c \
+	ft_strjoin_and_free.c \
+	ft_strjoin_char_and_free.c \
 	ft_free_array.c \
 	ft_strtrim.c \
 	ft_split.c \
