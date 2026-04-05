@@ -6,7 +6,7 @@
 #    By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#              #
-#    Updated: 2026/04/03 21:10:06 by fconde-p         ###   ########.fr        #
+#    Updated: 2026/04/05 10:19:14 by fconde-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ SRC_FILES	= main.c \
 			  builtins/pwd.c \
 			  builtins/unset.c \
 			  utils/errors.c \
-			  utils/environment.c \
+			  utils/get_env_value.c \
 			  utils/signals.c \
 			  utils/cleanup.c
 

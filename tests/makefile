@@ -12,7 +12,7 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/execution/executor.c \
               ../src/execution/pipes.c	\
               ../src/execution/heredoc.c \
-              ../src/utils/environment.c \
+              ../src/utils/get_env_value.c \
               ../src/utils/cleanup.c \
               ../src/parsing/fsm/clear_token_list.c
 
