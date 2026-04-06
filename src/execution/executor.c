@@ -6,7 +6,7 @@
 /*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/03/31 22:19:23 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/04/06 16:07:30 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,27 @@
 char	**find_path(char **envp)
 {
 	size_t	i;
+	char	**path;
 
 	i = 0;
+	path = NULL;
 	while (envp[i] != NULL)
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			return (ft_split(envp[i] + 5, ':'));
+		{
+			path = ft_split(envp[i] + 5, ':');
+			break ;
+		}
 		i++;
 	}
-	return (NULL);
+	return (path);
 }
-char	*find_command(char **path, char *cmd)
+char	*find_command(char **envp, char *cmd)
 {
 	char	*command_with_path;
 	int		i;
+	char	**path;
+	char	*command;
 
 	if (ft_strchr(cmd, '/'))
 	{
@@ -37,13 +44,21 @@ char	*find_command(char **path, char *cmd)
 		return (NULL);
 	}
 	i = -1;
+	path = find_path(envp);
+	command = ft_strjoin("/", cmd);
 	while (path[++i] != NULL)
 	{
-		command_with_path = ft_strjoin(path[i], ft_strjoin("/", cmd));
+		command_with_path = ft_strjoin(path[i], command);
 		if (access(command_with_path, F_OK | X_OK) == 0)
+		{
+			ft_free_array(path);
+			free(command);
 			return (command_with_path);
+		}
 		free(command_with_path);
 	}
+	ft_free_array(path);
+	free(command);
 	return (NULL);
 }
 
@@ -80,7 +95,7 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 	int		here_doc;
 
 	here_doc = check_here_doc(ast->value.command->redir);
-	command_line = find_command(find_path(shelly.envp), ast->value.command->cmd[0]);
+	command_line = find_command(shelly.envp, ast->value.command->cmd[0]);
 	if (here_doc == -1)
 	{
 		free(command_line);
@@ -96,6 +111,7 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 		simple_command_routine(ast, command_line, shelly.envp, here_doc);
 	waitpid(pid, &status, 0);
 	unlink("/tmp/.shelly_heredoc");
+	free(command_line);
 	return (status);
 }
 
