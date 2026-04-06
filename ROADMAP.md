@@ -137,6 +137,34 @@ Recebe uma string bruta e retorna a string expandida (nova alocação).
 
 ---
 
+## Etapa 4.9 — Funções de liberação de memória (free)
+
+Implementação das funções para liberar toda a memória alocada durante o ciclo de vida de um comando.
+
+### 4.9.1 — Funções de free da AST ✅
+
+- [x] `free_redir()` — libera lista encadeada de `t_redir`
+- [x] `free_tree()` — libera recursivamente a árvore `t_ast_node` (command + pipe)
+- [x] Integrar no main loop: chamar `free_tree(ast)` e `clear_token_list(&tokens)` após executor
+
+### 4.9.2 — Correção de memory leaks no executor ✅
+
+- [x] `find_path()` — corrigir retorno para variável local, evitar leak do `ft_split`
+- [x] `find_command()` — separar `ft_strjoin("/", cmd)` para liberar corretamente; usar `ft_free_array(path)`
+- [x] `exec_simple_command()` — liberar `command_line` após `waitpid()`
+- [x] Remover `free(shelly.envp)` indevido no main (envp do sistema não deve ser liberado)
+
+### 4.9.3 — Target de debug com AddressSanitizer ✅
+
+- [x] Adicionar target `make sanitize` que compila com `-fsanitize=address` para detecção de leaks
+
+### 4.9.4 — Funções pendentes
+
+- [ ] `free-expander.c` — implementar liberação de memória do expander
+- [ ] `free-shelly.c` — implementar liberação da struct `t_shelly` no encerramento
+
+---
+
 ## Etapa 5 — Builtins
 
 Builtins rodam no processo atual (sem `fork`), exceto dentro de pipeline.
