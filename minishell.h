@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/03 19:30:01 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/06 16:07:41 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	add_redir_command(t_ast_node **node, t_token **token);
 int		executor(t_ast_node *ast, t_shelly shelly);
 int		setup_redirections(t_redir *redir);
 char	**find_path(char **envp);
-char	*find_command(char **path, char *cmd);
+char	*find_command(char **envp, char *cmd);
 int		exec_simple_command(t_ast_node *ast, t_shelly shelly);
 void	simple_command_routine(t_ast_node *ast, char *command_line, char **envp, int here_doc);
 // pipe functions
@@ -117,7 +117,10 @@ void	set_here_doc_fd(void);
 
 // environment functions
 char	*get_env_value(char *name, char **envp);
-
+// free functions
+void	free_tree(t_ast_node *ast);
+void	free_redir(t_redir *redir);
+void	ft_free_array(char **array);
 // def funny stuff here, friendo!
 int		ft_sample(void);			// REMOVE ASAP!
 int		ft_sample_fail(void);		// REMOVE ASAP!
