@@ -6,7 +6,7 @@
 #    By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#              #
-#    Updated: 2026/04/03 21:10:06 by fconde-p         ###   ########.fr        #
+#    Updated: 2026/04/06 16:21:53 by csilva-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRC_FILES	= main.c \
 			  parsing/parser.c \
 			  parsing/expander.c \
 			  parsing/fsm/get_token_len.c \
+			  parsing/fsm/clear_token_list.c \
 			  parsing/fsm/set_tokens.c \
 			  execution/executor.c \
 			  execution/redirections.c \
@@ -42,7 +43,8 @@ SRC_FILES	= main.c \
 			  utils/errors.c \
 			  utils/environment.c \
 			  utils/signals.c \
-			  utils/cleanup.c
+			  utils/cleanup.c \
+			  free/free-parser.c
 
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
@@ -80,6 +82,10 @@ fclean: clean
 	@$(MAKE) fclean -C ./tests
 	@echo "$(RED)Executable removed$(RESET)"
 
+sanitize: CFLAGS += -fsanitize=address
+sanitize: re
+	@echo "$(GREEN)✓ Shelly compiled with AddressSanitizer!$(RESET)"
+
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re sanitize
