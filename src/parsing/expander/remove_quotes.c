@@ -17,6 +17,7 @@ char	*remove_quotes(char *value, t_bool *quoted_flag)
 	char	*new_value;
 	int		i;
 	int		j;
+	char	quote_type;
 
 	*quoted_flag = BOOL_FALSE;
 	if (!value)
@@ -26,11 +27,19 @@ char	*remove_quotes(char *value, t_bool *quoted_flag)
 		return (NULL);
 	i = 0;
 	j = 0;
+	quote_type = 0;
 	while (value[i])
 	{
-		if (value[i] == '\"' || value[i] == '\'')
+		if (quote_type == 0 && (value[i] == '\"' || value[i] == '\''))
 		{
+			quote_type = value[i];
 			*quoted_flag = BOOL_TRUE;
+			i++;
+			continue ;
+		}
+		else if (quote_type != 0 && value[i] == quote_type)
+		{
+			quote_type = 0;
 			i++;
 			continue ;
 		}
