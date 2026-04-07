@@ -1,5 +1,5 @@
 *.o
-./minishell
+minishell
 *.a
 *.out
 .test_failures
