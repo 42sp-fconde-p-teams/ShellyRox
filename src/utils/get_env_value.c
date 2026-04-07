@@ -29,15 +29,3 @@ char	*get_env_value(char *name, char **envp)
 	}
 	return (NULL);
 }
-
-char	*init_env(char **envp)
-{
-	(void)envp;
-	return (NULL);
-}
-
-char	**env_to_array(t_shelly shelly)
-{
-	(void)shelly;
-	return (NULL);
-}

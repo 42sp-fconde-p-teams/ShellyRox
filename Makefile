@@ -6,7 +6,7 @@
 #    By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#              #
-#    Updated: 2026/04/03 21:10:06 by fconde-p         ###   ########.fr        #
+#    Updated: 2026/04/06 22:35:14 by fconde-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,11 @@ LIBFT_DIR	= lib/libft
 # Source files
 SRC_FILES	= main.c \
 			  parsing/parser.c \
-			  parsing/expander.c \
+			  parsing/expander/expander.c \
+			  parsing/expander/remove_quotes.c \
+			  parsing/expander/variable_expansion.c \
+			  parsing/expander/tilde_expansion.c \
+			  parsing/expander/token_insertion.c \
 			  parsing/fsm/get_token_len.c \
 			  parsing/fsm/set_tokens.c \
 			  execution/executor.c \
@@ -40,7 +44,7 @@ SRC_FILES	= main.c \
 			  builtins/pwd.c \
 			  builtins/unset.c \
 			  utils/errors.c \
-			  utils/environment.c \
+			  utils/get_env_value.c \
 			  utils/signals.c \
 			  utils/cleanup.c
 
