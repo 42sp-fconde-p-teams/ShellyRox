@@ -93,6 +93,9 @@ void	clear_token_list(t_token **head);
 // expander functions
 t_token	*expander(t_token *tokens, t_shelly *shelly);
 void	insert_new_tokens(t_token **head, t_token *current, char **words);
+char	*remove_quotes(char *value, t_bool *quoted_flag);
+char	*expand_variables(char *value, t_shelly *shelly, t_bool is_quoted);
+char	*expand_tilde(char *value, t_shelly *shelly);
 // parser functions
 t_ast_node	*parser(t_token **tokens);
 t_ast_node	*parse_command(t_token	**token);

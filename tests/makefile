@@ -5,7 +5,11 @@ LIBFT       = $(LIBFT_DIR)/libft.a
 
 # IMPORTANTE: Garanta que nenhum desses arquivos tenha uma função main()
 C_FILES     = ../src/parsing/parser.c \
-              ../src/parsing/expander.c \
+              ../src/parsing/expander/expander.c \
+              ../src/parsing/expander/remove_quotes.c \
+              ../src/parsing/expander/variable_expansion.c \
+              ../src/parsing/expander/tilde_expansion.c \
+              ../src/parsing/expander/token_insertion.c \
               ../src/parsing/fsm/set_tokens.c \
               ../src/parsing/fsm/get_token_len.c \
               ../src/execution/redirections.c \
