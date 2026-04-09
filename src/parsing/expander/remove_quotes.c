@@ -6,17 +6,44 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 18:00:00 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/06 22:24:23 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/06 23:57:08 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+static void	handle_quote_loop(char *value, char *new_value, t_bool *quoted_flag)
+{
+	int		i;
+	int		j;
+	char	quote_type;
+
+	i = 0;
+	j = 0;
+	quote_type = 0;
+	while (value[i])
+	{
+		if (quote_type == 0 && (value[i] == '\"' || value[i] == '\''))
+		{
+			quote_type = value[i];
+			*quoted_flag = BOOL_TRUE;
+			i++;
+			continue ;
+		}
+		else if (quote_type != 0 && value[i] == quote_type)
+		{
+			quote_type = 0;
+			i++;
+			continue ;
+		}
+		new_value[j++] = value[i++];
+	}
+	new_value[j] = '\0';
+}
+
 char	*remove_quotes(char *value, t_bool *quoted_flag)
 {
 	char	*new_value;
-	int		i;
-	int		j;
 
 	*quoted_flag = BOOL_FALSE;
 	if (!value)
@@ -24,19 +51,7 @@ char	*remove_quotes(char *value, t_bool *quoted_flag)
 	new_value = ft_calloc(ft_strlen(value) + 1, sizeof(char));
 	if (!new_value)
 		return (NULL);
-	i = 0;
-	j = 0;
-	while (value[i])
-	{
-		if (value[i] == '\"' || value[i] == '\'')
-		{
-			*quoted_flag = BOOL_TRUE;
-			i++;
-			continue ;
-		}
-		new_value[j++] = value[i++];
-	}
-	new_value[j] = '\0';
+	handle_quote_loop(value, new_value, quoted_flag);
 	free(value);
 	return (new_value);
 }
