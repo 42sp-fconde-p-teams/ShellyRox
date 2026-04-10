@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/09 23:39:35 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/09 23:53:01 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	simple_command_routine(t_ast_node *ast, char *command_line, char **envp, in
 	exit(EXIT_FAILURE);
 }
 
-int	execute_builtin(char *cmd, t_shelly shelly)
+static int	execute_builtin(char *cmd, t_shelly shelly)
 {
 	if (ft_strncmp(cmd, "env", 3) == 0)
 		return (ft_env(shelly));
@@ -89,12 +89,7 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 	int		here_doc;
 
 	if (ast->value.command->cmd[0] && execute_builtin(ast->value.command->cmd[0], shelly) != -1)
-	{
-		// Built-ins are executed in the main process
-		// However, if we need redirection for a built-in, we'd handle it here.
-		// For now, we focus on the core execution.
 		return (0); 
-	}
 	here_doc = check_here_doc(ast->value.command->redir);
 	command_line = find_command(find_path(shelly.envp), ast->value.command->cmd[0]);
 	if (here_doc == -1)
