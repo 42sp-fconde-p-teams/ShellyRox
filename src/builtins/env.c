@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:40:19 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/09 21:19:41 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/09 21:45:53 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int	ft_env(t_shelly shelly)
 
 	while (shelly.envp && shelly.envp[i])
 	{
-		printf("%s\n", shelly.envp[i]);
+		ft_putstr_fd(shelly.envp[i], 1);
+		ft_putstr_fd("\n", 1);
 		i++;
 	}
 	return (0);
