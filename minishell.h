@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/03 19:30:01 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/09 21:19:42 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MINISHELL_H
 
 # include "./lib/libft/libft.h"
-#include <sys/wait.h>
+# include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <unistd.h>
@@ -117,6 +117,9 @@ void	exec_simple_pipe_left(t_ast_node *ast, t_shelly shelly, int fd_in, int *fd)
 int		check_here_doc(t_redir *redir);
 void	read_and_write_here_doc(int fd, t_redir *redir);
 void	set_here_doc_fd(void);
+
+// built-in functions
+int		ft_env(t_shelly shelly);
 
 // environment functions
 char	*get_env_value(char *name, char **envp);
