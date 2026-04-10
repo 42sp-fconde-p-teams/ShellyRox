@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/09 21:19:42 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/09 23:20:12 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,42 +87,43 @@ typedef struct s_ast_node
 }	t_ast_node;
 
 // lexer functions
-t_token	*set_tokens(char *s);
-int		get_token_len(char *str);
-void	clear_token_list(t_token **head);
+t_token		*set_tokens(char *s);
+int			get_token_len(char *str);
+void		clear_token_list(t_token **head);
 // expander functions
-t_token	*expander(t_token *tokens, t_shelly *shelly);
-void	insert_new_tokens(t_token **head, t_token *current, char **words);
-char	*remove_quotes(char *value, t_bool *quoted_flag);
-char	*expand_variables(char *value, t_shelly *shelly, t_bool is_quoted);
-char	*expand_tilde(char *value, t_shelly *shelly);
+t_token		*expander(t_token *tokens, t_shelly *shelly);
+void		insert_new_tokens(t_token **head, t_token *current, char **words);
+char		*remove_quotes(char *value, t_bool *quoted_flag);
+char		*expand_variables(char *value, t_shelly *shelly, t_bool is_quoted);
+char		*expand_tilde(char *value, t_shelly *shelly);
 // parser functions
 t_ast_node	*parser(t_token **tokens);
 t_ast_node	*parse_command(t_token	**token);
-int	count_words_token(t_token *token);
-void	add_redir_command(t_ast_node **node, t_token **token);
+int			count_words_token(t_token *token);
+void		add_redir_command(t_ast_node **node, t_token **token);
 
 // executor functions
-int		executor(t_ast_node *ast, t_shelly shelly);
-int		setup_redirections(t_redir *redir);
-char	**find_path(char **envp);
-char	*find_command(char **path, char *cmd);
-int		exec_simple_command(t_ast_node *ast, t_shelly shelly);
-void	simple_command_routine(t_ast_node *ast, char *command_line, char **envp, int here_doc);
+int			executor(t_ast_node *ast, t_shelly shelly);
+int			setup_redirections(t_redir *redir);
+char		**find_path(char **envp);
+char		*find_command(char **path, char *cmd);
+int			exec_simple_command(t_ast_node *ast, t_shelly shelly);
+void		simple_command_routine(t_ast_node *ast, char *command_line, char **envp, int here_doc);
 // pipe functions
-void	execute_pipes(t_ast_node *ast);
-void	exec_pipe(t_ast_node *ast, t_shelly shelly, int fd_in);
-void	exec_simple_pipe_left(t_ast_node *ast, t_shelly shelly, int fd_in, int *fd);
+void		execute_pipes(t_ast_node *ast);
+void		exec_pipe(t_ast_node *ast, t_shelly shelly, int fd_in);
+void		exec_simple_pipe_left(t_ast_node *ast, t_shelly shelly, int fd_in, int *fd);
 //	heredoc functions
-int		check_here_doc(t_redir *redir);
-void	read_and_write_here_doc(int fd, t_redir *redir);
-void	set_here_doc_fd(void);
+int			check_here_doc(t_redir *redir);
+void		read_and_write_here_doc(int fd, t_redir *redir);
+void		set_here_doc_fd(void);
 
 // built-in functions
-int		ft_env(t_shelly shelly);
+int			ft_env(t_shelly shelly);
+int			ft_pwd(t_shelly shelly);
 
 // environment functions
-char	*get_env_value(char *name, char **envp);
+char		*get_env_value(char *name, char **envp);
 
 // def funny stuff here, friendo!
 int		ft_sample(void);			// REMOVE ASAP!
