@@ -6,17 +6,16 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 22:10:00 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/09 23:31:27 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/09 23:41:12 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_pwd(t_shelly shelly)
+int	ft_pwd(void)
 {
 	char	*cwd;
 
-	(void)shelly;
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{

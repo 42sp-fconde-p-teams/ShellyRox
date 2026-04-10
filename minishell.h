@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/09 23:20:12 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/09 23:40:03 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void		set_here_doc_fd(void);
 
 // built-in functions
 int			ft_env(t_shelly shelly);
-int			ft_pwd(t_shelly shelly);
+int			ft_pwd(void);
 
 // environment functions
 char		*get_env_value(char *name, char **envp);
