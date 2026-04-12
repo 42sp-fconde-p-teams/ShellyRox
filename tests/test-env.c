@@ -14,7 +14,7 @@ static char	*capture_env_output(t_shelly shell)
 	saved_stdout = dup(STDOUT_FILENO);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
-	ft_env(shell);
+	ft_env(&shell);
 	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdout);
 	fd = open("/tmp/.test_env_out", O_RDONLY);

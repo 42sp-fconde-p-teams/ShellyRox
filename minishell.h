@@ -119,7 +119,7 @@ void		read_and_write_here_doc(int fd, t_redir *redir);
 void		set_here_doc_fd(void);
 
 // built-in functions
-int			ft_env(t_shelly shelly);
+int			ft_env(t_shelly *shelly);
 int			ft_pwd(void);
 int			ft_exit(t_shelly *shell, char **args);
 

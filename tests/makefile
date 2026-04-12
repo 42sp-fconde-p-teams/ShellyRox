@@ -20,7 +20,8 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/utils/cleanup.c \
               ../src/parsing/fsm/clear_token_list.c \
               ../src/builtins/env.c \
-              ../src/builtins/pwd.c
+              ../src/builtins/pwd.c \
+							../src/builtins/exit.c
 
 LIBS        = $(LIBFT) # -ldl -lglfw -pthread -lm
 HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR) -I..

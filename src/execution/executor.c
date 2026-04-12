@@ -72,12 +72,14 @@ void	simple_command_routine(t_ast_node *ast, char *command_line, char **envp, in
 	exit(EXIT_FAILURE);
 }
 
-static int	execute_builtin(char *cmd, t_shelly shelly)
+static int	execute_builtin(char *cmd, char **args, t_shelly *shelly)
 {
 	if (ft_strncmp(cmd, "env", 3) == 0)
 		return (ft_env(shelly));
 	if (ft_strncmp(cmd, "pwd", 3) == 0)
 		return (ft_pwd());
+	if (ft_strncmp(cmd, "exit", 4) == 0)
+		return (ft_exit(shelly, args));
 	return (-1);
 }
 
@@ -88,7 +90,7 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 	pid_t	pid;
 	int		here_doc;
 
-	if (ast->value.command->cmd[0] && execute_builtin(ast->value.command->cmd[0], shelly) != -1)
+	if (ast->value.command->cmd[0] && execute_builtin(ast->value.command->cmd[0], ast->value.command->cmd, &shelly) != -1)
 		return (0); 
 	here_doc = check_here_doc(ast->value.command->redir);
 	command_line = find_command(find_path(shelly.envp), ast->value.command->cmd[0]);
