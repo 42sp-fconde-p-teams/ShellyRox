@@ -37,7 +37,8 @@ TEST_SRCS   = $(TEST_DIR)/test-parser.c \
 				$(TEST_DIR)/test-pipe.c \
 				$(TEST_DIR)/test-clear_token_list.c \
 				$(TEST_DIR)/test-env.c \
-				$(TEST_DIR)/test-pwd.c
+				$(TEST_DIR)/test-pwd.c \
+				$(TEST_DIR)/test-exit.c
 TEST_BINS   = $(TEST_SRCS:.c=.out)
 REPORT_LOG  = test_report.log
 
