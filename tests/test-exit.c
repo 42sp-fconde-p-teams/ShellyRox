@@ -13,7 +13,7 @@ static int	run_exit_test(char **args, int expected_status, int initial_last_stat
 	if (pid == 0)
 	{
 		ft_exit(&shell, args);
-		exit(0); // Should not reach here
+		exit((expected_status + 1) & 255); // Fallback: must differ from expected_status
 	}
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))

@@ -38,7 +38,14 @@ int	ft_exit(t_shelly *shell, char **args)
 
 	if (!args || !args[0])
 		exit(0);
-	if (args[1] && !args[2])
+	if (!args[1])
+		status = shell->last_exit_status;
+	else if (args[2])
+	{
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+		status = 255;
+	}
+	else
 	{
 		if (is_numeric(args[1]))
 			status = ft_atoi(args[1]) & 255;
@@ -48,12 +55,5 @@ int	ft_exit(t_shelly *shell, char **args)
 			status = 255;
 		}
 	}
-	else if (args[2])
-	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		status = 255;
-	}
-	else
-		status = shell->last_exit_status;
 	exit(status);
 }
