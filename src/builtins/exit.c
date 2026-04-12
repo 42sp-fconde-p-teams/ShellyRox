@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 18:18:08 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/12 18:30:20 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/12 19:43:10 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ int	ft_exit(t_shelly *shell, char **args)
 	int	status;
 
 	if (!args || !args[0])
+	{
+		// TODO: cleanup all here
 		exit(0);
+	}
 	if (!args[1])
 		status = shell->last_exit_status;
 	else if (args[2])
@@ -55,5 +58,6 @@ int	ft_exit(t_shelly *shell, char **args)
 			status = 255;
 		}
 	}
+	// TODO: cleanup all here
 	exit(status);
 }
