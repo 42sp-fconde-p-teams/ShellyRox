@@ -6,13 +6,13 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 18:18:08 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/12 18:30:20 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/12 18:36:58 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	builtin_exit(t_shelly *shell)
+int	ft_exit(t_shelly *shell, char **args)
 {
 	(void)shell;
 	return (0);
