@@ -79,6 +79,8 @@ static int	execute_builtin(char *cmd, char **args, t_shelly *shelly)
 		return (ft_env(shelly));
 	if (ft_strncmp(cmd, "pwd", 3) == 0)
 		return (ft_pwd());
+	if (ft_strncmp(cmd, "cd", 2) == 0)
+		return (ft_cd(args, shelly));
 	if (ft_strncmp(cmd, "exit", 4) == 0)
 		return (ft_exit(shelly, args));
 	return (-1);

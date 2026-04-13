@@ -128,6 +128,7 @@ void		set_here_doc_fd(void);
 // built-in functions
 int			ft_env(t_shelly *shelly);
 int			ft_pwd(void);
+int			ft_cd(char **args, t_shelly *shell);
 int			ft_exit(t_shelly *shell, char **args);
 
 // environment functions
