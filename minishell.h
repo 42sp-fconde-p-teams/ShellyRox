@@ -112,7 +112,7 @@ void		add_redir_command(t_ast_node **node, t_token **token);
 // executor functions
 int			executor(t_ast_node *ast, t_shelly shelly);
 int			setup_redirections(t_redir *redir);
-char		**find_path(char **envp);
+char		**find_path(t_shelly *shell);
 char		*find_command(char **path, char *cmd);
 int			exec_simple_command(t_ast_node *ast, t_shelly shelly);
 void		simple_command_routine(t_ast_node *ast, char *command_line, char **envp, int here_doc);

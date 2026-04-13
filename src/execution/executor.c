@@ -12,16 +12,17 @@
 
 #include "../../minishell.h"
 
-char	**find_path(char **envp)
+char	**find_path(t_shelly *shell)
 {
-	size_t	i;
+	t_env	*curr;
 
-	i = 0;
-	while (envp[i] != NULL)
+	curr = shell->env_list;
+	while (curr)
 	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			return (ft_split(envp[i] + 5, ':'));
-		i++;
+		if (ft_strncmp(curr->key, "PATH", 4) == 0 
+			&& curr->key[4] == '\0')
+			return (ft_split(curr->value, ':'));
+		curr = curr->next;
 	}
 	return (NULL);
 }
