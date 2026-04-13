@@ -4,10 +4,10 @@
 int	should_expand_tilde_to_home(void)
 {
 	t_token	*token = NULL;
-	t_shelly shelly;
+	t_shelly shelly = {0};
 	char *envp[] = {"HOME=/home/dot", NULL};
 
-	shelly.envp = envp;
+	init_env_list(&shelly, envp);
 	shelly.last_exit_status = 0;
 	token = set_tokens("~");
 	if (!token)
@@ -28,10 +28,10 @@ int	should_expand_tilde_to_home(void)
 int	should_not_expand_tilde_if_no_home_set(void)
 {
 	t_token	*token = NULL;
-	t_shelly shelly;
+	t_shelly shelly = {0};
 	char *envp[] = {NULL};
 
-	shelly.envp = envp;
+	init_env_list(&shelly, envp);
 	shelly.last_exit_status = 0;
 	token = set_tokens("~");
 	if (!token)
@@ -52,10 +52,10 @@ int	should_not_expand_tilde_if_no_home_set(void)
 int	should_expand_variable(void)
 {
 	t_token	*token = NULL;
-	t_shelly shelly;
+	t_shelly shelly = {0};
 	char *envp[] = {"VAR=hello", NULL};
 
-	shelly.envp = envp;
+	init_env_list(&shelly, envp);
 	shelly.last_exit_status = 0;
 	token = set_tokens("$VAR");
 	if (!token)
@@ -76,10 +76,10 @@ int	should_expand_variable(void)
 int	should_expand_variable_with_nested_quotes(void)
 {
 	t_token	*token = NULL;
-	t_shelly shelly;
+	t_shelly shelly = {0};
 	char *envp[] = {"VAR=hello", NULL};
 
-	shelly.envp = envp;
+	init_env_list(&shelly, envp);
 	shelly.last_exit_status = 0;
 	token = set_tokens("\"\'$VAR\'\"");
 	if (!token)
@@ -100,10 +100,10 @@ int	should_expand_variable_with_nested_quotes(void)
 int	should_expand_exit_status(void)
 {
 	t_token	*token = NULL;
-	t_shelly shelly;
+	t_shelly shelly = {0};
 	char *envp[] = {NULL};
 
-	shelly.envp = envp;
+	init_env_list(&shelly, envp);
 	shelly.last_exit_status = 42;
 	token = set_tokens("$?");
 	if (!token)
@@ -124,10 +124,10 @@ int	should_expand_exit_status(void)
 int	should_remove_double_quotes(void)
 {
 	t_token	*token = NULL;
-	t_shelly shelly;
+	t_shelly shelly = {0};
 	char *envp[] = {NULL};
 
-	shelly.envp = envp;
+	init_env_list(&shelly, envp);
 	shelly.last_exit_status = 0;
 	token = set_tokens("\"hello\"");
 	if (!token)
@@ -148,10 +148,10 @@ int	should_remove_double_quotes(void)
 int	should_remove_single_quotes(void)
 {
 	t_token	*token = NULL;
-	t_shelly shelly;
+	t_shelly shelly = {0};
 	char *envp[] = {NULL};
 
-	shelly.envp = envp;
+	init_env_list(&shelly, envp);
 	shelly.last_exit_status = 0;
 	token = set_tokens("'hello'");
 	if (!token)
@@ -172,10 +172,10 @@ int	should_remove_single_quotes(void)
 int	should_not_expand_in_single_quotes(void)
 {
 	t_token	*token = NULL;
-	t_shelly shelly;
+	t_shelly shelly = {0};
 	char *envp[] = {"VAR=hello", NULL};
 
-	shelly.envp = envp;
+	init_env_list(&shelly, envp);
 	shelly.last_exit_status = 0;
 	// When set_tokens parses '$VAR', it sees it as a word but with quotes.
 	// Actually, set_tokens doesn't set 'quoted' flag yet properly.
@@ -199,10 +199,10 @@ int	should_not_expand_in_single_quotes(void)
 int	should_expand_in_double_quotes(void)
 {
 	t_token	*token = NULL;
-	t_shelly shelly;
+	t_shelly shelly = {0};
 	char *envp[] = {"VAR=hello", NULL};
 
-	shelly.envp = envp;
+	init_env_list(&shelly, envp);
 	shelly.last_exit_status = 0;
 	token = set_tokens("\"$VAR\"");
 	if (!token)
@@ -223,10 +223,10 @@ int	should_expand_in_double_quotes(void)
 int	should_split_words_if_not_quoted(void)
 {
 	t_token	*token = NULL;
-	t_shelly shelly;
+	t_shelly shelly = {0};
 	char *envp[] = {"VAR=hello world", NULL};
 
-	shelly.envp = envp;
+	init_env_list(&shelly, envp);
 	shelly.last_exit_status = 0;
 	token = set_tokens("$VAR");
 	if (!token)
@@ -250,10 +250,10 @@ int	should_split_words_if_not_quoted(void)
 int	should_not_split_words_if_quoted(void)
 {
 	t_token	*token = NULL;
-	t_shelly shelly;
+	t_shelly shelly = {0};
 	char *envp[] = {"VAR=hello world", NULL};
 
-	shelly.envp = envp;
+	init_env_list(&shelly, envp);
 	shelly.last_exit_status = 0;
 	token = set_tokens("\"$VAR\"");
 	if (!token)

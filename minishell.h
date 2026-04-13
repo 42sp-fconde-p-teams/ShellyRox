@@ -27,9 +27,16 @@ typedef enum e_bool
 	BOOL_TRUE
 }	t_bool;
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
+
 typedef struct s_shelly
 {
-	char	**envp;
+	t_env	*env_list;
 	char	**argv;
 	int		last_exit_status;
 	t_bool	suppress_output;
@@ -124,6 +131,9 @@ int			ft_pwd(void);
 int			ft_exit(t_shelly *shell, char **args);
 
 // environment functions
-char		*get_env_value(char *name, char **envp);
+int			init_env_list(t_shelly *shell, char **envp);
+char		**get_env_array(t_shelly *shell);
+char		*get_env_value(char *name, t_shelly *shell);
+int			set_env_var(t_shelly *shell, char *key, char *value);
 
 #endif

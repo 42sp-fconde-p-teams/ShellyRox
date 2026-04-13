@@ -16,9 +16,11 @@ void	exec_pipe_command(t_ast_node *ast, t_shelly shelly)
 {
 	char	*cmd_line;
 	int		here_doc;
+	char	**env_arr;
 
 	here_doc = check_here_doc(ast->value.command->redir);
-	cmd_line = find_command(find_path(shelly.envp),
+	env_arr = get_env_array(&shelly);
+	cmd_line = find_command(find_path(env_arr),
 			ast->value.command->cmd[0]);
 	if (cmd_line == NULL || here_doc == -1)
 	{
@@ -33,7 +35,7 @@ void	exec_pipe_command(t_ast_node *ast, t_shelly shelly)
 		if (setup_redirections(ast->value.command->redir) != 0)
 			exit (1);
 	}
-	execve(cmd_line, ast->value.command->cmd, shelly.envp);
+	execve(cmd_line, ast->value.command->cmd, env_arr);
 	perror("Failed");
 	exit(EXIT_FAILURE);
 	return ;

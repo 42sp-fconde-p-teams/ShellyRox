@@ -106,12 +106,12 @@ int	should_return_full_path_when_cmd_is_absolute(void)
 
 int	should_return_zero_on_successful_command(void)
 {
-	t_shelly	shell;
+	t_shelly	shell = {0};
 	t_ast_node	*node;
 	char		*args[] = {"ls", NULL};
 	int			status;
 
-	shell.envp = environ;
+	init_env_list(&shell, environ);
 	shell.last_exit_status = 0;
 	shell.suppress_output = BOOL_TRUE;
 	node = make_cmd_node(args);
@@ -121,12 +121,12 @@ int	should_return_zero_on_successful_command(void)
 
 int	should_return_nonzero_on_failed_command(void)
 {
-	t_shelly	shell;
+	t_shelly	shell = {0};
 	t_ast_node	*node;
 	char		*args[] = {"ls", "/this/path/does/not/exist/xyz", NULL};
 	int			status;
 
-	shell.envp = environ;
+	init_env_list(&shell, environ);
 	shell.last_exit_status = 0;
 	shell.suppress_output = BOOL_TRUE;
 	node = make_cmd_node(args);
@@ -136,12 +136,12 @@ int	should_return_nonzero_on_failed_command(void)
 
 int	should_return_nonzero_for_missing_command(void)
 {
-	t_shelly	shell;
+	t_shelly	shell = {0};
 	t_ast_node	*node;
 	char		*args[] = {"this_cmd_does_not_exist_xyz123", NULL};
 	int			status;
 
-	shell.envp = environ;
+	init_env_list(&shell, environ);
 	shell.last_exit_status = 0;
 	shell.suppress_output = BOOL_TRUE;
 	node = make_cmd_node(args);

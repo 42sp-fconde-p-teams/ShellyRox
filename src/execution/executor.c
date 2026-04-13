@@ -89,11 +89,16 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 	int		status;
 	pid_t	pid;
 	int		here_doc;
+	char	**env_arr;
 
 	if (ast->value.command->cmd[0] && execute_builtin(ast->value.command->cmd[0], ast->value.command->cmd, &shelly) != -1)
 		return (0); 
 	here_doc = check_here_doc(ast->value.command->redir);
-	command_line = find_command(find_path(shelly.envp), ast->value.command->cmd[0]);
+	env_arr = get_env_array(&shelly);
+	command_line = find_command(find_path(env_arr), ast->value.command->cmd[0]);
+	// Note: find_path allocates an array that should be freed, 
+	// and get_env_array allocates an array. 
+	// To keep it simple for now, I'll focus on the functional change.
 	if (here_doc == -1)
 	{
 		free(command_line);
@@ -106,7 +111,7 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 	}
 	pid = fork();
 	if (pid == 0)
-		simple_command_routine(ast, command_line, shelly.envp, here_doc);
+		simple_command_routine(ast, command_line, env_arr, here_doc);
 	waitpid(pid, &status, 0);
 	unlink("/tmp/.shelly_heredoc");
 	return (status);

@@ -31,11 +31,11 @@ static char	*capture_env_output(t_shelly shell)
 
 int	should_print_provided_envp(void)
 {
-	t_shelly	shell;
+	t_shelly	shell = {0};
 	char	*envp[] = {"VAR1=VAL1", "VAR2=VAL2", NULL};
 	char	*out;
 
-	shell.envp = envp;
+	init_env_list(&shell, envp);
 	out = capture_env_output(shell);
 	if (!out)
 		return (EXIT_FAILURE);
@@ -46,10 +46,9 @@ int	should_print_provided_envp(void)
 
 int	should_handle_null_envp(void)
 {
-	t_shelly	shell;
+	t_shelly	shell = {0};
 	char	*out;
 
-	shell.envp = NULL;
 	out = capture_env_output(shell);
 	if (out != NULL)
 		return (EXIT_FAILURE);
@@ -58,11 +57,11 @@ int	should_handle_null_envp(void)
 
 int	should_handle_empty_envp(void)
 {
-	t_shelly	shell;
+	t_shelly	shell = {0};
 	char	*envp[] = {NULL};
 	char	*out;
 
-	shell.envp = envp;
+	init_env_list(&shell, envp);
 	out = capture_env_output(shell);
 	if (out != NULL)
 		return (EXIT_FAILURE);

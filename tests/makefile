@@ -18,6 +18,9 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/execution/heredoc.c \
               ../src/utils/get_env_value.c \
               ../src/utils/cleanup.c \
+              ../src/utils/env_set.c \
+              ../src/utils/env_init.c \
+              ../src/utils/env_array.c \
               ../src/parsing/fsm/clear_token_list.c \
               ../src/builtins/env.c \
               ../src/builtins/pwd.c \
@@ -38,7 +41,8 @@ TEST_SRCS   = $(TEST_DIR)/test-parser.c \
 				$(TEST_DIR)/test-clear_token_list.c \
 				$(TEST_DIR)/test-env.c \
 				$(TEST_DIR)/test-pwd.c \
-				$(TEST_DIR)/test-exit.c
+				$(TEST_DIR)/test-exit.c \
+				$(TEST_DIR)/test-env_manager.c
 TEST_BINS   = $(TEST_SRCS:.c=.out)
 REPORT_LOG  = test_report.log
 

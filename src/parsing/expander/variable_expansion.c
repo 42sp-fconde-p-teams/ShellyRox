@@ -16,7 +16,7 @@ static char	*get_var_value(char *var_name, t_shelly *shelly)
 {
 	if (ft_strncmp(var_name, "?", 1) == 0)
 		return (ft_itoa(shelly->last_exit_status));
-	return (get_env_value(var_name, shelly->envp));
+	return (get_env_value(var_name, shelly));
 }
 
 static int	find_var_end(char *value, int start)

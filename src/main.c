@@ -21,7 +21,8 @@ int	main(int argc, char **argv, char **envp)
 	if (argc < 1)
 		return (1);
 	(void)*argv;
-	shelly.envp = envp;
+	shelly.env_list = NULL;
+	init_env_list(&shelly, envp);
 	while (1)
 	{
 		t_token *tokens = NULL;
@@ -36,6 +37,5 @@ int	main(int argc, char **argv, char **envp)
 		free(line);
 		// free everything function here
 	}
-	free(shelly.envp);
 	return (0);
 }

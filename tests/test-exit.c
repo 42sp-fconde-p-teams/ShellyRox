@@ -3,12 +3,11 @@
 
 static int	run_exit_test(char **args, int expected_status, int initial_last_status)
 {
-	t_shelly	shell;
+	t_shelly	shell = {0};
 	pid_t		pid;
 	int			status;
 
 	shell.last_exit_status = initial_last_status;
-	shell.envp = NULL;
 	pid = fork();
 	if (pid == 0)
 	{

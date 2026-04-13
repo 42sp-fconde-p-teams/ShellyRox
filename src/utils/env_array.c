@@ -1,30 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   environment.c                                      :+:      :+:    :+:   */
+/*   env_array.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csila-s <csila-s@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/01 00:00:00 by csila-s         #+#    #+#             */
-/*   Updated: 2026/03/27 00:42:22 by csilva-s         ###   ########.fr       */
+/*   Created: 2026/04/12 21:00:00 by fconde-p          #+#    #+#             */
+/*   Updated: 2026/04/12 21:00:00 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*get_env_value(char *name, t_shelly *shell)
+char	**get_env_array(t_shelly *shell)
 {
 	t_env	*curr;
+	int		count;
+	int		i;
+	char	**array;
 
-	if (!name || !shell || !shell->env_list)
-		return (NULL);
+	count = 0;
 	curr = shell->env_list;
 	while (curr)
 	{
-		if (ft_strncmp(curr->key, name, ft_strlen(name)) == 0 && \
-			curr->key[ft_strlen(name)] == '\0')
-			return (ft_strdup(curr->value));
+		count++;
 		curr = curr->next;
 	}
-	return (NULL);
+	array = malloc(sizeof(char *) * (count + 1));
+	if (!array)
+		return (NULL);
+	i = 0;
+	curr = shell->env_list;
+	while (curr)
+	{
+		array[i++] = ft_strjoin(curr->key, ft_strjoin("=", curr->value));
+		curr = curr->next;
+	}
+	array[i] = NULL;
+	return (array);
 }
