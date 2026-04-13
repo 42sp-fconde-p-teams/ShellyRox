@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/09 23:54:27 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/12 18:36:57 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,16 @@ typedef enum e_bool
 	BOOL_TRUE
 }	t_bool;
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
+
 typedef struct s_shelly
 {
-	char	**envp;
+	t_env	*env_list;
 	char	**argv;
 	int		last_exit_status;
 	t_bool	suppress_output;
@@ -105,7 +112,7 @@ void		add_redir_command(t_ast_node **node, t_token **token);
 // executor functions
 int			executor(t_ast_node *ast, t_shelly shelly);
 int			setup_redirections(t_redir *redir);
-char		**find_path(char **envp);
+char		**find_path(t_shelly *shell);
 char		*find_command(char **path, char *cmd);
 int			exec_simple_command(t_ast_node *ast, t_shelly shelly);
 void		simple_command_routine(t_ast_node *ast, char *command_line, char **envp, int here_doc);
@@ -119,10 +126,15 @@ void		read_and_write_here_doc(int fd, t_redir *redir);
 void		set_here_doc_fd(void);
 
 // built-in functions
-int			ft_env(t_shelly shelly);
+int			ft_env(t_shelly *shelly);
 int			ft_pwd(void);
+int			ft_cd(char **args, t_shelly *shell);
+int			ft_exit(t_shelly *shell, char **args);
 
 // environment functions
-char		*get_env_value(char *name, char **envp);
+int			init_env_list(t_shelly *shell, char **envp);
+char		**get_env_array(t_shelly *shell);
+char		*get_env_value(char *name, t_shelly *shell);
+int			set_env_var(t_shelly *shell, char *key, char *value);
 
 #endif

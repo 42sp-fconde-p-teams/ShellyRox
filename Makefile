@@ -45,9 +45,11 @@ SRC_FILES	= main.c \
 			  builtins/unset.c \
 			  utils/errors.c \
 			  utils/get_env_value.c \
+			  utils/env_set.c \
+			  utils/env_init.c \
+			  utils/env_array.c \
 			  utils/signals.c \
 			  utils/cleanup.c
-
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 

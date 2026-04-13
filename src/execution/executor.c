@@ -12,16 +12,17 @@
 
 #include "../../minishell.h"
 
-char	**find_path(char **envp)
+char	**find_path(t_shelly *shell)
 {
-	size_t	i;
+	t_env	*curr;
 
-	i = 0;
-	while (envp[i] != NULL)
+	curr = shell->env_list;
+	while (curr)
 	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			return (ft_split(envp[i] + 5, ':'));
-		i++;
+		if (ft_strncmp(curr->key, "PATH", 4) == 0 
+			&& curr->key[4] == '\0')
+			return (ft_split(curr->value, ':'));
+		curr = curr->next;
 	}
 	return (NULL);
 }
@@ -72,12 +73,16 @@ void	simple_command_routine(t_ast_node *ast, char *command_line, char **envp, in
 	exit(EXIT_FAILURE);
 }
 
-static int	execute_builtin(char *cmd, t_shelly shelly)
+static int	execute_builtin(char *cmd, char **args, t_shelly *shelly)
 {
 	if (ft_strncmp(cmd, "env", 3) == 0)
 		return (ft_env(shelly));
 	if (ft_strncmp(cmd, "pwd", 3) == 0)
 		return (ft_pwd());
+	if (ft_strncmp(cmd, "cd", 2) == 0)
+		return (ft_cd(args, shelly));
+	if (ft_strncmp(cmd, "exit", 4) == 0)
+		return (ft_exit(shelly, args));
 	return (-1);
 }
 
@@ -87,11 +92,15 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 	int		status;
 	pid_t	pid;
 	int		here_doc;
+	char	**paths;
 
-	if (ast->value.command->cmd[0] && execute_builtin(ast->value.command->cmd[0], shelly) != -1)
+	if (ast->value.command->cmd[0] && execute_builtin(ast->value.command->cmd[0], ast->value.command->cmd, &shelly) != -1)
 		return (0); 
 	here_doc = check_here_doc(ast->value.command->redir);
-	command_line = find_command(find_path(shelly.envp), ast->value.command->cmd[0]);
+	paths = find_path(&shelly);
+	command_line = find_command(paths, ast->value.command->cmd[0]);
+	if (paths)
+		ft_free_array(paths);
 	if (here_doc == -1)
 	{
 		free(command_line);
@@ -99,12 +108,14 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 	}
 	if (!command_line)
 	{
-		// Free em tudo aqui <--
 		return (127);
 	}
 	pid = fork();
 	if (pid == 0)
-		simple_command_routine(ast, command_line, shelly.envp, here_doc);
+	{
+		char	**env_arr = get_env_array(&shelly);
+		simple_command_routine(ast, command_line, env_arr, here_doc);
+	}
 	waitpid(pid, &status, 0);
 	unlink("/tmp/.shelly_heredoc");
 	return (status);

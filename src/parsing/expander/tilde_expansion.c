@@ -19,7 +19,7 @@ char	*expand_tilde(char *value, t_shelly *shelly)
 
 	if (!value || value[0] != '~')
 		return (ft_strdup(value));
-	home_path = get_env_value("HOME", shelly->envp);
+	home_path = get_env_value("HOME", shelly);
 	if (!home_path)
 		return (ft_strdup(value));
 	if (ft_strlen(value) == 1)
