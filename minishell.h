@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/14 22:27:39 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/14 22:50:15 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ char		**find_path(t_shelly *shell);
 char		*find_command(char **path, char *cmd);
 int			exec_simple_command(t_ast_node *ast, t_shelly shelly);
 void		simple_command_routine(t_ast_node *ast, char *command_line, char **envp, int here_doc);
+int			execute_builtin(char *cmd, char **args, t_shelly *shelly);
 // pipe functions
 void		execute_pipes(t_ast_node *ast);
 void		exec_pipe(t_ast_node *ast, t_shelly shelly, int fd_in);

@@ -57,35 +57,9 @@ void	simple_command_routine(t_ast_node *ast, char *command_line, char **envp, in
 		if (setup_redirections(ast->value.command->redir) != 0)
 			exit (1);
 	}
-	// Remover: Feat do framework de teste
-	// if (shelly.suppress_output)
-	// {
-	// 	int dev_null_fd = open("/dev/null", O_WRONLY);
-	// 	if (dev_null_fd != -1)
-	// 	{
-	// 		dup2(dev_null_fd, STDOUT_FILENO);
-	// 		dup2(dev_null_fd, STDERR_FILENO);
-	// 		close(dev_null_fd);
-	// 	}
-	// }
 	execve(command_line, ast->value.command->cmd, envp);
 	perror("Failed");
 	exit(EXIT_FAILURE);
-}
-
-static int	execute_builtin(char *cmd, char **args, t_shelly *shelly)
-{
-	if (ft_strncmp(cmd, "env", 3) == 0)
-		return (ft_env(shelly));
-	if (ft_strncmp(cmd, "pwd", 3) == 0)
-		return (ft_pwd());
-	if (ft_strncmp(cmd, "cd", 2) == 0)
-		return (ft_cd(args, shelly));
-	if (ft_strncmp(cmd, "exit", 4) == 0)
-		return (ft_exit(shelly, args));
-	if (ft_strncmp(cmd, "export", 6) == 0)
-		return (ft_export(args, shelly));
-	return (-1);
 }
 
 int	exec_simple_command(t_ast_node *ast, t_shelly shelly)

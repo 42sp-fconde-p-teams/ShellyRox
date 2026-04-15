@@ -18,6 +18,9 @@ void	exec_pipe_command(t_ast_node *ast, t_shelly shelly)
 	int		here_doc;
 	char	**paths;
 
+	if (ast->value.command->cmd[0] && execute_builtin(ast->value.command->cmd[0], \
+		ast->value.command->cmd, &shelly) != -1)
+		exit(0);
 	here_doc = check_here_doc(ast->value.command->redir);
 	paths = find_path(&shelly);
 	cmd_line = find_command(paths, ast->value.command->cmd[0]);

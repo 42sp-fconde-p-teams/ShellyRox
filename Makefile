@@ -6,7 +6,7 @@
 #    By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#              #
-#    Updated: 2026/04/06 22:35:14 by fconde-p         ###   ########.fr        #
+#    Updated: 2026/04/14 22:56:56 by fconde-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRC_FILES	= main.c \
 			  parsing/fsm/get_token_len.c \
 			  parsing/fsm/set_tokens.c \
 			  execution/executor.c \
+			  execution/execute_builtin.c \
 			  execution/redirections.c \
 			  execution/heredoc.c	\
 			  execution/pipes.c \
