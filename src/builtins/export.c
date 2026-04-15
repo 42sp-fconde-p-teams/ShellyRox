@@ -94,7 +94,7 @@ static void	process_export_arg(char *arg, t_shelly *shell)
 		value = "";
 	}
 	if (!is_valid_identifier(key))
-		ft_printf("minishell: export: '%s': not a valid identifier", key);
+		ft_printf("minishell: export: '%s': not a valid identifier\n", key);
 	else
 		set_env_var(shell, key, value);
 	free(key);
