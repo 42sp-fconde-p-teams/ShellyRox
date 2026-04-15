@@ -25,7 +25,8 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/builtins/env.c \
               ../src/builtins/pwd.c \
               ../src/builtins/cd.c \
-							../src/builtins/exit.c
+							../src/builtins/exit.c \
+							../src/builtins/export.c
 
 LIBS        = $(LIBFT) # -ldl -lglfw -pthread -lm
 HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR) -I..

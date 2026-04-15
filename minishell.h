@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/12 18:36:57 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/14 22:27:39 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ int			ft_env(t_shelly *shelly);
 int			ft_pwd(void);
 int			ft_cd(char **args, t_shelly *shell);
 int			ft_exit(t_shelly *shell, char **args);
+int			ft_export(char **args, t_shelly *shell);
 
 // environment functions
 int			init_env_list(t_shelly *shell, char **envp);
