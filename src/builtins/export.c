@@ -6,11 +6,32 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/14 22:32:06 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/14 23:52:06 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+static int	is_valid_identifier(char *str)
+{
+	int		i;
+
+	i = 0;
+	if (!str || !str[i])
+		return (0);
+	if ((str[i] >= '0' && str[i] <= '9'))
+		return (0);
+	while (str[i])
+	{
+		if (!((str[i] >= 'a' && str[i] <= 'z') || 
+			  (str[i] >= 'A' && str[i] <= 'Z') || 
+			  (str[i] >= '0' && str[i] <= '9') || 
+			  (str[i] == '_')))
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 static void	sort_env_array(char **array)
 {
@@ -55,6 +76,42 @@ static void	print_env_list(t_shelly *shell)
 	free(env_array);
 }
 
+static void	process_export_arg(char *arg, t_shelly *shell)
+{
+	char	*eq;
+	char	*key;
+	char	*value;
+
+	eq = ft_strchr(arg, '=');
+	if (eq)
+	{
+		key = ft_substr(arg, 0, eq - arg);
+		value = eq + 1;
+	}
+	else
+	{
+		key = ft_strdup(arg);
+		value = "";
+	}
+	if (!is_valid_identifier(key))
+		ft_printf("minishell: export: '%s': not a valid identifier", key);
+	else
+		set_env_var(shell, key, value);
+	free(key);
+}
+
+static void	handle_export_args(char **args, t_shelly *shell)
+{
+	int	i;
+
+	i = 1;
+	while (args[i])
+	{
+		process_export_arg(args[i], shell);
+		i++;
+	}
+}
+
 int	ft_export(char **args, t_shelly *shell)
 {
 	if (!args || !args[0])
@@ -64,5 +121,6 @@ int	ft_export(char **args, t_shelly *shell)
 		print_env_list(shell);
 		return (0);
 	}
+	handle_export_args(args, shell);
 	return (0);
 }
