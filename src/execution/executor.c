@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/09 23:53:01 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/14 22:31:45 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,33 +57,9 @@ void	simple_command_routine(t_ast_node *ast, char *command_line, char **envp, in
 		if (setup_redirections(ast->value.command->redir) != 0)
 			exit (1);
 	}
-	// Remover: Feat do framework de teste
-	// if (shelly.suppress_output)
-	// {
-	// 	int dev_null_fd = open("/dev/null", O_WRONLY);
-	// 	if (dev_null_fd != -1)
-	// 	{
-	// 		dup2(dev_null_fd, STDOUT_FILENO);
-	// 		dup2(dev_null_fd, STDERR_FILENO);
-	// 		close(dev_null_fd);
-	// 	}
-	// }
 	execve(command_line, ast->value.command->cmd, envp);
 	perror("Failed");
 	exit(EXIT_FAILURE);
-}
-
-static int	execute_builtin(char *cmd, char **args, t_shelly *shelly)
-{
-	if (ft_strncmp(cmd, "env", 3) == 0)
-		return (ft_env(shelly));
-	if (ft_strncmp(cmd, "pwd", 3) == 0)
-		return (ft_pwd());
-	if (ft_strncmp(cmd, "cd", 2) == 0)
-		return (ft_cd(args, shelly));
-	if (ft_strncmp(cmd, "exit", 4) == 0)
-		return (ft_exit(shelly, args));
-	return (-1);
 }
 
 int	exec_simple_command(t_ast_node *ast, t_shelly shelly)

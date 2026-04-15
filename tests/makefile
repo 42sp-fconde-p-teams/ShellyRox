@@ -16,6 +16,7 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/execution/executor.c \
               ../src/execution/pipes.c	\
               ../src/execution/heredoc.c \
+              ../src/execution/execute_builtin.c \
               ../src/utils/get_env_value.c \
               ../src/utils/cleanup.c \
               ../src/utils/env_set.c \
@@ -25,7 +26,8 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/builtins/env.c \
               ../src/builtins/pwd.c \
               ../src/builtins/cd.c \
-							../src/builtins/exit.c
+							../src/builtins/exit.c \
+							../src/builtins/export.c
 
 LIBS        = $(LIBFT) # -ldl -lglfw -pthread -lm
 HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR) -I..
@@ -44,7 +46,8 @@ TEST_SRCS   = $(TEST_DIR)/test-parser.c \
 				$(TEST_DIR)/test-pwd.c \
 				$(TEST_DIR)/test-exit.c \
 				$(TEST_DIR)/test-cd.c \
-				$(TEST_DIR)/test-env_manager.c
+				$(TEST_DIR)/test-env_manager.c \
+				$(TEST_DIR)/test-export.c
 TEST_BINS   = $(TEST_SRCS:.c=.out)
 REPORT_LOG  = test_report.log
 
