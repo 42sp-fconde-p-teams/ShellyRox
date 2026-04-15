@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/14 23:52:06 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/14 23:58:11 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,20 +100,10 @@ static void	process_export_arg(char *arg, t_shelly *shell)
 	free(key);
 }
 
-static void	handle_export_args(char **args, t_shelly *shell)
+int	ft_export(char **args, t_shelly *shell)
 {
 	int	i;
 
-	i = 1;
-	while (args[i])
-	{
-		process_export_arg(args[i], shell);
-		i++;
-	}
-}
-
-int	ft_export(char **args, t_shelly *shell)
-{
 	if (!args || !args[0])
 		return (0);
 	if (args[1] == NULL)
@@ -121,6 +111,11 @@ int	ft_export(char **args, t_shelly *shell)
 		print_env_list(shell);
 		return (0);
 	}
-	handle_export_args(args, shell);
+	i = 1;
+	while (args[i])
+	{
+		process_export_arg(args[i], shell);
+		i++;
+	}
 	return (0);
 }
