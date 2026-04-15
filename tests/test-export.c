@@ -124,7 +124,6 @@ int	should_reject_invalid_identifier_numeric(void)
 	free(val);
 	return (EXIT_SUCCESS);
 }
-
 int	should_reject_invalid_identifier_special(void)
 {
 	t_shelly	shell = {0};
@@ -139,6 +138,26 @@ int	should_reject_invalid_identifier_special(void)
 	return (EXIT_SUCCESS);
 }
 
+int	should_set_variable_with_spaces(void)
+{
+	t_shelly	shell = {0};
+	char	*args[] = {"export", "TEST_SPACE=hello world", NULL};
+	char	*val;
+
+	ft_export(args, &shell);
+	val = get_env_value("TEST_SPACE", &shell);
+	if (!val)
+		return (EXIT_FAILURE);
+	if (ft_strncmp(val, "hello world", 11) != 0 || val[11] != '\0')
+	{
+		printf("\nExpected: 'hello world', Got: '%s'\n", val);
+		free(val);
+		return (EXIT_FAILURE);
+	}
+	free(val);
+	return (EXIT_SUCCESS);
+}
+
 int	main(void)
 {
 	RUN_TEST(should_list_env_alphabetically);
@@ -148,5 +167,6 @@ int	main(void)
 	RUN_TEST(should_handle_multiple_args);
 	RUN_TEST(should_reject_invalid_identifier_numeric);
 	RUN_TEST(should_reject_invalid_identifier_special);
+	RUN_TEST(should_set_variable_with_spaces);
 	return (0);
 }
