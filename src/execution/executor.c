@@ -6,31 +6,31 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/14 22:31:45 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/16 01:08:09 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-char	**find_path(t_shelly *shell)
+// FIX: Corrigir o loop
+char	**find_path(t_shelly *shelly)
 {
-	size_t	i;
 	char	**path;
+	t_env	*tmp;
 
-	i = 0;
 	path = NULL;
-	while (envp[i] != NULL)
+	tmp = shelly->env_list;
+	while (tmp != NULL)
 	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+		if (ft_strncmp(tmp->key, "PATH", 4) == 0)
 		{
-			path = ft_split(envp[i] + 5, ':');
+			path = ft_split(tmp->value, ':');
 			break ;
 		}
-		i++;
+		tmp = tmp->next;
 	}
 	return (path);
 }
-char	*find_command(char **envp, char *cmd)
+char	*find_command(t_shelly *shelly, char *cmd)
 {
 	char	*command_with_path;
 	int		i;
@@ -44,7 +44,7 @@ char	*find_command(char **envp, char *cmd)
 		return (NULL);
 	}
 	i = -1;
-	path = find_path(envp);
+	path = find_path(shelly);
 	command = ft_strjoin("/", cmd);
 	while (path[++i] != NULL)
 	{
@@ -76,35 +76,28 @@ void	simple_command_routine(t_ast_node *ast, char *command_line, char **envp, in
 	exit(EXIT_FAILURE);
 }
 
-int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
+int	exec_simple_command(t_ast_node *ast, t_shelly *shelly)
 {
 	char	*command_line;
 	int		status;
 	pid_t	pid;
 	int		here_doc;
-	char	**paths;
 
-	if (ast->value.command->cmd[0] && execute_builtin(ast->value.command->cmd[0], ast->value.command->cmd, &shelly) != -1)
-		return (0); 
+	if (ast->value.command->cmd[0] && execute_builtin(ast->value.command->cmd[0], ast->value.command->cmd, shelly) != -1)
+		return (0);
 	here_doc = check_here_doc(ast->value.command->redir);
-	paths = find_path(&shelly);
-	command_line = find_command(paths, ast->value.command->cmd[0]);
-	if (paths)
-		ft_free_array(paths);
->>>>>>> main
+	command_line = find_command(shelly, ast->value.command->cmd[0]);
 	if (here_doc == -1)
 	{
 		free(command_line);
 		return (1);
 	}
 	if (!command_line)
-	{
 		return (127);
-	}
 	pid = fork();
 	if (pid == 0)
 	{
-		char	**env_arr = get_env_array(&shelly);
+		char	**env_arr = get_env_array(shelly);
 		simple_command_routine(ast, command_line, env_arr, here_doc);
 	}
 	waitpid(pid, &status, 0);
@@ -113,7 +106,7 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 	return (status);
 }
 
-int	executor(t_ast_node *ast, t_shelly shelly)
+int	executor(t_ast_node *ast, t_shelly *shelly)
 {
 	int	status;
 

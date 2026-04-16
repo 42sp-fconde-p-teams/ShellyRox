@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/14 22:50:15 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/16 01:40:53 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct s_redir
 {
 	t_token_type	type;
 	char			*filename;
-	struct	s_redir	*next;
+	struct s_redir	*next;
 }	t_redir;
 
 typedef struct s_command
@@ -110,17 +110,17 @@ int			count_words_token(t_token *token);
 void		add_redir_command(t_ast_node **node, t_token **token);
 
 // executor functions
-int			executor(t_ast_node *ast, t_shelly shelly);
+int			executor(t_ast_node *ast, t_shelly *shelly);
 int			setup_redirections(t_redir *redir);
-char		**find_path(t_shelly *shell);
-char		*find_command(char **path, char *cmd);
-int			exec_simple_command(t_ast_node *ast, t_shelly shelly);
+char		**find_path(t_shelly *shelly);
+char		*find_command(t_shelly *shelly, char *cmd);
+int			exec_simple_command(t_ast_node *ast, t_shelly *shelly);
 void		simple_command_routine(t_ast_node *ast, char *command_line, char **envp, int here_doc);
 int			execute_builtin(char *cmd, char **args, t_shelly *shelly);
 // pipe functions
 void		execute_pipes(t_ast_node *ast);
-void		exec_pipe(t_ast_node *ast, t_shelly shelly, int fd_in);
-void		exec_simple_pipe_left(t_ast_node *ast, t_shelly shelly, int fd_in, int *fd);
+void		exec_pipe(t_ast_node *ast, t_shelly *shelly, int fd_in);
+void		exec_simple_pipe_left(t_ast_node *ast, t_shelly *shelly, int fd_in, int *fd);
 //	heredoc functions
 int			check_here_doc(t_redir *redir);
 void		read_and_write_here_doc(int fd, t_redir *redir);
@@ -140,6 +140,7 @@ char		*get_env_value(char *name, t_shelly *shell);
 int			set_env_var(t_shelly *shell, char *key, char *value);
 // free functions
 void		free_tree(t_ast_node *ast);
+void		free_env_list(t_env *env);
 void		free_redir(t_redir *redir);
 void		ft_free_array(char **array);
 
