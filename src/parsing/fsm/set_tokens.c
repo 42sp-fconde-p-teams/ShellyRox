@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/03/04 22:02:56 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/05 11:17:04 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,6 @@ static void	set_type(t_token *token)
 		token->type = TOKEN_WORD;
 		token->quoted = BOOL_FALSE;
 	}
-	// else if (is_command(token->value))
-	// 	token->type = TOKEN_CMD;
-	// else if (is_flag(token->value))
-	// 	token->type = TOKEN_FLAG;
 }
 static t_token	*create_token(char *value, t_token *prev_t)
 {

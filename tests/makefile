@@ -5,16 +5,29 @@ LIBFT       = $(LIBFT_DIR)/libft.a
 
 # IMPORTANTE: Garanta que nenhum desses arquivos tenha uma função main()
 C_FILES     = ../src/parsing/parser.c \
-              ../src/parsing/expander.c \
+              ../src/parsing/expander/expander.c \
+              ../src/parsing/expander/remove_quotes.c \
+              ../src/parsing/expander/variable_expansion.c \
+              ../src/parsing/expander/tilde_expansion.c \
+              ../src/parsing/expander/token_insertion.c \
               ../src/parsing/fsm/set_tokens.c \
               ../src/parsing/fsm/get_token_len.c \
               ../src/execution/redirections.c \
               ../src/execution/executor.c \
               ../src/execution/pipes.c	\
               ../src/execution/heredoc.c \
-              ../src/utils/environment.c \
+              ../src/execution/execute_builtin.c \
+              ../src/utils/get_env_value.c \
               ../src/utils/cleanup.c \
-              ../src/parsing/fsm/clear_token_list.c
+              ../src/utils/env_set.c \
+              ../src/utils/env_init.c \
+              ../src/utils/env_array.c \
+              ../src/parsing/fsm/clear_token_list.c \
+              ../src/builtins/env.c \
+              ../src/builtins/pwd.c \
+              ../src/builtins/cd.c \
+							../src/builtins/exit.c \
+							../src/builtins/export.c
 
 LIBS        = $(LIBFT) # -ldl -lglfw -pthread -lm
 HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR) -I..
@@ -28,7 +41,13 @@ TEST_SRCS   = $(TEST_DIR)/test-parser.c \
 				$(TEST_DIR)/test-expander.c \
 				$(TEST_DIR)/test-heredoc.c \
 				$(TEST_DIR)/test-pipe.c \
-				$(TEST_DIR)/test-clear_token_list.c
+				$(TEST_DIR)/test-clear_token_list.c \
+				$(TEST_DIR)/test-env.c \
+				$(TEST_DIR)/test-pwd.c \
+				$(TEST_DIR)/test-exit.c \
+				$(TEST_DIR)/test-cd.c \
+				$(TEST_DIR)/test-env_manager.c \
+				$(TEST_DIR)/test-export.c
 TEST_BINS   = $(TEST_SRCS:.c=.out)
 REPORT_LOG  = test_report.log
 

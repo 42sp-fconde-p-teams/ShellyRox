@@ -6,16 +6,12 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 19:00:00 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/03 19:00:00 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/05 10:02:59 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h> // For free
 
-/*
-** Frees a NULL-terminated array of strings.
-*/
 void	ft_free_array(char **array)
 {
 	int	i;
@@ -28,5 +24,5 @@ void	ft_free_array(char **array)
 		free(array[i]);
 		i++;
 	}
-	free(array); // Free the array itself
+	free(array);
 }

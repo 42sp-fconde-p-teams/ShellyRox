@@ -64,12 +64,12 @@ static char	*capture_output(t_ast_node *ast, t_shelly shell)
 */
 int	should_pipe_echo_to_cat(void)
 {
-	t_shelly	shell;
+	t_shelly	shell = {0};
 	char		*args_l[] = {"echo", "hello", NULL};
 	char		*args_r[] = {"cat", NULL};
 	char		*out;
 
-	shell.envp = environ;
+	init_env_list(&shell, environ);
 	shell.last_exit_status = 0;
 	shell.suppress_output = BOOL_FALSE;
 	out = capture_output(
@@ -87,14 +87,14 @@ int	should_pipe_echo_to_cat(void)
 */
 int	should_chain_three_commands(void)
 {
-	t_shelly	shell;
+	t_shelly	shell = {0};
 	char		*a_echo[] = {"echo", "hello", NULL};
 	char		*a_cat1[] = {"cat", NULL};
 	char		*a_cat2[] = {"cat", NULL};
 	t_ast_node	*inner_pipe;
 	char		*out;
 
-	shell.envp = environ;
+	init_env_list(&shell, environ);
 	shell.last_exit_status = 0;
 	shell.suppress_output = BOOL_FALSE;
 	inner_pipe = make_pipe_node(make_cmd_node(a_cat1), make_cmd_node(a_cat2));
@@ -113,12 +113,12 @@ int	should_chain_three_commands(void)
 */
 int	should_pipe_echo_to_grep_match(void)
 {
-	t_shelly	shell;
+	t_shelly	shell = {0};
 	char		*args_l[] = {"echo", "hello", NULL};
 	char		*args_r[] = {"grep", "hello", NULL};
 	char		*out;
 
-	shell.envp = environ;
+	init_env_list(&shell, environ);
 	shell.last_exit_status = 0;
 	shell.suppress_output = BOOL_FALSE;
 	out = capture_output(
@@ -136,12 +136,12 @@ int	should_pipe_echo_to_grep_match(void)
 */
 int	should_pipe_grep_no_match_produces_no_output(void)
 {
-	t_shelly	shell;
+	t_shelly	shell = {0};
 	char		*args_l[] = {"echo", "hello", NULL};
 	char		*args_r[] = {"grep", "nope", NULL};
 	char		*out;
 
-	shell.envp = environ;
+	init_env_list(&shell, environ);
 	shell.last_exit_status = 0;
 	shell.suppress_output = BOOL_FALSE;
 	out = capture_output(
@@ -157,12 +157,12 @@ int	should_pipe_grep_no_match_produces_no_output(void)
 */
 int	should_pipe_echo_n_no_newline(void)
 {
-	t_shelly	shell;
+	t_shelly	shell = {0};
 	char		*args_l[] = {"echo", "-n", "hello", NULL};
 	char		*args_r[] = {"cat", NULL};
 	char		*out;
 
-	shell.envp = environ;
+	init_env_list(&shell, environ);
 	shell.last_exit_status = 0;
 	shell.suppress_output = BOOL_FALSE;
 	out = capture_output(

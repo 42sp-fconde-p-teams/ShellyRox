@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/06 16:07:41 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/04/14 22:50:15 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MINISHELL_H
 
 # include "./lib/libft/libft.h"
-#include <sys/wait.h>
+# include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <unistd.h>
@@ -27,9 +27,16 @@ typedef enum e_bool
 	BOOL_TRUE
 }	t_bool;
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
+
 typedef struct s_shelly
 {
-	char	**envp;
+	t_env	*env_list;
 	char	**argv;
 	int		last_exit_status;
 	t_bool	suppress_output;
@@ -87,43 +94,53 @@ typedef struct s_ast_node
 }	t_ast_node;
 
 // lexer functions
-t_token	*set_tokens(char *s);
-int		get_token_len(char *str);
-void	clear_token_list(t_token **head);
+t_token		*set_tokens(char *s);
+int			get_token_len(char *str);
+void		clear_token_list(t_token **head);
 // expander functions
-t_token	*expander(t_token *tokens, t_shelly *shelly);
-void	insert_new_tokens(t_token **head, t_token *current, char **words);
+t_token		*expander(t_token *tokens, t_shelly *shelly);
+void		insert_new_tokens(t_token **head, t_token *current, char **words);
+char		*remove_quotes(char *value, t_bool *quoted_flag);
+char		*expand_variables(char *value, t_shelly *shelly, t_bool is_quoted);
+char		*expand_tilde(char *value, t_shelly *shelly);
 // parser functions
 t_ast_node	*parser(t_token **tokens);
 t_ast_node	*parse_command(t_token	**token);
-int	count_words_token(t_token *token);
-void	add_redir_command(t_ast_node **node, t_token **token);
+int			count_words_token(t_token *token);
+void		add_redir_command(t_ast_node **node, t_token **token);
 
 // executor functions
-int		executor(t_ast_node *ast, t_shelly shelly);
-int		setup_redirections(t_redir *redir);
-char	**find_path(char **envp);
-char	*find_command(char **envp, char *cmd);
-int		exec_simple_command(t_ast_node *ast, t_shelly shelly);
-void	simple_command_routine(t_ast_node *ast, char *command_line, char **envp, int here_doc);
+int			executor(t_ast_node *ast, t_shelly shelly);
+int			setup_redirections(t_redir *redir);
+char		**find_path(t_shelly *shell);
+char		*find_command(char **path, char *cmd);
+int			exec_simple_command(t_ast_node *ast, t_shelly shelly);
+void		simple_command_routine(t_ast_node *ast, char *command_line, char **envp, int here_doc);
+int			execute_builtin(char *cmd, char **args, t_shelly *shelly);
 // pipe functions
-void	execute_pipes(t_ast_node *ast);
-void	exec_pipe(t_ast_node *ast, t_shelly shelly, int fd_in);
-void	exec_simple_pipe_left(t_ast_node *ast, t_shelly shelly, int fd_in, int *fd);
+void		execute_pipes(t_ast_node *ast);
+void		exec_pipe(t_ast_node *ast, t_shelly shelly, int fd_in);
+void		exec_simple_pipe_left(t_ast_node *ast, t_shelly shelly, int fd_in, int *fd);
 //	heredoc functions
-int		check_here_doc(t_redir *redir);
-void	read_and_write_here_doc(int fd, t_redir *redir);
-void	set_here_doc_fd(void);
+int			check_here_doc(t_redir *redir);
+void		read_and_write_here_doc(int fd, t_redir *redir);
+void		set_here_doc_fd(void);
+
+// built-in functions
+int			ft_env(t_shelly *shelly);
+int			ft_pwd(void);
+int			ft_cd(char **args, t_shelly *shell);
+int			ft_exit(t_shelly *shell, char **args);
+int			ft_export(char **args, t_shelly *shell);
 
 // environment functions
-char	*get_env_value(char *name, char **envp);
+int			init_env_list(t_shelly *shell, char **envp);
+char		**get_env_array(t_shelly *shell);
+char		*get_env_value(char *name, t_shelly *shell);
+int			set_env_var(t_shelly *shell, char *key, char *value);
 // free functions
-void	free_tree(t_ast_node *ast);
-void	free_redir(t_redir *redir);
-void	ft_free_array(char **array);
-// def funny stuff here, friendo!
-int		ft_sample(void);			// REMOVE ASAP!
-int		ft_sample_fail(void);		// REMOVE ASAP!
-int		ft_sample_success(void);	// REMOVE ASAP!
+void		free_tree(t_ast_node *ast);
+void		free_redir(t_redir *redir);
+void		ft_free_array(char **array);
 
 #endif

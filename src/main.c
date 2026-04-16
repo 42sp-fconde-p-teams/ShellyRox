@@ -22,7 +22,8 @@ int	main(int argc, char **argv, char **envp)
 	if (argc < 1)
 		return (1);
 	(void)*argv;
-	shelly.envp = envp;
+	shelly.env_list = NULL;
+	init_env_list(&shelly, envp);
 	while (1)
 	{
 		line = readline("shelly🎀> ");

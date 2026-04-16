@@ -12,32 +12,19 @@
 
 #include "../../minishell.h"
 
-char	*get_env_value(char *name, char **envp)
+char	*get_env_value(char *name, t_shelly *shell)
 {
-	int		i;
-	int		len;
+	t_env	*curr;
 
-	if (!name || !envp)
+	if (!name || !shell || !shell->env_list)
 		return (NULL);
-	len = ft_strlen(name);
-	i = 0;
-	while (envp[i])
+	curr = shell->env_list;
+	while (curr)
 	{
-		if (ft_strncmp(envp[i], name, len) == 0 && envp[i][len] == '=')
-			return (ft_strdup(envp[i] + len + 1));
-		i++;
+		if (ft_strncmp(curr->key, name, ft_strlen(name)) == 0 && \
+			curr->key[ft_strlen(name)] == '\0')
+			return (ft_strdup(curr->value));
+		curr = curr->next;
 	}
-	return (NULL);
-}
-
-char	*init_env(char **envp)
-{
-	(void)envp;
-	return (NULL);
-}
-
-char	**env_to_array(t_shelly shelly)
-{
-	(void)shelly;
 	return (NULL);
 }

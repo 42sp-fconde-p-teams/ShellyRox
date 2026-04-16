@@ -1,31 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strjoin_and_free.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/09 20:40:19 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/09 21:45:53 by fconde-p         ###   ########.fr       */
+/*   Created: 2025/07/28 20:12:31 by fconde-p          #+#    #+#             */
+/*   Updated: 2026/04/05 10:12:01 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "libft.h"
 
-int	ft_env(t_shelly *shelly)
+char	*ft_strjoin_and_free(char *s1, char *s2)
 {
-	t_env	*curr;
+	char	*new_str;
 
-	if (!shelly || !shelly->env_list)
-		return (0);
-	curr = shelly->env_list;
-	while (curr)
-	{
-		ft_putstr_fd(curr->key, 1);
-		ft_putstr_fd("=", 1);
-		ft_putstr_fd(curr->value ? curr->value : "", 1);
-		ft_putstr_fd("\n", 1);
-		curr = curr->next;
-	}
-	return (0);
+	new_str = ft_strjoin(s1, s2);
+	free(s1);
+	return (new_str);
 }

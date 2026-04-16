@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/06 16:07:30 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/04/14 22:31:45 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	**find_path(char **envp)
+char	**find_path(t_shelly *shell)
 {
 	size_t	i;
 	char	**path;
@@ -71,17 +71,6 @@ void	simple_command_routine(t_ast_node *ast, char *command_line, char **envp, in
 		if (setup_redirections(ast->value.command->redir) != 0)
 			exit (1);
 	}
-	// Remover: Feat do framework de teste
-	// if (shelly.suppress_output)
-	// {
-	// 	int dev_null_fd = open("/dev/null", O_WRONLY);
-	// 	if (dev_null_fd != -1)
-	// 	{
-	// 		dup2(dev_null_fd, STDOUT_FILENO);
-	// 		dup2(dev_null_fd, STDERR_FILENO);
-	// 		close(dev_null_fd);
-	// 	}
-	// }
 	execve(command_line, ast->value.command->cmd, envp);
 	perror("Failed");
 	exit(EXIT_FAILURE);
@@ -93,9 +82,16 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 	int		status;
 	pid_t	pid;
 	int		here_doc;
+	char	**paths;
 
+	if (ast->value.command->cmd[0] && execute_builtin(ast->value.command->cmd[0], ast->value.command->cmd, &shelly) != -1)
+		return (0); 
 	here_doc = check_here_doc(ast->value.command->redir);
-	command_line = find_command(shelly.envp, ast->value.command->cmd[0]);
+	paths = find_path(&shelly);
+	command_line = find_command(paths, ast->value.command->cmd[0]);
+	if (paths)
+		ft_free_array(paths);
+>>>>>>> main
 	if (here_doc == -1)
 	{
 		free(command_line);
@@ -103,12 +99,14 @@ int	exec_simple_command(t_ast_node *ast, t_shelly shelly)
 	}
 	if (!command_line)
 	{
-		// Free em tudo aqui <--
 		return (127);
 	}
 	pid = fork();
 	if (pid == 0)
-		simple_command_routine(ast, command_line, shelly.envp, here_doc);
+	{
+		char	**env_arr = get_env_array(&shelly);
+		simple_command_routine(ast, command_line, env_arr, here_doc);
+	}
 	waitpid(pid, &status, 0);
 	unlink("/tmp/.shelly_heredoc");
 	free(command_line);

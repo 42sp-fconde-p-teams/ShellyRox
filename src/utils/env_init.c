@@ -1,31 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/09 20:40:19 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/09 21:45:53 by fconde-p         ###   ########.fr       */
+/*   Created: 2026/04/12 21:00:00 by fconde-p          #+#    #+#             */
+/*   Updated: 2026/04/12 21:00:00 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	ft_env(t_shelly *shelly)
+int	init_env_list(t_shelly *shell, char **envp)
 {
-	t_env	*curr;
+	int		i;
+	char	*str;
+	char	*eq;
 
-	if (!shelly || !shelly->env_list)
+	i = 0;
+	if (!shell || !envp)
 		return (0);
-	curr = shelly->env_list;
-	while (curr)
+	while (envp[i])
 	{
-		ft_putstr_fd(curr->key, 1);
-		ft_putstr_fd("=", 1);
-		ft_putstr_fd(curr->value ? curr->value : "", 1);
-		ft_putstr_fd("\n", 1);
-		curr = curr->next;
+		str = ft_strdup(envp[i]);
+		if (!str)
+			return (0);
+		eq = ft_strchr(str, '=');
+		if (eq)
+		{
+			*eq = '\0';
+			set_env_var(shell, str, eq + 1);
+		}
+		free(str);
+		i++;
 	}
-	return (0);
+	return (1);
 }

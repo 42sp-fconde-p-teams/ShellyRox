@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strjoin_char_and_free.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/09 20:40:19 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/09 21:45:53 by fconde-p         ###   ########.fr       */
+/*   Created: 2025/07/28 20:12:31 by fconde-p          #+#    #+#             */
+/*   Updated: 2026/04/05 10:12:47 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "libft.h"
 
-int	ft_env(t_shelly *shelly)
+char	*ft_strjoin_char_and_free(char *s1, char c)
 {
-	t_env	*curr;
+	char	*char_str;
+	char	*new_str;
 
-	if (!shelly || !shelly->env_list)
-		return (0);
-	curr = shelly->env_list;
-	while (curr)
-	{
-		ft_putstr_fd(curr->key, 1);
-		ft_putstr_fd("=", 1);
-		ft_putstr_fd(curr->value ? curr->value : "", 1);
-		ft_putstr_fd("\n", 1);
-		curr = curr->next;
-	}
-	return (0);
+	char_str = (char *)ft_calloc(2, sizeof(char));
+	if (!char_str)
+		return (NULL);
+	char_str[0] = c;
+	new_str = ft_strjoin(s1, char_str);
+	free(s1);
+	free(char_str);
+	return (new_str);
 }
