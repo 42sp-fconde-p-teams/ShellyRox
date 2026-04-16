@@ -96,6 +96,10 @@ sanitize: CFLAGS += -fsanitize=address
 sanitize: re
 	@echo "$(GREEN)✓ Shelly compiled with AddressSanitizer!$(RESET)"
 
+tester: CFLAGS += -DTESTER
+tester: re
+	@echo "$(GREEN)✓ Shelly compiled for tester mode!$(RESET)"
+
 re: fclean all
 
-.PHONY: all clean fclean re sanitize
+.PHONY: all clean fclean re sanitize tester

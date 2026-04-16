@@ -27,7 +27,21 @@ int	main(int argc, char **argv, char **envp)
 	init_env_list(&shelly, envp);
 	while (1)
 	{
+#ifdef TESTER
+		if (!isatty(fileno(stdin)))
+		{
+			char	*raw;
+			raw = get_next_line(fileno(stdin));
+			if (!raw)
+				break ;
+			line = ft_strtrim(raw, "\n");
+			free(raw);
+		}
+		else
+			line = readline("shelly🎀> ");
+#else
 		line = readline("shelly🎀> ");
+#endif
 		if (!line)
 			break ;
 		tokens = NULL;
