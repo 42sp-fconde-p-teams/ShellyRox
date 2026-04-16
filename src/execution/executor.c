@@ -39,12 +39,14 @@ char	*find_command(t_shelly *shelly, char *cmd)
 
 	if (ft_strchr(cmd, '/'))
 	{
-		if(access(cmd, F_OK | X_OK) == 0)
-			return (cmd);
+		if (access(cmd, F_OK | X_OK) == 0)
+			return (ft_strdup(cmd));
 		return (NULL);
 	}
 	i = -1;
 	path = find_path(shelly);
+	if (!path)
+		return (NULL);
 	command = ft_strjoin("/", cmd);
 	while (path[++i] != NULL)
 	{
