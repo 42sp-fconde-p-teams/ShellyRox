@@ -6,7 +6,7 @@
 #    By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#              #
-#    Updated: 2026/04/14 22:56:56 by fconde-p         ###   ########.fr        #
+#    Updated: 2026/04/16 01:38:53 by csilva-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SRC_FILES	= main.c \
 			  parsing/expander/tilde_expansion.c \
 			  parsing/expander/token_insertion.c \
 			  parsing/fsm/get_token_len.c \
+			  parsing/fsm/clear_token_list.c \
 			  parsing/fsm/set_tokens.c \
 			  execution/executor.c \
 			  execution/execute_builtin.c \
@@ -50,7 +51,11 @@ SRC_FILES	= main.c \
 			  utils/env_init.c \
 			  utils/env_array.c \
 			  utils/signals.c \
-			  utils/cleanup.c
+			  utils/cleanup.c \
+			  free/free-parser.c \
+			  free/free-env.c
+
+
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
@@ -87,6 +92,14 @@ fclean: clean
 	@$(MAKE) fclean -C ./tests
 	@echo "$(RED)Executable removed$(RESET)"
 
+sanitize: CFLAGS += -fsanitize=address
+sanitize: re
+	@echo "$(GREEN)✓ Shelly compiled with AddressSanitizer!$(RESET)"
+
+tester: CFLAGS += -DTESTER
+tester: re
+	@echo "$(GREEN)✓ Shelly compiled for tester mode!$(RESET)"
+
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re sanitize tester

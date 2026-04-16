@@ -77,10 +77,12 @@ int	should_split_path_entries_correctly(void)
 
 int	should_resolve_command_from_path(void)
 {
-	char	*path[] = {"/usr/bin", "/bin", NULL};
-	char	*result;
+	t_shelly	shell = {0};
+	char		*envp[] = {"PATH=/usr/bin:/bin", NULL};
+	char		*result;
 
-	result = find_command(path, "ls");
+	init_env_list(&shell, envp);
+	result = find_command(&shell, "ls");
 	if (!result)
 		return (EXIT_FAILURE);
 	if (access(result, F_OK | X_OK) != 0)
@@ -90,10 +92,12 @@ int	should_resolve_command_from_path(void)
 
 int	should_return_null_for_unknown_command(void)
 {
-	char	*path[] = {"/usr/bin", "/bin", NULL};
-	char	*result;
+	t_shelly	shell = {0};
+	char		*envp[] = {"PATH=/usr/bin:/bin", NULL};
+	char		*result;
 
-	result = find_command(path, "this_cmd_does_not_exist_xyz123");
+	init_env_list(&shell, envp);
+	result = find_command(&shell, "this_cmd_does_not_exist_xyz123");
 	if (result != NULL)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
@@ -101,10 +105,12 @@ int	should_return_null_for_unknown_command(void)
 
 int	should_return_full_path_when_cmd_is_absolute(void)
 {
-	char	*path[] = {"/usr/bin", "/bin", NULL};
-	char	*result;
+	t_shelly	shell = {0};
+	char		*envp[] = {"PATH=/usr/bin:/bin", NULL};
+	char		*result;
 
-	result = find_command(path, "/bin/ls");
+	init_env_list(&shell, envp);
+	result = find_command(&shell, "/bin/ls");
 	if (!result)
 		return (EXIT_FAILURE);
 	if (access(result, F_OK | X_OK) != 0)
@@ -123,7 +129,7 @@ int	should_return_zero_on_successful_command(void)
 	shell.last_exit_status = 0;
 	shell.suppress_output = BOOL_TRUE;
 	node = make_cmd_node(args);
-	status = executor(node, shell);
+	status = executor(node, &shell);
 	return (WEXITSTATUS(status) == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 }
 
@@ -138,8 +144,8 @@ int	should_return_nonzero_on_failed_command(void)
 	shell.last_exit_status = 0;
 	shell.suppress_output = BOOL_TRUE;
 	node = make_cmd_node(args);
-	status = executor(node, shell);
-	return (WEXITSTATUS(status) != 0 ? EXIT_SUCCESS : EXIT_FAILURE);
+	status = executor(node, &shell);
+	return (status != 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 }
 
 int	should_return_nonzero_for_missing_command(void)
@@ -153,7 +159,7 @@ int	should_return_nonzero_for_missing_command(void)
 	shell.last_exit_status = 0;
 	shell.suppress_output = BOOL_TRUE;
 	node = make_cmd_node(args);
-	status = executor(node, shell);
+	status = executor(node, &shell);
 	return (status != 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 }
 

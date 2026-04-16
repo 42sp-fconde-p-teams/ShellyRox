@@ -44,7 +44,7 @@ static char	*capture_output(t_ast_node *ast, t_shelly shell)
 	saved_stdout = dup(STDOUT_FILENO);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
-	executor(ast, shell);
+	executor(ast, &shell);
 	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdout);
 	fd = open("/tmp/.test_pipe_out", O_RDONLY);
