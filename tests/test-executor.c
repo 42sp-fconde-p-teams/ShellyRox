@@ -145,7 +145,7 @@ int	should_return_nonzero_on_failed_command(void)
 	shell.suppress_output = BOOL_TRUE;
 	node = make_cmd_node(args);
 	status = executor(node, &shell);
-	return (WEXITSTATUS(status) != 0 ? EXIT_SUCCESS : EXIT_FAILURE);
+	return (status != 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 }
 
 int	should_return_nonzero_for_missing_command(void)
