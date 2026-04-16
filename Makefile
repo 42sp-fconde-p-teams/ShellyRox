@@ -6,7 +6,7 @@
 #    By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#              #
-#    Updated: 2026/04/14 22:56:56 by fconde-p         ###   ########.fr        #
+#    Updated: 2026/04/16 01:38:53 by csilva-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,9 @@ SRC_FILES	= main.c \
 			  utils/env_array.c \
 			  utils/signals.c \
 			  utils/cleanup.c \
-			  free/free-parser.c
+			  free/free-parser.c \
+			  free/free-env.c
+
 
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
