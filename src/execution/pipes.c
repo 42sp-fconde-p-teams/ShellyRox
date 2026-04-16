@@ -16,10 +16,15 @@ void	exec_pipe_command(t_ast_node *ast, t_shelly *shelly)
 {
 	char	*cmd_line;
 	int		here_doc;
+	int		builtin_ret;
 
-	if (ast->value.command->cmd[0] && execute_builtin(ast->value.command->cmd[0], \
-		ast->value.command->cmd, shelly) != -1)
-		exit(0);
+	if (ast->value.command->cmd[0])
+	{
+		builtin_ret = execute_builtin(ast->value.command->cmd[0], \
+			ast->value.command->cmd, shelly);
+		if (builtin_ret != -1)
+			exit(builtin_ret);
+	}
 	here_doc = check_here_doc(ast->value.command->redir);
 	cmd_line = find_command(shelly, ast->value.command->cmd[0]);
 	if (cmd_line == NULL || here_doc == -1)

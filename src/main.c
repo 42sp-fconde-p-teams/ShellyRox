@@ -56,5 +56,5 @@ int	main(int argc, char **argv, char **envp)
 		free(line);
 	}
 	free_env_list(shelly.env_list);
-	return (0);
+	return (shelly.last_exit_status);
 }

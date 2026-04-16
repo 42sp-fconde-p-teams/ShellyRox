@@ -84,9 +84,14 @@ int	exec_simple_command(t_ast_node *ast, t_shelly *shelly)
 	int		status;
 	pid_t	pid;
 	int		here_doc;
+	int		builtin_ret;
 
-	if (ast->value.command->cmd[0] && execute_builtin(ast->value.command->cmd[0], ast->value.command->cmd, shelly) != -1)
-		return (0);
+	if (ast->value.command->cmd[0])
+	{
+		builtin_ret = execute_builtin(ast->value.command->cmd[0], ast->value.command->cmd, shelly);
+		if (builtin_ret != -1)
+			return (builtin_ret);
+	}
 	here_doc = check_here_doc(ast->value.command->redir);
 	command_line = find_command(shelly, ast->value.command->cmd[0]);
 	if (here_doc == -1)
@@ -105,6 +110,10 @@ int	exec_simple_command(t_ast_node *ast, t_shelly *shelly)
 	waitpid(pid, &status, 0);
 	unlink("/tmp/.shelly_heredoc");
 	free(command_line);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
 	return (status);
 }
 
