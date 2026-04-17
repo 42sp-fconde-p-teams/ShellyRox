@@ -173,8 +173,9 @@ int	should_pipe_echo_n_no_newline(void)
 	out = end_capture(saved_stdout);
 	if (!out)
 		return (EXIT_FAILURE);
-	if (ft_strncmp(out, "hello", 6) != 0)
+	if (ft_strncmp(out, "hello", 5) != 0 || out[5] != '\0')
 	{
+		printf("\n\nTEST ===> Expected: 'hello', Got: '%s'\n\n", out);
 		free(out);
 		return (EXIT_FAILURE);
 	}
