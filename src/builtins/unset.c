@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csila-s <csila-s@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/01 00:00:00 by csila-s         #+#    #+#             */
-/*   Updated: 2026/03/27 00:37:20 by csilva-s         ###   ########.fr       */
+/*   Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#             */
+/*   Updated: 2026/04/16 21:23:33 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	builtin_unset(char **args, t_shelly *shell)
+int	ft_unset(char **args, t_shelly *shell)
 {
 	(void)args;
 	(void)shell;
-	return (0);
+
+	return (EXIT_SUCCESS);
 }
