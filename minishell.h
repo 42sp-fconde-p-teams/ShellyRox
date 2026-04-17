@@ -132,12 +132,14 @@ int			ft_pwd(void);
 int			ft_cd(char **args, t_shelly *shell);
 int			ft_exit(t_shelly *shell, char **args);
 int			ft_export(char **args, t_shelly *shell);
+int			ft_unset(char **args, t_shelly *shell);
 
 // environment functions
 int			init_env_list(t_shelly *shell, char **envp);
 char		**get_env_array(t_shelly *shell);
 char		*get_env_value(char *name, t_shelly *shell);
 int			set_env_var(t_shelly *shell, char *key, char *value);
+int			validate_env_identifier(char *str);
 // free functions
 void		free_tree(t_ast_node *ast);
 void		free_env_list(t_env *env);
