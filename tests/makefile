@@ -22,6 +22,7 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/utils/env_set.c \
               ../src/utils/env_init.c \
               ../src/utils/env_array.c \
+              ../src/utils/validate_env_identifier.c \
               ../src/parsing/fsm/clear_token_list.c \
               ../src/builtins/env.c \
               ../src/builtins/pwd.c \
@@ -29,7 +30,6 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/builtins/exit.c \
               ../src/builtins/export.c \
               ../src/builtins/unset.c
-
 LIBS        = $(LIBFT) # -ldl -glfw -pthread -lm
 HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR) -I..
 

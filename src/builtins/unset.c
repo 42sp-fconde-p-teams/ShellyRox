@@ -12,27 +12,6 @@
 
 #include "../../minishell.h"
 
-static int	is_valid_identifier(char *str)
-{
-	int		i;
-
-	i = 0;
-	if (!str || !str[i])
-		return (0);
-	if ((str[i] >= '0' && str[i] <= '9'))
-		return (0);
-	while (str[i])
-	{
-		if (!((str[i] >= 'a' && str[i] <= 'z') || 
-			  (str[i] >= 'A' && str[i] <= 'Z') || 
-			  (str[i] >= '0' && str[i] <= '9') || 
-			  (str[i] == '_')))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 static void	free_env_node(t_env *node)
 {
 	if (!node)
@@ -47,7 +26,7 @@ static void	unset_variable(char *key, t_shelly *shell)
 	t_env	*curr;
 	t_env	*prev;
 
-	if (!is_valid_identifier(key))
+	if (!validate_env_identifier(key))
 	{
 		ft_printf("minishell: unset: '%s': not a valid identifier\n", key);
 		return ;

@@ -12,27 +12,6 @@
 
 #include "../../minishell.h"
 
-static int	is_valid_identifier(char *str)
-{
-	int		i;
-
-	i = 0;
-	if (!str || !str[i])
-		return (0);
-	if ((str[i] >= '0' && str[i] <= '9'))
-		return (0);
-	while (str[i])
-	{
-		if (!((str[i] >= 'a' && str[i] <= 'z') || 
-			  (str[i] >= 'A' && str[i] <= 'Z') || 
-			  (str[i] >= '0' && str[i] <= '9') || 
-			  (str[i] == '_')))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 static void	sort_env_array(char **array)
 {
 	int		i;
@@ -93,7 +72,7 @@ static void	process_export_arg(char *arg, t_shelly *shell)
 		key = ft_strdup(arg);
 		value = "";
 	}
-	if (!is_valid_identifier(key))
+	if (!validate_env_identifier(key))
 		ft_printf("minishell: export: '%s': not a valid identifier\n", key);
 	else
 		set_env_var(shell, key, value);
