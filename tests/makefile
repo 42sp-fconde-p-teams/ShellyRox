@@ -23,13 +23,15 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/utils/env_init.c \
               ../src/utils/env_array.c \
               ../src/utils/validate_env_identifier.c \
+              ./utils/capture_stdout.c \
               ../src/parsing/fsm/clear_token_list.c \
               ../src/builtins/env.c \
               ../src/builtins/pwd.c \
               ../src/builtins/cd.c \
               ../src/builtins/exit.c \
               ../src/builtins/export.c \
-              ../src/builtins/unset.c
+              ../src/builtins/unset.c \
+              ../src/builtins/echo.c
 LIBS        = $(LIBFT) # -ldl -glfw -pthread -lm
 HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR) -I..
 
@@ -49,7 +51,8 @@ HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR) -I..
               $(TEST_DIR)/test-cd.c \
               $(TEST_DIR)/test-env_manager.c \
               $(TEST_DIR)/test-export.c \
-              $(TEST_DIR)/test-unset.c
+              $(TEST_DIR)/test-unset.c \
+              $(TEST_DIR)/test-echo.c
 TEST_BINS   = $(TEST_SRCS:.c=.out)
 REPORT_LOG  = test_report.log
 

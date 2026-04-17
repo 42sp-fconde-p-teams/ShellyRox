@@ -12,6 +12,9 @@
 # include <stdlib.h>
 # include <stdio.h>
 
+int	start_capture(void);
+char	*end_capture(int saved_stdout);
+
 // def funny stuff here, friendo!
 
 // MACRO for individual test running and result printing

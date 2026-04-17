@@ -12,7 +12,7 @@
 
 #include "../../minishell.h"
 
-int	builtin_echo(char **args)
+int	ft_echo(char **args)
 {
 	(void)args;
 	return (0);
