@@ -123,6 +123,120 @@ int	should_handle_empty_env_list(void)
 	return (EXIT_SUCCESS);
 }
 
+int	should_handle_invalid_identifier(void)
+{
+	t_shelly	shell = {0};
+	char		*args[] = {"unset", "1VAR", NULL};
+	char		*val;
+
+	set_env_var(&shell, "1VAR", "VAL");
+	ft_unset(args, &shell);
+	val = get_env_value("1VAR", &shell);
+	if (val == NULL)
+	{
+		clear_env_list(&shell.env_list);
+		return (EXIT_FAILURE);
+	}
+	free(val);
+	clear_env_list(&shell.env_list);
+	return (EXIT_SUCCESS);
+}
+
+int	should_remove_only_element(void)
+{
+	t_shelly	shell = {0};
+	char		*args[] = {"unset", "TEST", NULL};
+
+	set_env_var(&shell, "TEST", "VAL");
+	ft_unset(args, &shell);
+	if (shell.env_list != NULL)
+	{
+		clear_env_list(&shell.env_list);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	should_remove_first_element(void)
+{
+	t_shelly	shell = {0};
+	char		*args[] = {"unset", "VAR1", NULL};
+	char		*val;
+
+	set_env_var(&shell, "VAR1", "1");
+	set_env_var(&shell, "VAR2", "2");
+	ft_unset(args, &shell);
+	val = get_env_value("VAR2", &shell);
+	if (!val || ft_strncmp(val, "2", 1) != 0 || shell.env_list->key[0] != 'V')
+	{
+		free(val);
+		clear_env_list(&shell.env_list);
+		return (EXIT_FAILURE);
+	}
+	free(val);
+	clear_env_list(&shell.env_list);
+	return (EXIT_SUCCESS);
+}
+
+int	should_remove_last_element(void)
+{
+	t_shelly	shell = {0};
+	char		*args[] = {"unset", "VAR2", NULL};
+	char		*val;
+
+	set_env_var(&shell, "VAR1", "1");
+	set_env_var(&shell, "VAR2", "2");
+	ft_unset(args, &shell);
+	val = get_env_value("VAR1", &shell);
+	if (!val || shell.env_list->next != NULL)
+	{
+		free(val);
+		clear_env_list(&shell.env_list);
+		return (EXIT_FAILURE);
+	}
+	free(val);
+	clear_env_list(&shell.env_list);
+	return (EXIT_SUCCESS);
+}
+
+int	should_be_case_sensitive(void)
+{
+	t_shelly	shell = {0};
+	char		*args[] = {"unset", "VAR", NULL};
+	char		*val;
+
+	set_env_var(&shell, "VAR", "1");
+	set_env_var(&shell, "var", "2");
+	ft_unset(args, &shell);
+	if (get_env_value("VAR", &shell) != NULL)
+	{
+		clear_env_list(&shell.env_list);
+		return (EXIT_FAILURE);
+	}
+	val = get_env_value("var", &shell);
+	if (!val || ft_strncmp(val, "2", 1) != 0)
+	{
+		free(val);
+		clear_env_list(&shell.env_list);
+		return (EXIT_FAILURE);
+	}
+	free(val);
+	clear_env_list(&shell.env_list);
+	return (EXIT_SUCCESS);
+}
+
+int	should_handle_null_args(void)
+{
+	t_shelly	shell = {0};
+	int			res;
+
+	res = ft_unset(NULL, &shell);
+	if (res != 0)
+		return (EXIT_FAILURE);
+	clear_env_list(&shell.env_list);
+	return (EXIT_SUCCESS);
+}
+
 int	main(void)
 {
 	RUN_TEST(should_do_nothing_with_no_args);
@@ -130,5 +244,11 @@ int	main(void)
 	RUN_TEST(should_handle_non_existent_variable);
 	RUN_TEST(should_remove_multiple_variables);
 	RUN_TEST(should_handle_empty_env_list);
+	RUN_TEST(should_handle_invalid_identifier);
+	RUN_TEST(should_remove_only_element);
+	RUN_TEST(should_remove_first_element);
+	RUN_TEST(should_remove_last_element);
+	RUN_TEST(should_be_case_sensitive);
+	RUN_TEST(should_handle_null_args);
 	return (0);
 }
