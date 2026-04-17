@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 23:00:00 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/14 22:47:19 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/16 22:10:33 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,7 @@ int	execute_builtin(char *cmd, char **args, t_shelly *shelly)
 		return (ft_exit(shelly, args));
 	if (ft_strncmp(cmd, "export", 6) == 0 && cmd[6] == '\0')
 		return (ft_export(args, shelly));
+	if (ft_strncmp(cmd, "unset", 5) == 0 && cmd[5] == '\0')
+		return (ft_unset(args, shelly));
 	return (-1);
 }
