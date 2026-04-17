@@ -26,28 +26,30 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/builtins/env.c \
               ../src/builtins/pwd.c \
               ../src/builtins/cd.c \
-							../src/builtins/exit.c \
-							../src/builtins/export.c
+              ../src/builtins/exit.c \
+              ../src/builtins/export.c \
+              ../src/builtins/unset.c
 
-LIBS        = $(LIBFT) # -ldl -lglfw -pthread -lm
+LIBS        = $(LIBFT) # -ldl -glfw -pthread -lm
 HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR) -I..
 
-# Tests section
-TEST_DIR    = ./
-TEST_SRCS   = $(TEST_DIR)/test-parser.c \
-				$(TEST_DIR)/test-set_tokens.c \
-				$(TEST_DIR)/test-get_token_len.c \
-				$(TEST_DIR)/test-executor.c \
-				$(TEST_DIR)/test-expander.c \
-				$(TEST_DIR)/test-heredoc.c \
-				$(TEST_DIR)/test-pipe.c \
-				$(TEST_DIR)/test-clear_token_list.c \
-				$(TEST_DIR)/test-env.c \
-				$(TEST_DIR)/test-pwd.c \
-				$(TEST_DIR)/test-exit.c \
-				$(TEST_DIR)/test-cd.c \
-				$(TEST_DIR)/test-env_manager.c \
-				$(TEST_DIR)/test-export.c
+              # Tests section
+              TEST_DIR    = ./
+              TEST_SRCS   = $(TEST_DIR)/test-parser.c \
+              $(TEST_DIR)/test-set_tokens.c \
+              $(TEST_DIR)/test-get_token_len.c \
+              $(TEST_DIR)/test-executor.c \
+              $(TEST_DIR)/test-expander.c \
+              $(TEST_DIR)/test-heredoc.c \
+              $(TEST_DIR)/test-pipe.c \
+              $(TEST_DIR)/test-clear_token_list.c \
+              $(TEST_DIR)/test-env.c \
+              $(TEST_DIR)/test-pwd.c \
+              $(TEST_DIR)/test-exit.c \
+              $(TEST_DIR)/test-cd.c \
+              $(TEST_DIR)/test-env_manager.c \
+              $(TEST_DIR)/test-export.c \
+              $(TEST_DIR)/test-unset.c
 TEST_BINS   = $(TEST_SRCS:.c=.out)
 REPORT_LOG  = test_report.log
 

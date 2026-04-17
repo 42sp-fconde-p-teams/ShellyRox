@@ -132,6 +132,7 @@ int			ft_pwd(void);
 int			ft_cd(char **args, t_shelly *shell);
 int			ft_exit(t_shelly *shell, char **args);
 int			ft_export(char **args, t_shelly *shell);
+int			ft_unset(char **args, t_shelly *shell);
 
 // environment functions
 int			init_env_list(t_shelly *shell, char **envp);
