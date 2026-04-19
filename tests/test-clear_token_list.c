@@ -1,4 +1,4 @@
-# include "../minishell.h"
+#include "../minishell.h"
 #include "./tests.h"
 
 int	shoud_frees_all_token_nodes(void)
