@@ -6,12 +6,6 @@
 # include "../lib/libft/libft.h"
 # include "../minishell.h"
 
-// other header files
-# include <unistd.h>
-# include <fcntl.h>
-# include <stdlib.h>
-# include <stdio.h>
-
 int	start_capture(void);
 char	*end_capture(int saved_stdout);
 void	init_test_log(void);
