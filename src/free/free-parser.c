@@ -6,7 +6,7 @@
 /*   By: csilva-s <csilva-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 15:33:48 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/06 16:00:12 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/04/18 22:32:56 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	free_redir(t_redir *redir)
 {
-	t_redir *next;
+	t_redir	*next;
+
 	while (redir)
 	{
 		next = redir->next;
@@ -22,7 +23,6 @@ void	free_redir(t_redir *redir)
 		redir = next;
 	}
 }
-
 void	free_tree(t_ast_node *ast)
 {
 	if (!ast)
@@ -41,7 +41,6 @@ void	free_tree(t_ast_node *ast)
 	}
 	free(ast);
 }
-
 void	ft_free_array(char **array)
 {
 	int	i;

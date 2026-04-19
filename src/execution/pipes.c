@@ -6,7 +6,7 @@
 /*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:50 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/16 01:14:30 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/04/18 22:37:58 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	exec_pipe_command(t_ast_node *ast, t_shelly *shelly)
 
 	if (ast->value.command->cmd[0])
 	{
-		builtin_ret = execute_builtin(ast->value.command->cmd[0], \
-			ast->value.command->cmd, shelly);
+		builtin_ret = execute_builtin(ast->value.command->cmd[0],
+				ast->value.command->cmd, shelly);
 		if (builtin_ret != -1)
 			exit(builtin_ret);
 	}
@@ -45,7 +45,8 @@ void	exec_pipe_command(t_ast_node *ast, t_shelly *shelly)
 	return ;
 }
 
-void	exec_simple_pipe_left(t_ast_node *ast, t_shelly *shelly, int fd_in, int *fd)
+void	exec_simple_pipe_left(t_ast_node *ast, t_shelly *shelly,
+			int fd_in, int *fd)
 {
 	if (fd_in != 0)
 		dup2(fd_in, STDIN_FILENO);

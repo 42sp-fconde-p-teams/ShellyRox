@@ -6,12 +6,12 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/16 01:08:09 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/04/18 22:34:05 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-// FIX: Corrigir o loop
+
 char	**find_path(t_shelly *shelly)
 {
 	char	**path;
@@ -64,7 +64,8 @@ char	*find_command(t_shelly *shelly, char *cmd)
 	return (NULL);
 }
 
-void	simple_command_routine(t_ast_node *ast, char *command_line, char **envp, int here_doc)
+void	simple_command_routine(t_ast_node *ast, char *command_line,
+		char **envp, int here_doc)
 {
 	if (ast->value.command->redir)
 	{
