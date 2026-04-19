@@ -1,4 +1,3 @@
-
 #include "../minishell.h"
 #include "./tests.h"
 

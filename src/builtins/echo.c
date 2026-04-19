@@ -3,17 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csila-s <csila-s@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/01 00:00:00 by csila-s         #+#    #+#             */
-/*   Updated: 2026/03/27 00:36:38 by csilva-s         ###   ########.fr       */
+/*   Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#             */
+/*   Updated: 2026/04/17 00:43:22 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	builtin_echo(char **args)
+int	ft_echo(char **args)
 {
-	(void)args;
+	int		i;
+	t_bool	newline;
+
+	if (!args)
+		return (0);
+	newline = BOOL_TRUE;
+	i = 1;
+	if (args[1] && ft_strncmp(args[1], "-n", 2) == 0 && args[1][2] == '\0')
+	{
+		newline = BOOL_FALSE;
+		i = 2;
+	}
+	while (args[i])
+	{
+		ft_printf("%s", args[i]);
+		if (args[i + 1])
+			ft_printf(" ");
+		i++;
+	}
+	if (newline == BOOL_TRUE)
+		ft_printf("\n");
 	return (0);
 }
+
+

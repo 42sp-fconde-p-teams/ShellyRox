@@ -1,4 +1,4 @@
-# include "../minishell.h"
+#include "../minishell.h"
 #include "./tests.h"
 
 int should_create_ast_node(void)

@@ -1,47 +1,28 @@
 #include "./tests.h"
 #include "../minishell.h"
 
-static char	*capture_export_output(char **args, t_shelly shell)
-{
-	static char	buf[2048];
-	int			fd;
-	int			saved_stdout;
-	ssize_t		n;
-
-	fd = open("/tmp/.test_export_out", O_WRONLY | O_CREAT | O_TRUNC, 0600);
-	if (fd == -1)
-		return (NULL);
-	saved_stdout = dup(STDOUT_FILENO);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
-	ft_export(args, &shell);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdout);
-	fd = open("/tmp/.test_export_out", O_RDONLY);
-	if (fd == -1)
-		return (NULL);
-	n = read(fd, buf, sizeof(buf) - 1);
-	close(fd);
-	unlink("/tmp/.test_export_out");
-	if (n <= 0)
-		return (NULL);
-	buf[n] = '\0';
-	return (buf);
-}
-
 int	should_list_env_alphabetically(void)
 {
 	t_shelly	shell = {0};
 	char	*envp[] = {"Z_VAR=last", "A_VAR=first", "M_VAR=middle", NULL};
 	char	*args[] = {"export", NULL};
 	char	*out;
+	int		saved_stdout;
 
 	init_env_list(&shell, envp);
-	out = capture_export_output(args, shell);
+	saved_stdout = start_capture();
+	if (saved_stdout == -1)
+		return (EXIT_FAILURE);
+	ft_export(args, &shell);
+	out = end_capture(saved_stdout);
 	if (!out)
 		return (EXIT_FAILURE);
 	if (ft_strncmp(out, "A_VAR=first\nM_VAR=middle\nZ_VAR=last\n", 36) != 0)
+	{
+		free(out);
 		return (EXIT_FAILURE);
+	}
+	free(out);
 	return (EXIT_SUCCESS);
 }
 

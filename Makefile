@@ -50,6 +50,7 @@ SRC_FILES	= main.c \
 			  utils/env_set.c \
 			  utils/env_init.c \
 			  utils/env_array.c \
+			  utils/validate_env_identifier.c \
 			  utils/signals.c \
 			  utils/cleanup.c \
 			  free/free-parser.c \
