@@ -24,6 +24,7 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/utils/env_array.c \
               ../src/utils/validate_env_identifier.c \
               ./utils/capture_stdout.c \
+              ./utils/test_log.c \
               ../src/parsing/fsm/clear_token_list.c \
               ../src/builtins/env.c \
               ../src/builtins/pwd.c \
@@ -100,7 +101,7 @@ $(TEST_DIR)/%.out: $(TEST_DIR)/%.c
 	@# If binary was created, runs it and cleans it
 	@if [ -f $@ ]; then \
 		echo "\nFile: $<" >> $(REPORT_LOG); \
-		./$@ >> $(REPORT_LOG) 2>&1 || true; \
+		./$@ || true; \
 		rm -f $@; \
 	fi
 
