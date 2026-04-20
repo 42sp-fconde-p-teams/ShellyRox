@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/18 22:34:05 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/04/20 15:07:46 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	**find_path(t_shelly *shelly)
 	}
 	return (path);
 }
+
 char	*find_command(t_shelly *shelly, char *cmd)
 {
 	char	*command_with_path;
@@ -37,17 +38,20 @@ char	*find_command(t_shelly *shelly, char *cmd)
 	char	**path;
 	char	*command;
 
+	// check if command is already valid
 	if (ft_strchr(cmd, '/'))
 	{
 		if (access(cmd, F_OK | X_OK) == 0)
 			return (ft_strdup(cmd));
 		return (NULL);
 	}
-	i = -1;
+	//  init path string and check if path is valid
 	path = find_path(shelly);
 	if (!path)
 		return (NULL);
+	// search on path by command
 	command = ft_strjoin("/", cmd);
+	i = -1;
 	while (path[++i] != NULL)
 	{
 		command_with_path = ft_strjoin(path[i], command);
@@ -89,7 +93,8 @@ int	exec_simple_command(t_ast_node *ast, t_shelly *shelly)
 
 	if (ast->value.command->cmd[0])
 	{
-		builtin_ret = execute_builtin(ast->value.command->cmd[0], ast->value.command->cmd, shelly);
+		builtin_ret = execute_builtin(ast->value.command->cmd[0],
+				ast->value.command->cmd, shelly);
 		if (builtin_ret != -1)
 			return (builtin_ret);
 	}
