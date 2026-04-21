@@ -39,7 +39,8 @@ void	read_and_write_here_doc(int fd, t_redir *redir)
 	char	*line;
 
 	ft_putstr_fd("> ", 0);
-	while ((line = get_next_line(0)))
+	line = get_next_line(0);
+	while (line)
 	{
 		if (ft_strncmp(line, ft_strjoin(redir->filename, "\n\0"),
 				ft_strlen(redir->filename) + 2) == 0)
@@ -49,6 +50,7 @@ void	read_and_write_here_doc(int fd, t_redir *redir)
 		}
 		ft_putstr_fd(line, fd);
 		ft_putstr_fd("> ", 0);
+		line = get_next_line(0);
 	}
 	close (fd);
 }

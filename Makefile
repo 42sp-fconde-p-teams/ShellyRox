@@ -34,6 +34,7 @@ SRC_FILES	= main.c \
 			  parsing/fsm/clear_token_list.c \
 			  parsing/fsm/set_tokens.c \
 			  execution/executor.c \
+			  execution/executor_utils.c \
 			  execution/execute_builtin.c \
 			  execution/redirections.c \
 			  execution/heredoc.c	\
