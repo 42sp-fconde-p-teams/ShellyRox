@@ -70,7 +70,7 @@ all: $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ -g3
 	@echo "$(GREEN)Compiled: $<$(RESET)"
 
 $(NAME): $(OBJS)
