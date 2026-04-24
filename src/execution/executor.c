@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/21 19:20:57 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/04/23 22:38:12 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,12 @@ void	simple_command_routine(t_ast_node *ast, char *command_line,
 int	exec_simple_command(t_ast_node *ast, t_shelly *shelly)
 {
 	pid_t	pid;
+	int		builtin_ret;
 
+	builtin_ret = execute_builtin(ast->value.command->cmd[0],
+			ast->value.command->cmd, shelly);
+	if (builtin_ret != -1)
+		return (builtin_ret);
 	pid = fork();
 	if (pid == 0)
 		exec_command_in_child(ast, shelly);
