@@ -1,12 +1,12 @@
 /* ************************************************************************** */
-/*                                                                            */
 /*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/16 23:22:09 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/21 19:22:16 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,14 @@ typedef struct s_ast_node
 t_token		*set_tokens(char *s);
 int			get_token_len(char *str);
 void		clear_token_list(t_token **head);
+
 // expander functions
 t_token		*expander(t_token *tokens, t_shelly *shelly);
 void		insert_new_tokens(t_token **head, t_token *current, char **words);
 char		*remove_quotes(char *value, t_bool *quoted_flag);
 char		*expand_variables(char *value, t_shelly *shelly, t_bool is_quoted);
 char		*expand_tilde(char *value, t_shelly *shelly);
+
 // parser functions
 t_ast_node	*parser(t_token **tokens);
 t_ast_node	*parse_command(t_token	**token);
@@ -115,12 +117,20 @@ int			setup_redirections(t_redir *redir);
 char		**find_path(t_shelly *shelly);
 char		*find_command(t_shelly *shelly, char *cmd);
 int			exec_simple_command(t_ast_node *ast, t_shelly *shelly);
-void		simple_command_routine(t_ast_node *ast, char *command_line, char **envp, int here_doc);
+void		simple_command_routine(t_ast_node *ast, char *command_line,
+				char **envp, int here_doc);
 int			execute_builtin(char *cmd, char **args, t_shelly *shelly);
+char		*search_cmd_path(char *cmd, t_shelly *shelly);
+int			handle_error(char *command_line, int heredoc);
+int			get_status_code(pid_t pid);
+void		exec_command_in_child(t_ast_node *ast, t_shelly *shelly);
+
 // pipe functions
 void		execute_pipes(t_ast_node *ast);
 void		exec_pipe(t_ast_node *ast, t_shelly *shelly, int fd_in);
-void		exec_simple_pipe_left(t_ast_node *ast, t_shelly *shelly, int fd_in, int *fd);
+void		exec_simple_pipe_left(t_ast_node *ast, t_shelly *shelly,
+				int fd_in, int *fd);
+
 //	heredoc functions
 int			check_here_doc(t_redir *redir);
 void		read_and_write_here_doc(int fd, t_redir *redir);
@@ -141,6 +151,7 @@ char		**get_env_array(t_shelly *shell);
 char		*get_env_value(char *name, t_shelly *shell);
 int			set_env_var(t_shelly *shell, char *key, char *value);
 int			validate_env_identifier(char *str);
+
 // free functions
 void		free_tree(t_ast_node *ast);
 void		free_env_list(t_env *env);

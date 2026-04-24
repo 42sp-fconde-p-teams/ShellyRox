@@ -6,7 +6,7 @@
 /*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:50 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/16 01:14:30 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/04/23 22:51:31 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,35 +17,26 @@ void	exec_pipe_command(t_ast_node *ast, t_shelly *shelly)
 	char	*cmd_line;
 	int		here_doc;
 	int		builtin_ret;
+	char	**env_arr;
 
 	if (ast->value.command->cmd[0])
 	{
-		builtin_ret = execute_builtin(ast->value.command->cmd[0], \
-			ast->value.command->cmd, shelly);
+		builtin_ret = execute_builtin(ast->value.command->cmd[0],
+				ast->value.command->cmd, shelly);
 		if (builtin_ret != -1)
 			exit(builtin_ret);
 	}
 	here_doc = check_here_doc(ast->value.command->redir);
 	cmd_line = find_command(shelly, ast->value.command->cmd[0]);
-	if (cmd_line == NULL || here_doc == -1)
-	{
-		free(cmd_line);
-		return ;
-	}
-	if (ast->value.command->redir)
-	{
-		if (here_doc > 0)
-			set_here_doc_fd();
-		if (setup_redirections(ast->value.command->redir) != 0)
-			exit (1);
-	}
-	execve(cmd_line, ast->value.command->cmd, get_env_array(shelly));
-	perror("Failed");
-	exit(EXIT_FAILURE);
+	if (here_doc == -1 || !cmd_line)
+		exit(handle_error(cmd_line, here_doc));
+	env_arr = get_env_array(shelly);
+	simple_command_routine(ast, cmd_line, env_arr, here_doc);
 	return ;
 }
 
-void	exec_simple_pipe_left(t_ast_node *ast, t_shelly *shelly, int fd_in, int *fd)
+void	exec_simple_pipe_left(t_ast_node *ast, t_shelly *shelly,
+			int fd_in, int *fd)
 {
 	if (fd_in != 0)
 		dup2(fd_in, STDIN_FILENO);

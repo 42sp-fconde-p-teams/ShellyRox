@@ -14,6 +14,7 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/parsing/fsm/get_token_len.c \
               ../src/execution/redirections.c \
               ../src/execution/executor.c \
+              ../src/execution/executor_utils.c \
               ../src/execution/pipes.c	\
               ../src/execution/heredoc.c \
               ../src/execution/execute_builtin.c \
