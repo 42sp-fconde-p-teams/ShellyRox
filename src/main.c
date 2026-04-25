@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:39:21 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/16 01:41:12 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/04/25 19:44:19 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,7 @@ int	main(int argc, char **argv, char **envp)
 	init_env_list(&shelly, envp);
 	while (1)
 	{
-#ifdef TESTER
-		if (!isatty(fileno(stdin)))
-		{
-			char	*raw;
-			raw = get_next_line(fileno(stdin));
-			if (!raw)
-				break ;
-			line = ft_strtrim(raw, "\n");
-			free(raw);
-		}
-		else
-			line = readline("shelly🎀> ");
-#else
 		line = readline("shelly🎀> ");
-#endif
 		if (!line)
 			break ;
 		tokens = NULL;
