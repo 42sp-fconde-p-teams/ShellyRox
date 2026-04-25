@@ -6,11 +6,11 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 18:00:00 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/06 18:00:00 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/25 20:04:35 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 static char	*get_var_value(char *var_name, t_shelly *shelly)
 {

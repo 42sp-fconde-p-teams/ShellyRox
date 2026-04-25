@@ -6,12 +6,11 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/05 11:17:04 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/25 20:06:10 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
-
 
 static void	set_type(t_token *token)
 {
@@ -36,6 +35,7 @@ static void	set_type(t_token *token)
 		token->quoted = BOOL_FALSE;
 	}
 }
+
 static t_token	*create_token(char *value, t_token *prev_t)
 {
 	t_token	*token_node;
@@ -45,7 +45,6 @@ static t_token	*create_token(char *value, t_token *prev_t)
 	token_node->value = value;
 	token_node->next = NULL;
 	token_node->prev = prev_t;
-	// TODO set token_type from enum
 	set_type(token_node);
 	return (token_node);
 }

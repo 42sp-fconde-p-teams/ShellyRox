@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 18:18:08 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/12 19:43:10 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/25 20:22:41 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int	ft_exit(t_shelly *shell, char **args)
 
 	if (!args || !args[0])
 	{
-		// TODO: cleanup all here
+		ft_free_array(args);
+		//TODO Call free_shelly here
 		exit(0);
 	}
 	if (!args[1])

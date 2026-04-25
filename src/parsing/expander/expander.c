@@ -6,13 +6,14 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 18:00:00 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/15 00:43:47 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/25 20:05:30 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
-static void	handle_word_expansion(t_token *current, t_shelly *shelly, t_token **tokens)
+static void	handle_word_expansion(t_token *current,
+		t_shelly *shelly, t_token **tokens)
 {
 	char	*temp_value;
 	t_bool	quoted_flag;
@@ -25,7 +26,7 @@ static void	handle_word_expansion(t_token *current, t_shelly *shelly, t_token **
 	temp_value = expand_variables(current->value, shelly, quoted_flag);
 	free(current->value);
 	current->value = temp_value;
-	if (!quoted_flag && !ft_strchr(current->value, '\"') 
+	if (!quoted_flag && !ft_strchr(current->value, '\"')
 		&& !ft_strchr(current->value, '\'') && ft_strchr(current->value, ' '))
 	{
 		split_words = ft_split(current->value, ' ');
