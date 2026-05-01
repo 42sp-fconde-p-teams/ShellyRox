@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 18:00:00 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/25 20:04:35 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/04/30 20:55:55 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ char	*expand_variables(char *value, t_shelly *shelly, t_bool is_quoted)
 	i = 0;
 	while (value[i])
 	{
-		if (value[i] == '$' && value[i + 1] && \
-					(ft_isalnum(value[i + 1]) || value[i + 1] == '_' || \
-					value[i + 1] == '?') && (!is_quoted || value[0] == '"'))
-						i = process_variable(value, i, shelly, &expanded_str);
+		if (value[i] == '$' && value[i + 1]
+			&& (ft_isalnum(value[i + 1]) || value[i + 1] == '_'
+				|| value[i + 1] == '?') && (!is_quoted || value[0] == '"'))
+			i = process_variable(value, i, shelly, &expanded_str);
 		else
 			expanded_str = ft_strjoin_char_and_free(expanded_str, value[i++]);
 	}

@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 21:00:00 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/12 21:00:00 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/30 20:34:52 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,11 @@ int	set_env_var(t_shelly *shell, char *key, char *value)
 		if (ft_strlen(curr->key) == len && ft_strncmp(curr->key, key, len) == 0)
 		{
 			free(curr->value);
-			curr->value = ft_strdup(value ? value : "");
 			return (1);
+			if (value)
+				curr->value = ft_strdup(value);
+			else
+				curr->value = ft_strdup("");
 		}
 		last = curr;
 		curr = curr->next;
@@ -39,7 +42,10 @@ int	set_env_var(t_shelly *shell, char *key, char *value)
 	if (!new_node)
 		return (0);
 	new_node->key = ft_strdup(key);
-	new_node->value = ft_strdup(value ? value : "");
+	if (value)
+		new_node->value = ft_strdup(value);
+	else
+		new_node->value = ft_strdup("");
 	new_node->next = NULL;
 	if (!last)
 		shell->env_list = new_node;

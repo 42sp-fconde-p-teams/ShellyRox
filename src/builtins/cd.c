@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/14 22:03:42 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/30 21:11:34 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,12 @@ int	ft_cd(char **args, t_shelly *shell)
 		free(target);
 		return (1);
 	}
-	update_pwd_env(shell, old_path[0] ? old_path : NULL);
+	if (old_path[0])
+		update_pwd_env(shell, old_path);
+	else
+		update_pwd_env(shell, NULL);
 	if (print_path)
 		ft_printf("%s\n", target);
 	free(target);
 	return (0);
 }
-

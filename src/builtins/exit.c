@@ -39,7 +39,6 @@ int	ft_exit(t_shelly *shell, char **args)
 	if (!args || !args[0])
 	{
 		ft_free_array(args);
-		//TODO Call free_shelly here
 		exit(0);
 	}
 	if (!args[1])
@@ -59,6 +58,5 @@ int	ft_exit(t_shelly *shell, char **args)
 			status = 255;
 		}
 	}
-	// TODO: cleanup all here
 	exit(status);
 }

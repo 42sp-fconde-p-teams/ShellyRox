@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 20:40:19 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/09 21:45:53 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/30 21:29:18 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ int	ft_env(t_shelly *shelly)
 	{
 		ft_putstr_fd(curr->key, 1);
 		ft_putstr_fd("=", 1);
-		ft_putstr_fd(curr->value ? curr->value : "", 1);
+		if (curr->value)
+			ft_putstr_fd(curr->value, 1);
+		else
+			ft_putstr_fd("", 1);
 		ft_putstr_fd("\n", 1);
 		curr = curr->next;
 	}

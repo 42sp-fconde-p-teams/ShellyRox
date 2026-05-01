@@ -6,11 +6,11 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 18:00:00 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/06 18:00:00 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/30 20:58:29 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../../minishell.h"
 
 void	insert_new_tokens(t_token **head, t_token *current, char **words)
 {

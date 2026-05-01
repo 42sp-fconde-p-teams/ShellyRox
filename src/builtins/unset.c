@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/16 21:58:00 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/30 21:27:29 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	unset_variable(char *key, t_shelly *shell)
 	prev = NULL;
 	while (curr)
 	{
-		if (ft_strncmp(curr->key, key, ft_strlen(key)) == 0 
+		if (ft_strncmp(curr->key, key, ft_strlen(key)) == 0
 			&& curr->key[ft_strlen(key)] == '\0')
 		{
 			if (prev == NULL)
