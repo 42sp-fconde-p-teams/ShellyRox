@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/01 17:40:52 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/01 18:01:20 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,23 @@ static int	handle_quotes_len(char *str)
 	return (i);
 }
 
+static int	handle_operator_len(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[0] == '|')
+		return (1);
+	else if (str[0] == '<' && str[1] == '<')
+		return (2);
+	else if (str[0] == '>' && str[1] == '>')
+		return (2);
+	else if (str[0] == '<' || str[0] == '>')
+		return (1);
+	else
+		return (-1);
+}
+
 int	get_token_len(char *str)
 {
 	int		i;
@@ -43,12 +60,9 @@ int	get_token_len(char *str)
 
 	i = 0;
 	if (str[i] == '\'' || str[i] == '\"')
-	{
 		return (handle_quotes_len(&str[i]));
-	}
-	if ((str[i] == '<' && str[i + 1] == '<')
-		|| (str[i] == '>' && str[i + 1] == '>'))
-		return (2);
+	if (str[i] == '<' || str[i] == '>' || str[i] == '|')
+		return (handle_operator_len(&str[i]));
 	while (str[i] != '\0')
 	{
 		if (str[i] == '\'' || str[i] == '\"')
