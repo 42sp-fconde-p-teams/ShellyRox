@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/03/29 22:47:54 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/04/26 23:04:41 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ int	get_token_len(char *str)
 	{
 		quote = str[i];
 		i++;
-		while (str[i] != quote)
+		while (str[i] != '\0' && str[i] != quote)
 			i++;
-		i++;
+		if (str[i] == quote)
+			i++;
 		return (i);
 	}
 	if ((str[i] == '<' && str[i + 1] == '<') 
@@ -41,6 +42,27 @@ int	get_token_len(char *str)
 		return (2);
 	while (str[i] != '\0')
 	{
+		if (str[i] == '\'' || str[i] == '\"')
+		{
+			int	has_eq = 0;
+			int	j = 0;
+			while (str[j] && j < i)
+			{
+				if (str[j] == '=')
+					has_eq = 1;
+				j++;
+			}
+			if (has_eq)
+			{
+				quote = str[i];
+				i++;
+				while (str[i] != '\0' && str[i] != quote)
+					i++;
+				if (str[i] == quote)
+					i++;
+				continue ;
+			}
+		}
 		if (is_token_delimiter(str[i]) == EXIT_SUCCESS)
 			break ;
 		i++;
