@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/01 17:10:33 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/01 17:40:52 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,21 @@ static int	is_token_delimiter(char c)
 	return (EXIT_FAILURE);
 }
 
+static int	handle_quotes_len(char *str)
+{
+	int		i;
+	char	quote;
+
+	i = 0;
+	quote = str[i];
+	i++;
+	while (str[i] != '\0' && str[i] != quote)
+		i++;
+	if (str[i] == quote)
+		i++;
+	return (i);
+}
+
 int	get_token_len(char *str)
 {
 	int		i;
@@ -29,13 +44,7 @@ int	get_token_len(char *str)
 	i = 0;
 	if (str[i] == '\'' || str[i] == '\"')
 	{
-		quote = str[i];
-		i++;
-		while (str[i] != '\0' && str[i] != quote)
-			i++;
-		if (str[i] == quote)
-			i++;
-		return (i);
+		return (handle_quotes_len(&str[i]));
 	}
 	if ((str[i] == '<' && str[i + 1] == '<')
 		|| (str[i] == '>' && str[i + 1] == '>'))
