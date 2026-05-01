@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_token_len.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/26 23:04:41 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/01 17:10:33 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,18 @@ int	get_token_len(char *str)
 			i++;
 		return (i);
 	}
-	if ((str[i] == '<' && str[i + 1] == '<') 
+	if ((str[i] == '<' && str[i + 1] == '<')
 		|| (str[i] == '>' && str[i + 1] == '>'))
 		return (2);
 	while (str[i] != '\0')
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 		{
-			int	has_eq = 0;
-			int	j = 0;
+			int	has_eq;
+			int	j;
+
+			has_eq = 0;
+			j = 0;
 			while (str[j] && j < i)
 			{
 				if (str[j] == '=')
