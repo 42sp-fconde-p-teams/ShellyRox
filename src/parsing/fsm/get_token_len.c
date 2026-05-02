@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/02 19:10:31 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/02 19:49:56 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,6 @@ static int	handle_quotes_len(char *str)
 
 static int	handle_operator_len(char *str)
 {
-	int	i;
-
-	i = 0;
 	if (str[0] == '|')
 		return (1);
 	else if (str[0] == '<' && str[1] == '<')
