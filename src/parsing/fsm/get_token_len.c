@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/02 18:25:11 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/02 19:08:04 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	handle_operator_len(char *str)
 		return (-1);
 }
 
-static int	check_attribuition_operator(char *str, int i)
+static int	check_assignment_operator(char *str, int i)
 {
 	int	has_eq;
 	int	j;
@@ -69,10 +69,22 @@ static int	check_attribuition_operator(char *str, int i)
 	return (has_eq);
 }
 
+static int	deal_with_quote(char *str, int i)
+{
+	char	quote;
+
+	quote = str[i];
+	i++;
+	while (str[i] != '\0' && str[i] != quote)
+		i++;
+	if (str[i] == quote)
+		i++;
+	return (i);
+}
+
 int	get_token_len(char *str)
 {
 	int		i;
-	char	quote;
 
 	i = 0;
 	if (str[i] == '\'' || str[i] == '\"')
@@ -83,16 +95,8 @@ int	get_token_len(char *str)
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 		{
-			if (check_attribuition_operator(str, i))
-			{
-				quote = str[i];
-				i++;
-				while (str[i] != '\0' && str[i] != quote)
-					i++;
-				if (str[i] == quote)
-					i++;
-				continue ;
-			}
+			if (check_assignment_operator(str, i))
+				i = deal_with_quote(str, i);
 		}
 		if (is_token_delimiter(str[i]) == EXIT_SUCCESS)
 			break ;
