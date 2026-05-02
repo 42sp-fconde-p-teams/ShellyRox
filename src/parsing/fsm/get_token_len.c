@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/01 18:01:20 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/02 18:25:11 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,22 @@ static int	handle_operator_len(char *str)
 		return (-1);
 }
 
+static int	check_attribuition_operator(char *str, int i)
+{
+	int	has_eq;
+	int	j;
+
+	has_eq = 0;
+	j = 0;
+	while (str[j] && j < i)
+	{
+		if (str[j] == '=')
+			has_eq = 1;
+		j++;
+	}
+	return (has_eq);
+}
+
 int	get_token_len(char *str)
 {
 	int		i;
@@ -67,18 +83,7 @@ int	get_token_len(char *str)
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 		{
-			int	has_eq;
-			int	j;
-
-			has_eq = 0;
-			j = 0;
-			while (str[j] && j < i)
-			{
-				if (str[j] == '=')
-					has_eq = 1;
-				j++;
-			}
-			if (has_eq)
+			if (check_attribuition_operator(str, i))
 			{
 				quote = str[i];
 				i++;
