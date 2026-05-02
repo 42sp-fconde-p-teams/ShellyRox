@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/01 20:02:06 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/01 18:01:20 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,6 @@ static int	handle_operator_len(char *str)
 		return (-1);
 }
 
-static int	has_assignment_operator(char *str, int i)
-{
-
-}
-
 int	get_token_len(char *str)
 {
 	int		i;
@@ -68,12 +63,31 @@ int	get_token_len(char *str)
 		return (handle_quotes_len(&str[i]));
 	if (str[i] == '<' || str[i] == '>' || str[i] == '|')
 		return (handle_operator_len(&str[i]));
-	while (str[i] != '\0' && !is_token_delimiter(str[i]))
+	while (str[i] != '\0')
 	{
-		if ((str[i] == '\'' || str[i] == '\"') 
-			&& has_assignment_operator(&str, i))
+		if (str[i] == '\'' || str[i] == '\"')
 		{
-			i += handle_quotes_len(&str[i]);
+			int	has_eq;
+			int	j;
+
+			has_eq = 0;
+			j = 0;
+			while (str[j] && j < i)
+			{
+				if (str[j] == '=')
+					has_eq = 1;
+				j++;
+			}
+			if (has_eq)
+			{
+				quote = str[i];
+				i++;
+				while (str[i] != '\0' && str[i] != quote)
+					i++;
+				if (str[i] == quote)
+					i++;
+				continue ;
+			}
 		}
 		if (is_token_delimiter(str[i]) == EXIT_SUCCESS)
 			break ;
