@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/02 19:31:22 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/03 17:21:36 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,5 +158,8 @@ void		free_tree(t_ast_node *ast);
 void		free_env_list(t_env *env);
 void		free_redir(t_redir *redir);
 void		ft_free_array(char **array);
+
+// utils
+int			has_meaningful_content(char *line);
 
 #endif

@@ -6,18 +6,11 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:39:21 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/03 17:04:50 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/03 17:20:17 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int		has_meaningful_content(char *line)
-{
-	if (line[0] == '\0')
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
-}
 
 void	do_shelly(t_shelly shelly)
 {

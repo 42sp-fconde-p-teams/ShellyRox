@@ -21,6 +21,7 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/execution/execute_builtin.c \
               ../src/utils/get_env_value.c \
               ../src/utils/cleanup.c \
+              ../src/utils/has_meaningful_content.c \
               ../src/utils/env_set.c \
               ../src/utils/env_init.c \
               ../src/utils/env_array.c \

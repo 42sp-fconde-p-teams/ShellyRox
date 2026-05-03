@@ -6,7 +6,7 @@
 #    By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#              #
-#    Updated: 2026/05/02 19:30:07 by fconde-p         ###   ########.fr        #
+#    Updated: 2026/05/03 17:22:12 by fconde-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,7 @@ SRC_FILES	= main.c \
 			  utils/validate_env_identifier.c \
 			  utils/signals.c \
 			  utils/cleanup.c \
+			  utils/has_meaningful_content.c \
 			  free/free-parser.c \
 			  free/free-env.c
 
