@@ -56,6 +56,7 @@ HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR) -I..
               $(TEST_DIR)/test-env_manager.c \
               $(TEST_DIR)/test-export.c \
               $(TEST_DIR)/test-unset.c \
+              $(TEST_DIR)/test-has_meaningful_content.c \
               $(TEST_DIR)/test-echo.c
 TEST_BINS   = $(TEST_SRCS:.c=.out)
 REPORT_LOG  = test_report.log
