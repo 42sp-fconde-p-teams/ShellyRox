@@ -21,6 +21,7 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/execution/execute_builtin.c \
               ../src/utils/get_env_value.c \
               ../src/utils/cleanup.c \
+              ../src/utils/has_meaningful_content.c \
               ../src/utils/env_set.c \
               ../src/utils/env_init.c \
               ../src/utils/env_array.c \
@@ -55,6 +56,7 @@ HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR) -I..
               $(TEST_DIR)/test-env_manager.c \
               $(TEST_DIR)/test-export.c \
               $(TEST_DIR)/test-unset.c \
+              $(TEST_DIR)/test-has_meaningful_content.c \
               $(TEST_DIR)/test-echo.c
 TEST_BINS   = $(TEST_SRCS:.c=.out)
 REPORT_LOG  = test_report.log
