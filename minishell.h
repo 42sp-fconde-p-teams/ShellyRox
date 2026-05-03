@@ -1,12 +1,12 @@
 /* ************************************************************************** */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
-/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/21 19:22:16 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/05/02 19:31:22 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ typedef struct s_ast_node
 // lexer functions
 t_token		*set_tokens(char *s);
 int			get_token_len(char *str);
+int			check_assignment_operator(char *str, int i);
 void		clear_token_list(t_token **head);
 
 // expander functions

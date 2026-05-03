@@ -6,7 +6,11 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2026/04/23 22:38:12 by csilva-s         ###   ########.fr       */
+=======
+/*   Updated: 2026/04/20 15:07:46 by csilva-s         ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +83,11 @@ int	exec_simple_command(t_ast_node *ast, t_shelly *shelly)
 	builtin_ret = execute_builtin(ast->value.command->cmd[0],
 			ast->value.command->cmd, shelly);
 	if (builtin_ret != -1)
+<<<<<<< Updated upstream
 		return (builtin_ret);
+=======
+		exit(builtin_ret);
+>>>>>>> Stashed changes
 	pid = fork();
 	if (pid == 0)
 		exec_command_in_child(ast, shelly);

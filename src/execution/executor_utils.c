@@ -54,17 +54,12 @@ int	get_status_code(pid_t pid)
 
 void	exec_command_in_child(t_ast_node *ast, t_shelly *shelly)
 {
-	int		builtin_ret;
 	int		heredoc;
 	char	*command_line;
 	char	**env_arr;
 
 	if (ast->value.command->cmd[0])
 	{
-		builtin_ret = execute_builtin(ast->value.command->cmd[0],
-				ast->value.command->cmd, shelly);
-		if (builtin_ret != -1)
-			exit(builtin_ret);
 		heredoc = check_here_doc(ast->value.command->redir);
 		command_line = find_command(shelly, ast->value.command->cmd[0]);
 		if (heredoc == -1 || !command_line)

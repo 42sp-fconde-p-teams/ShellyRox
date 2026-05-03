@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_token_len.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 18:25:25 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/26 23:04:41 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/02 19:52:01 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,47 +21,63 @@ static int	is_token_delimiter(char c)
 	return (EXIT_FAILURE);
 }
 
-int	get_token_len(char *str)
+static int	handle_quotes_len(char *str)
 {
 	int		i;
 	char	quote;
 
 	i = 0;
-	if (str[i] == '\'' || str[i] == '\"')
-	{
-		quote = str[i];
+	quote = str[i];
+	i++;
+	while (str[i] != '\0' && str[i] != quote)
 		i++;
-		while (str[i] != '\0' && str[i] != quote)
-			i++;
-		if (str[i] == quote)
-			i++;
-		return (i);
-	}
-	if ((str[i] == '<' && str[i + 1] == '<') 
-		|| (str[i] == '>' && str[i + 1] == '>'))
+	if (str[i] == quote)
+		i++;
+	return (i);
+}
+
+static int	handle_operator_len(char *str)
+{
+	if (str[0] == '|')
+		return (1);
+	else if (str[0] == '<' && str[1] == '<')
 		return (2);
+	else if (str[0] == '>' && str[1] == '>')
+		return (2);
+	else if (str[0] == '<' || str[0] == '>')
+		return (1);
+	else
+		return (-1);
+}
+
+static int	deal_with_quote(char *str, int i)
+{
+	char	quote;
+
+	quote = str[i];
+	i++;
+	while (str[i] != '\0' && str[i] != quote)
+		i++;
+	if (str[i] == quote)
+		i++;
+	return (i);
+}
+
+int	get_token_len(char *str)
+{
+	int		i;
+
+	i = 0;
+	if (str[i] == '\'' || str[i] == '\"')
+		return (handle_quotes_len(&str[i]));
+	if (str[i] == '<' || str[i] == '>' || str[i] == '|')
+		return (handle_operator_len(&str[i]));
 	while (str[i] != '\0')
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 		{
-			int	has_eq = 0;
-			int	j = 0;
-			while (str[j] && j < i)
-			{
-				if (str[j] == '=')
-					has_eq = 1;
-				j++;
-			}
-			if (has_eq)
-			{
-				quote = str[i];
-				i++;
-				while (str[i] != '\0' && str[i] != quote)
-					i++;
-				if (str[i] == quote)
-					i++;
-				continue ;
-			}
+			if (check_assignment_operator(str, i))
+				i = deal_with_quote(str, i);
 		}
 		if (is_token_delimiter(str[i]) == EXIT_SUCCESS)
 			break ;

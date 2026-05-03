@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+         #
+#    By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#              #
-#    Updated: 2026/04/25 16:32:17 by csilva-s         ###   ########.fr        #
+#    Updated: 2026/05/02 19:30:07 by fconde-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SRC_FILES	= main.c \
 			  parsing/expander/tilde_expansion.c \
 			  parsing/expander/token_insertion.c \
 			  parsing/fsm/get_token_len.c \
+			  parsing/fsm/check_assignment_operator.c \
 			  parsing/fsm/clear_token_list.c \
 			  parsing/fsm/set_tokens.c \
 			  execution/executor.c \

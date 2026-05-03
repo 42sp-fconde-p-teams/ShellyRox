@@ -12,6 +12,7 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/parsing/expander/token_insertion.c \
               ../src/parsing/fsm/set_tokens.c \
               ../src/parsing/fsm/get_token_len.c \
+              ../src/parsing/fsm/check_assignment_operator.c \
               ../src/execution/redirections.c \
               ../src/execution/executor.c \
               ../src/execution/executor_utils.c \
