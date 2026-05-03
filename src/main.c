@@ -6,25 +6,19 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:39:21 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/03 14:16:56 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/03 14:30:23 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+void	do_shelly(t_shelly shelly)
 {
-	t_shelly	shelly;
 	char		*line;
 	t_ast_node	*ast;
 	t_token		*tokens;
 	t_token		*token_head;
 
-	if (argc < 1)
-		return (1);
-	(void)*argv;
-	shelly.env_list = NULL;
-	init_env_list(&shelly, envp);
 	while (1)
 	{
 		line = readline("shelly🎀> ");
@@ -41,6 +35,18 @@ int	main(int argc, char **argv, char **envp)
 		add_history(line);
 		free(line);
 	}
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_shelly	shelly;
+
+	if (argc < 1)
+		return (1);
+	(void)*argv;
+	shelly.env_list = NULL;
+	init_env_list(&shelly, envp);
+	do_shelly(shelly);
 	free_env_list(shelly.env_list);
 	return (shelly.last_exit_status);
 }
