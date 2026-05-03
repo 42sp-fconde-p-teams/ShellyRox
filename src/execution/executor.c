@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-<<<<<<< Updated upstream
 /*   Updated: 2026/04/23 22:38:12 by csilva-s         ###   ########.fr       */
-=======
-/*   Updated: 2026/04/20 15:07:46 by csilva-s         ###   ########.fr       */
->>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +42,7 @@ char	*search_cmd_path(char *cmd, t_shelly *shelly)
 
 char	*find_command(t_shelly *shelly, char *cmd)
 {
-	char	*command;
+	char	*full_command;
 
 	if (ft_strchr(cmd, '/'))
 	{
@@ -54,10 +50,13 @@ char	*find_command(t_shelly *shelly, char *cmd)
 			return (ft_strdup(cmd));
 		return (NULL);
 	}
-	command = search_cmd_path(cmd, shelly);
-	if (!command)
+	full_command = search_cmd_path(cmd, shelly);
+	if (!full_command)
+	{
+		printf("%s: No such file or directory\n", cmd);
 		return (NULL);
-	return (command);
+	}
+	return (full_command);
 }
 
 void	simple_command_routine(t_ast_node *ast, char *command_line,
