@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/08 19:35:25 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/09 13:41:59 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ typedef enum e_bool
 	BOOL_FALSE,
 	BOOL_TRUE
 }	t_bool;
+
+typedef enum e_sig_state
+{
+	SIG_STATE_INTERACTIVE,
+	SIG_STATE_CHILD,
+	SIG_STATE_IGNORE
+}	t_sig_state;
 
 typedef struct s_env
 {
@@ -162,7 +169,7 @@ void		ft_free_array(char **array);
 
 // utils
 int			has_meaningful_content(char *line);
-void		setup_signals(void);
+void		setup_signals(t_sig_state state);
 
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/09 12:54:26 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/09 13:42:24 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ static void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
-void	setup_signals(void)
+void	setup_signals(t_sig_state state)
 {
+	(void)state;
 	struct sigaction	sa;
 
 	ft_bzero(&sa, sizeof(struct sigaction));
