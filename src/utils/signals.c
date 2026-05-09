@@ -12,7 +12,28 @@
 
 #include "../../minishell.h"
 
+int	g_sig_status;
+
+// g_sig_status = 0;
+
+static void	handle_sigint(int sig)
+{
+	(void)sig;
+	g_sig_status = 130;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
 void	setup_signals(void)
 {
-	// Ignore SIGINT and SIGQUIT in the main shell process
+	struct sigaction	sa;
+
+	sa.sa_handler = handle_sigint;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &sa, NULL);
 }

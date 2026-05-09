@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/03 17:21:36 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/08 19:35:25 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <signal.h>
 
 typedef enum e_bool
 {
@@ -161,5 +162,7 @@ void		ft_free_array(char **array);
 
 // utils
 int			has_meaningful_content(char *line);
+void		setup_signals(void);
+
 
 #endif
