@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/03 14:00:53 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/09 15:29:27 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,21 @@ int	exec_simple_command(t_ast_node *ast, t_shelly *shelly)
 {
 	pid_t	pid;
 	int		builtin_ret;
+	int		status;
 
 	builtin_ret = execute_builtin(ast->value.command->cmd[0],
 			ast->value.command->cmd, shelly);
 	if (builtin_ret != -1)
 		return (builtin_ret);
+	setup_signals(SIG_STATE_IGNORE);
 	pid = fork();
 	if (pid == 0)
+	{
+		setup_signals(SIG_STATE_CHILD);
 		exec_command_in_child(ast, shelly);
+	}
+	status = get_status_code(pid);
+	setup_signals(SIG_STATE_INTERACTIVE);
 	return (get_status_code(pid));
 }
 
