@@ -27,7 +27,7 @@ static int	has_only_invisible_chars(char *line)
 	return (EXIT_SUCCESS);
 }
 
-int		has_meaningful_content(char *line)
+int	has_meaningful_content(char *line)
 {
 	if (line[0] == '\0')
 		return (EXIT_FAILURE);

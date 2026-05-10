@@ -78,11 +78,23 @@ int	exec_simple_command(t_ast_node *ast, t_shelly *shelly)
 {
 	pid_t	pid;
 	int		builtin_ret;
+	int		saved_stdin;
+	int		saved_stdout;
 
-	builtin_ret = execute_builtin(ast->value.command->cmd[0],
-			ast->value.command->cmd, shelly);
-	if (builtin_ret != -1)
+	if (is_builtin(ast->value.command->cmd[0]))
+	{
+		saved_stdin = dup(1);
+		saved_stdout = dup(0);
+		if (ast->value.command->redir != NULL)
+			setup_redirections(ast->value.command->redir);
+		builtin_ret = execute_builtin(ast->value.command->cmd[0],
+				ast->value.command->cmd, shelly);
+		dup2(saved_stdin, STDIN_FILENO);
+		dup2(saved_stdout, STDOUT_FILENO);
+		close(saved_stdin);
+		close(saved_stdout);
 		return (builtin_ret);
+	}
 	pid = fork();
 	if (pid == 0)
 		exec_command_in_child(ast, shelly);
