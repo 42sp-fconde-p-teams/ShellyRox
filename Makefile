@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+         #
+#    By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#              #
-#    Updated: 2026/05/03 17:22:12 by fconde-p         ###   ########.fr        #
+#    Updated: 2026/05/12 22:49:27 by fconde-p         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,7 @@ SRC_FILES	= main.c \
 			  utils/env_init.c \
 			  utils/env_array.c \
 			  utils/validate_env_identifier.c \
-			  utils/signals.c \
+			  utils/setup_signals.c \
 			  utils/cleanup.c \
 			  utils/has_meaningful_content.c \
 			  free/free-parser.c \
