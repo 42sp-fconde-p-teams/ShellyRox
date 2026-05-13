@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:39:21 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/03 17:20:17 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/09 14:38:42 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)*argv;
 	shelly.env_list = NULL;
 	init_env_list(&shelly, envp);
+	setup_signals(SIG_STATE_INTERACTIVE);
 	do_shelly(shelly);
 	free_env_list(shelly.env_list);
 	return (shelly.last_exit_status);

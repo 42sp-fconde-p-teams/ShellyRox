@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/03 17:21:36 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/12 22:42:02 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,20 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <signal.h>
 
 typedef enum e_bool
 {
 	BOOL_FALSE,
 	BOOL_TRUE
 }	t_bool;
+
+typedef enum e_sig_state
+{
+	SIG_STATE_INTERACTIVE,
+	SIG_STATE_CHILD,
+	SIG_STATE_IGNORE
+}	t_sig_state;
 
 typedef struct s_env
 {
@@ -162,5 +170,7 @@ void		ft_free_array(char **array);
 
 // utils
 int			has_meaningful_content(char *line);
+void		setup_signals(t_sig_state state);
+
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/03 14:00:53 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/12 22:28:08 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	exec_simple_command(t_ast_node *ast, t_shelly *shelly)
 {
 	pid_t	pid;
 	int		builtin_ret;
+	int		status;
 	int		saved_stdin;
 	int		saved_stdout;
 
@@ -95,10 +96,16 @@ int	exec_simple_command(t_ast_node *ast, t_shelly *shelly)
 		close(saved_stdout);
 		return (builtin_ret);
 	}
+	setup_signals(SIG_STATE_IGNORE);
 	pid = fork();
 	if (pid == 0)
+	{
+		setup_signals(SIG_STATE_CHILD);
 		exec_command_in_child(ast, shelly);
-	return (get_status_code(pid));
+	}
+	status = get_status_code(pid);
+	setup_signals(SIG_STATE_INTERACTIVE);
+	return (status);
 }
 
 int	executor(t_ast_node *ast, t_shelly *shelly)

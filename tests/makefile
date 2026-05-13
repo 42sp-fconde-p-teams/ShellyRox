@@ -21,6 +21,7 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/execution/execute_builtin.c \
               ../src/utils/get_env_value.c \
               ../src/utils/cleanup.c \
+              ../src/utils/setup_signals.c \
               ../src/utils/has_meaningful_content.c \
               ../src/utils/env_set.c \
               ../src/utils/env_init.c \
@@ -36,7 +37,7 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/builtins/export.c \
               ../src/builtins/unset.c \
               ../src/builtins/echo.c
-LIBS        = $(LIBFT) # -ldl -glfw -pthread -lm
+LIBS        = $(LIBFT) -lreadline # -ldl -glfw -pthread -lm
 HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR) -I..
 
               # Tests section
