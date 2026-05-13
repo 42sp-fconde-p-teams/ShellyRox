@@ -129,6 +129,7 @@ int			exec_simple_command(t_ast_node *ast, t_shelly *shelly);
 void		simple_command_routine(t_ast_node *ast, char *command_line,
 				char **envp, int here_doc);
 int			execute_builtin(char *cmd, char **args, t_shelly *shelly);
+int			is_builtin(char *cmd);
 char		*search_cmd_path(char *cmd, t_shelly *shelly);
 int			handle_error(char *command_line, int heredoc);
 int			get_status_code(pid_t pid);

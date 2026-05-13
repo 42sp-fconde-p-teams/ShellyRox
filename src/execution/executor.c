@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/09 15:29:27 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/12 22:28:08 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,23 @@ int	exec_simple_command(t_ast_node *ast, t_shelly *shelly)
 	pid_t	pid;
 	int		builtin_ret;
 	int		status;
+	int		saved_stdin;
+	int		saved_stdout;
 
-	builtin_ret = execute_builtin(ast->value.command->cmd[0],
-			ast->value.command->cmd, shelly);
-	if (builtin_ret != -1)
+	if (is_builtin(ast->value.command->cmd[0]))
+	{
+		saved_stdin = dup(1);
+		saved_stdout = dup(0);
+		if (ast->value.command->redir != NULL)
+			setup_redirections(ast->value.command->redir);
+		builtin_ret = execute_builtin(ast->value.command->cmd[0],
+				ast->value.command->cmd, shelly);
+		dup2(saved_stdin, STDIN_FILENO);
+		dup2(saved_stdout, STDOUT_FILENO);
+		close(saved_stdin);
+		close(saved_stdout);
 		return (builtin_ret);
+	}
 	setup_signals(SIG_STATE_IGNORE);
 	pid = fork();
 	if (pid == 0)
@@ -93,7 +105,7 @@ int	exec_simple_command(t_ast_node *ast, t_shelly *shelly)
 	}
 	status = get_status_code(pid);
 	setup_signals(SIG_STATE_INTERACTIVE);
-	return (get_status_code(pid));
+	return (status);
 }
 
 int	executor(t_ast_node *ast, t_shelly *shelly)
