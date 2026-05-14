@@ -22,6 +22,11 @@ void	do_shelly(t_shelly shelly)
 	while (1)
 	{
 		line = readline("shelly🎀> ");
+		if (!line)
+		{
+			write(1, "exit\n", 5);
+			break;
+		}
 		if (has_meaningful_content(line) == EXIT_FAILURE)
 		{
 			free(line);
