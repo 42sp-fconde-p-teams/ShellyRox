@@ -12,12 +12,26 @@
 
 #include "../minishell.h"
 
+static void	process_line(char *line, t_shelly *shelly)
+{
+	t_token		*tokens;
+	t_token		*token_head;
+	t_ast_node	*ast;
+
+	tokens = set_tokens(line);
+	token_head = tokens;
+	tokens = expander(tokens, shelly);
+	ast = parser(&tokens);
+	shelly->last_exit_status = executor(ast, shelly);
+	free_tree(ast);
+	clear_token_list(&token_head);
+	add_history(line);
+	free(line);
+}
+
 void	do_shelly(t_shelly shelly)
 {
 	char		*line;
-	t_ast_node	*ast;
-	t_token		*tokens;
-	t_token		*token_head;
 
 	while (1)
 	{
@@ -32,16 +46,7 @@ void	do_shelly(t_shelly shelly)
 			free(line);
 			continue ;
 		}
-		tokens = NULL;
-		tokens = set_tokens(line);
-		token_head = tokens;
-		tokens = expander(tokens, &shelly);
-		ast = parser(&tokens);
-		shelly.last_exit_status = executor(ast, &shelly);
-		free_tree(ast);
-		clear_token_list(&token_head);
-		add_history(line);
-		free(line);
+		process_line(line, &shelly);
 	}
 }
 
