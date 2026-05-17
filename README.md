@@ -1,10 +1,10 @@
-_This project has been created as part of the 42 curriculum by fconde-p._
+_This project has been created as part of the 42 curriculum by fconde-p, csilva-s._
 
 # Description
 
 This project intends to ~~drives us crazy~~ make us learn the main concepts of a shell interpreter like Bash.
 
-A shell interpreter must read a prompt and deal with the content to give a satisfatory response deppending on the input. For this we have the following process:
+A shell interpreter must read a command from a prompt and process it to provide a satisfactory response based on the input. This involves the following process:
 
 ```
 |INPUT| --> |TOKENIZER| --> |PARSER| --> |EXECUTOR| --> |OUTPUT|
@@ -31,7 +31,7 @@ To clean the objects created, do a `make clean`.\
 To clean the objects created and the executable, do a `make fclean`.\
 To run the binary, after compile the project, run `./minishell`. It will bring Shelly to life.
 
-If you want to go further, you can check our unit tests made for this project. It was a blessing for us protecting us from ourselves and from each other.
+If you want to go further, you can check our unit tests made for this project. They were a blessing, protecting us from ourselves and from each other.
 
 # Resources
 
