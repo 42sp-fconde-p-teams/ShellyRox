@@ -33,6 +33,18 @@ To run the binary, after compile the project, run `./minishell`. It will bring S
 
 If you want to go further, you can check our unit tests made for this project. It was a blessing for us protecting us from ourselves and from each other.
 
+# Resources
+
+## Articles
+
+[GNU Bash documentation](https://www.gnu.org/software/bash/manual/html_node/index.html#SEC_Contents)
+
+[Abstract Syntax Tree (AST) - Explained in Plain English](https://dev.to/balapriya/abstract-syntax-tree-ast-explained-in-plain-english-1h38) - Bala Priya (12/06/2021)
+
+[Introduction to Systems Programming: a Hands-on Approach - chapter 5: Writing Your Own Shell](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf) -  Gustavo Rodriguez-Rivera and Justin Ennen (25/02/2025)
+
+[Do Zero à Pós-Produção em 1 Semana - Como usar IA em Projetos de Verdade](https://akitaonrails.com/2026/02/20/do-zero-a-pos-producao-em-1-semana-como-usar-ia-em-projetos-de-verdade-bastidores-do-the-m-akita-chronicles/) - Fábio Akita (02/20/2026)
+
 ## AI
 
 We wanted to use a mature aproach in AI on this project. Our main concern was learn how to use AI efficiently but without falling into the pit of cognitive debt. So, by the beggining of the project, Carlos made a Gemini Gem called _Shelly_ that would helps us. It was feeded with the context of our project and, to spice a little bit, it was designed with a sarcastic and acid personality. It was really funny to read their responses pointing out our mistakes and concept misunderstandings.
@@ -46,6 +58,3 @@ So we used
 - Claude Code (Carlos): 
 
 Besides the AI usage, we kept track of all the development and architectural decisions (for the best and for the worst).
-
-# Resources
-
