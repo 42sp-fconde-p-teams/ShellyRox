@@ -1,0 +1,68 @@
+_This project has been created as part of the 42 curriculum by fconde-p, csilva-s._
+
+# Description
+
+This project intends to ~~drives us crazy~~ make us learn the main concepts of a shell interpreter like Bash.
+
+A shell interpreter must read a command from a prompt and process it to provide a satisfactory response based on the input. This involves the following process:
+
+```
+|INPUT| --> |TOKENIZER| --> |PARSER| --> |EXECUTOR| --> |OUTPUT|
+```
+
+After this process, it should wait for a new prompt.
+
+## Tokenizer
+
+Here the system splits the input in a list of tokens (not propperly words) that are classified in types that can be WORD, PIPE, REDIR_OUT, REDIR_IN, HEREDOC or APPEND. Those are operation signals except for WORD. This is a special token that later will be processed at the parser.
+
+## Parser
+
+The parser will parse (duh =P) the content of the token list to an abstract syntax three (AST). Here we will expand the content indicated by '$',
+
+## Executor
+
+This will run the comands following the AST. If there is some OS function, it will access from the system. And if there are some built in functions it will be run from the project itself.
+
+# Instructions
+
+To compile, use the `make` comand.\
+To clean the objects created, do a `make clean`.\
+To clean the objects created and the executable, do a `make fclean`.\
+To run the binary, after compile the project, run `./minishell`. It will bring Shelly to life.
+
+If you want to go further, you can check our unit tests made for this project. They were a blessing, protecting us from ourselves and from each other.
+
+# Tests (a sip of quality)
+
+As part of this project, we've created a unit tests system. Probably it is not here at the source code delivered for evaluation, but you can watch it working on the github repository. It counts with `CI` setup running on Github Actions. Feel free to ask for information about it. The tests have their own `readme.md` file and they can be run with the command `make unit-tests` since the root folder.
+
+The `CI` rules are also in a dedicated folder in the Github project, but you can see it working with all set configs on the remote repository.
+
+It was a great moment for us to learn about CI and unit tests creating this little framework from scratch. Probably this little monster will grow with the next projects.
+
+# Resources
+
+## Articles
+
+[GNU Bash documentation](https://www.gnu.org/software/bash/manual/html_node/index.html#SEC_Contents)
+
+[Abstract Syntax Tree (AST) - Explained in Plain English](https://dev.to/balapriya/abstract-syntax-tree-ast-explained-in-plain-english-1h38) - Bala Priya (12/06/2021)
+
+[Introduction to Systems Programming: a Hands-on Approach - chapter 5: Writing Your Own Shell](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf) -  Gustavo Rodriguez-Rivera and Justin Ennen (25/02/2025)
+
+[Do Zero à Pós-Produção em 1 Semana - Como usar IA em Projetos de Verdade](https://akitaonrails.com/2026/02/20/do-zero-a-pos-producao-em-1-semana-como-usar-ia-em-projetos-de-verdade-bastidores-do-the-m-akita-chronicles/) - Fábio Akita (02/20/2026)
+
+## AI
+
+We wanted to use a mature aproach in AI on this project. Our main concern was learn how to use AI efficiently but without falling into the pit of cognitive debt. So, by the beggining of the project, Carlos made a Gemini Gem called _Shelly_ that would helps us. It was feeded with the context of our project and, to spice a little bit, it was designed with a sarcastic and acid personality. It was really funny to read their responses pointing out our mistakes and concept misunderstandings.
+
+As we studied more about AI and accordingly to the needs we had at our jobs, it showed up to as as an opportunity to test ways to write code in a way that everything fit right in place without breaking our system and without taking to much time from us writting long prompts or having to ask several times the same thing. For this, we followed the suggestions given by Fabio Akita at his blog aftes a deep dive that he took in software develompent with AI (the article is listed in Resources section below). He tells us to be the software engineer leading a crew of developers (the AI itself). So we need to design a clear and cohesive path to develop the system and pass to the AI small chunks of activities and describe in a fine way the requisites. Also, ask it to create unit tests that we -- and the AI -- could run to check if something was broken as the project goes on.
+
+So we used
+
+- Gemini Gem (Shelly): to conduct the concepts understanding and _tough love_;
+- Gemini CLI (Filipe): mostly with the model gemma 4 (31B), opensource and unlimited for use;
+- Claude Code (Carlos): 
+
+Besides the AI usage, we kept track of all the development and architectural decisions (for the best and for the worst).
