@@ -33,6 +33,14 @@ To run the binary, after compile the project, run `./minishell`. It will bring S
 
 If you want to go further, you can check our unit tests made for this project. They were a blessing, protecting us from ourselves and from each other.
 
+# Tests (a sip of quality)
+
+As part of this project, we've created a unit tests system. Probably it is not here at the source code delivered for evaluation, but you can watch it working on the github repository. It counts with `CI` setup running on Github Actions. Feel free to ask for information about it. The tests have their own `readme.md` file and they can be run with the command `make unit-tests` since the root folder.
+
+The `CI` rules are also in a dedicated folder in the Github project, but you can see it working with all set configs on the remote repository.
+
+It was a great moment for us to learn about CI and unit tests creating this little framework from scratch. Probably this little monster will grow with the next projects.
+
 # Resources
 
 ## Articles
