@@ -48,7 +48,11 @@ int	get_status_code(pid_t pid)
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGQUIT)
+			printf("Quit (core dumped)\n");
 		return (128 + WTERMSIG(status));
+	}
 	return (status);
 }
 
