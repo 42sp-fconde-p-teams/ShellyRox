@@ -29,7 +29,7 @@ static void	process_line(char *line, t_shelly *shelly)
 	free(line);
 }
 
-void	do_shelly(t_shelly shelly)
+void	do_shelly(t_shelly *shelly)
 {
 	char		*line;
 
@@ -46,7 +46,7 @@ void	do_shelly(t_shelly shelly)
 			free(line);
 			continue ;
 		}
-		process_line(line, &shelly);
+		process_line(line, shelly);
 	}
 }
 
@@ -60,7 +60,8 @@ int	main(int argc, char **argv, char **envp)
 	shelly.env_list = NULL;
 	init_env_list(&shelly, envp);
 	setup_signals(SIG_STATE_INTERACTIVE);
-	do_shelly(shelly);
+	do_shelly(&shelly);
+	rl_clear_history();
 	free_env_list(shelly.env_list);
 	return (shelly.last_exit_status);
 }
