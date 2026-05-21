@@ -48,7 +48,11 @@ int	get_status_code(pid_t pid)
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGQUIT)
+			printf("Quit (core dumped)\n");
 		return (128 + WTERMSIG(status));
+	}
 	return (status);
 }
 
@@ -71,6 +75,7 @@ void	exec_command_in_child(t_ast_node *ast, t_shelly *shelly)
 			exit(handle_error(command_line, heredoc));
 		env_arr = get_env_array(shelly);
 		simple_command_routine(ast, command_line, env_arr, heredoc);
+		ft_free_array(env_arr);
 		free(command_line);
 	}
 }

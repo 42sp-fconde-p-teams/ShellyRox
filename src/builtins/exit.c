@@ -38,7 +38,7 @@ int	ft_exit(t_shelly *shell, char **args)
 
 	if (!args || !args[0])
 	{
-		// TODO: cleanup all here
+		free_env_list(shell->env_list);
 		exit(0);
 	}
 	if (!args[1])
@@ -58,6 +58,6 @@ int	ft_exit(t_shelly *shell, char **args)
 			status = 255;
 		}
 	}
-	// TODO: cleanup all here
+	free_env_list(shell->env_list);
 	exit(status);
 }

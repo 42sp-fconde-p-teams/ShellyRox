@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#              #
-#    Updated: 2026/05/12 22:49:27 by fconde-p         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME		= minishell
 
 CC			= cc
@@ -57,7 +45,7 @@ SRC_FILES	= main.c \
 			  utils/cleanup.c \
 			  utils/has_meaningful_content.c \
 			  free/free-parser.c \
-			  free/free-env.c
+			  free/free_env_list.c
 
 
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
