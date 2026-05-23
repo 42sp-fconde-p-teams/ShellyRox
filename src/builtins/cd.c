@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/23 14:20:48 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/23 14:24:43 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,3 @@ int	ft_cd(char **args, t_shelly *shell)
 	free(target);
 	return (0);
 }
-
