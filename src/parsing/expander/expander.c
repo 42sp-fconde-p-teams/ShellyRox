@@ -25,7 +25,7 @@ static void	handle_word_expansion(t_token *current, t_shelly *shelly, t_token **
 	temp_value = expand_variables(current->value, shelly, quoted_flag);
 	free(current->value);
 	current->value = temp_value;
-	if (!quoted_flag && !ft_strchr(current->value, '\"') 
+	if (!quoted_flag && !ft_strchr(current->value, '\"')
 		&& !ft_strchr(current->value, '\'') && ft_strchr(current->value, ' '))
 	{
 		split_words = ft_split(current->value, ' ');
@@ -48,6 +48,8 @@ t_token	*expander(t_token *tokens, t_shelly *shelly)
 	{
 		if (current->type == TOKEN_WORD)
 			handle_word_expansion(current, shelly, &tokens);
+		if (current->type == TOKEN_HEREDOC && current->next->type == TOKEN_WORD)
+			current = current->next;
 		current = current->next;
 	}
 	return (tokens);
