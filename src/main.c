@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:39:21 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/09 14:38:42 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/23 13:26:40 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	do_shelly(t_shelly *shelly)
 		if (!line)
 		{
 			write(1, "exit\n", 5);
-			break;
+			break ;
 		}
 		if (has_meaningful_content(line) == EXIT_FAILURE)
 		{

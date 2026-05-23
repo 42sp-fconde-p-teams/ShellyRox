@@ -13,7 +13,7 @@ static t_ast_node	*make_cmd_node(char **args)
 	cmd->cmd = args;
 	cmd->redir = NULL;
 	node->node_type = TOKEN_WORD;
-	node->value.command = cmd;
+	node->value.cmd = cmd;
 	return (node);
 }
 

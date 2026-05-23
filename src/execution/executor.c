@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/12 22:28:08 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/23 15:27:44 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,14 @@ char	*find_command(t_shelly *shelly, char *cmd)
 void	simple_command_routine(t_ast_node *ast, char *command_line,
 		char **envp, int here_doc)
 {
-	if (ast->value.command->redir)
+	if (ast->value.cmd->redir)
 	{
 		if (here_doc > 0)
 			set_here_doc_fd();
-		if (setup_redirections(ast->value.command->redir) != 0)
+		if (setup_redirections(ast->value.cmd->redir) != 0)
 			exit (1);
 	}
-	execve(command_line, ast->value.command->cmd, envp);
+	execve(command_line, ast->value.cmd->cmd, envp);
 	perror("Failed");
 	exit(EXIT_FAILURE);
 }
@@ -77,25 +77,10 @@ void	simple_command_routine(t_ast_node *ast, char *command_line,
 int	exec_simple_command(t_ast_node *ast, t_shelly *shelly)
 {
 	pid_t	pid;
-	int		builtin_ret;
 	int		status;
-	int		saved_stdin;
-	int		saved_stdout;
 
-	if (is_builtin(ast->value.command->cmd[0]))
-	{
-		saved_stdin = dup(1);
-		saved_stdout = dup(0);
-		if (ast->value.command->redir != NULL)
-			setup_redirections(ast->value.command->redir);
-		builtin_ret = execute_builtin(ast->value.command->cmd[0],
-				ast->value.command->cmd, shelly);
-		dup2(saved_stdin, STDIN_FILENO);
-		dup2(saved_stdout, STDOUT_FILENO);
-		close(saved_stdin);
-		close(saved_stdout);
-		return (builtin_ret);
-	}
+	if (is_builtin(ast->value.cmd->cmd[0]))
+		return (exec_builtin_parent(ast, shelly));
 	setup_signals(SIG_STATE_IGNORE);
 	pid = fork();
 	if (pid == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/14 22:03:42 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/23 14:24:43 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,20 @@ static void	update_pwd_env(t_shelly *shell, char *old_path)
 		set_env_var(shell, "PWD", new_path);
 }
 
+int	deal_with_target(char *target)
+{
+	if (!target)
+		return (EXIT_FAILURE);
+	if (chdir(target) != 0)
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		perror(target);
+		free(target);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
 int	ft_cd(char **args, t_shelly *shell)
 {
 	char	*target;
@@ -57,22 +71,17 @@ int	ft_cd(char **args, t_shelly *shell)
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		return (1);
 	}
-	target = get_target_path(args, shell, &print_path);
-	if (!target)
-		return (1);
 	if (!getcwd(old_path, sizeof(old_path)))
 		old_path[0] = '\0';
-	if (chdir(target) != 0)
-	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		perror(target);
-		free(target);
-		return (1);
-	}
-	update_pwd_env(shell, old_path[0] ? old_path : NULL);
+	target = get_target_path(args, shell, &print_path);
+	if (deal_with_target(target) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (old_path[0])
+		update_pwd_env(shell, old_path);
+	else
+		update_pwd_env(shell, NULL);
 	if (print_path)
 		ft_printf("%s\n", target);
 	free(target);
 	return (0);
 }
-

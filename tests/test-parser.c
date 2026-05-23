@@ -8,7 +8,7 @@ int should_create_ast_node(void)
 	char *line = "echo 'hello'";
 	token = set_tokens(line);
 	ast = parser(&token);
-	if (ast->value.command->cmd[0] == NULL)
+	if (ast->value.cmd->cmd[0] == NULL)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -20,7 +20,7 @@ int should_create_pipe_ast_node(void)
 	char *line = "echo 'hello' | wc -l";
 	token = set_tokens(line);
 	ast = parser(&token);
-	if (ast->value.pipe->left->value.command->cmd[0] == NULL && ast->value.pipe->right->value.command->cmd[0] == NULL)
+	if (ast->value.pipe->left->value.cmd->cmd[0] == NULL && ast->value.pipe->right->value.cmd->cmd[0] == NULL)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -32,7 +32,7 @@ int	should_create_node_with_redirection(void)
 	char *line = "echo 'hello' > output.txt";
 	token = set_tokens(line);
 	ast = parser(&token);
-	if (ast->value.command->cmd[0] == NULL && ast->value.command->redir == NULL)
+	if (ast->value.cmd->cmd[0] == NULL && ast->value.cmd->redir == NULL)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -44,9 +44,9 @@ int	should_create_pipe_and_redirections(void)
 	char *line = "echo 'hello' | wc -l > output.txt";
 	token = set_tokens(line);
 	ast = parser(&token);
-	if (ast->value.pipe->left->value.command->cmd[0] == NULL &&
-	 ast->value.pipe->right->value.command->cmd[0] == NULL &&
-	 ast->value.pipe->right->value.command->redir == NULL)
+	if (ast->value.pipe->left->value.cmd->cmd[0] == NULL &&
+	 ast->value.pipe->right->value.cmd->cmd[0] == NULL &&
+	 ast->value.pipe->right->value.cmd->redir == NULL)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -58,12 +58,12 @@ int	should_handle_multiple_word_command(void)
 	char *line = "ls -la";
 	token = set_tokens(line);
 	ast = parser(&token);
-	if (ast->node_type != TOKEN_WORD || ast->value.command->cmd[0] == NULL ||
-		ft_strncmp(ast->value.command->cmd[0], "ls", 2) != 0 ||
-		ast->value.command->cmd[1] == NULL ||
-		ft_strncmp(ast->value.command->cmd[1], "-la", 3) != 0 ||
-		ast->value.command->cmd[2] != NULL ||
-		ast->value.command->redir != NULL)
+	if (ast->node_type != TOKEN_WORD || ast->value.cmd->cmd[0] == NULL ||
+		ft_strncmp(ast->value.cmd->cmd[0], "ls", 2) != 0 ||
+		ast->value.cmd->cmd[1] == NULL ||
+		ft_strncmp(ast->value.cmd->cmd[1], "-la", 3) != 0 ||
+		ast->value.cmd->cmd[2] != NULL ||
+		ast->value.cmd->redir != NULL)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -75,13 +75,13 @@ int	should_create_node_with_input_redirection(void)
 	char *line = "cat < input.txt";
 	token = set_tokens(line);
 	ast = parser(&token);
-	if (ast->node_type != TOKEN_WORD || ast->value.command->cmd[0] == NULL ||
-		ft_strncmp(ast->value.command->cmd[0], "cat", 3) != 0 ||
-		ast->value.command->cmd[1] != NULL ||
-		ast->value.command->redir == NULL ||
-		ast->value.command->redir->type != TOKEN_REDIR_IN ||
-		ft_strncmp(ast->value.command->redir->filename, "input.txt", 9) != 0 ||
-		ast->value.command->redir->next != NULL)
+	if (ast->node_type != TOKEN_WORD || ast->value.cmd->cmd[0] == NULL ||
+		ft_strncmp(ast->value.cmd->cmd[0], "cat", 3) != 0 ||
+		ast->value.cmd->cmd[1] != NULL ||
+		ast->value.cmd->redir == NULL ||
+		ast->value.cmd->redir->type != TOKEN_REDIR_IN ||
+		ft_strncmp(ast->value.cmd->redir->filename, "input.txt", 9) != 0 ||
+		ast->value.cmd->redir->next != NULL)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -93,15 +93,15 @@ int	should_create_node_with_heredoc_redirection(void)
 	char *line = "grep var << EOF";
 	token = set_tokens(line);
 	ast = parser(&token);
-	if (ast->node_type != TOKEN_WORD || ast->value.command->cmd[0] == NULL ||
-		ft_strncmp(ast->value.command->cmd[0], "grep", 4) != 0 ||
-		ast->value.command->cmd[1] == NULL ||
-		ft_strncmp(ast->value.command->cmd[1], "var", 3) != 0 ||
-		ast->value.command->cmd[2] != NULL ||
-		ast->value.command->redir == NULL ||
-		ast->value.command->redir->type != TOKEN_HEREDOC ||
-		ft_strncmp(ast->value.command->redir->filename, "EOF", 3) != 0 ||
-		ast->value.command->redir->next != NULL)
+	if (ast->node_type != TOKEN_WORD || ast->value.cmd->cmd[0] == NULL ||
+		ft_strncmp(ast->value.cmd->cmd[0], "grep", 4) != 0 ||
+		ast->value.cmd->cmd[1] == NULL ||
+		ft_strncmp(ast->value.cmd->cmd[1], "var", 3) != 0 ||
+		ast->value.cmd->cmd[2] != NULL ||
+		ast->value.cmd->redir == NULL ||
+		ast->value.cmd->redir->type != TOKEN_HEREDOC ||
+		ft_strncmp(ast->value.cmd->redir->filename, "EOF", 3) != 0 ||
+		ast->value.cmd->redir->next != NULL)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -113,15 +113,15 @@ int	should_create_node_with_append_redirection(void)
 	char *line = "echo 'hello' >> output.txt";
 	token = set_tokens(line);
 	ast = parser(&token);
-	if (ast->node_type != TOKEN_WORD || ast->value.command->cmd[0] == NULL ||
-		ft_strncmp(ast->value.command->cmd[0], "echo", 4) != 0 ||
-		ast->value.command->cmd[1] == NULL ||
-		ft_strncmp(ast->value.command->cmd[1], "'hello'", 7) != 0 ||
-		ast->value.command->cmd[2] != NULL ||
-		ast->value.command->redir == NULL ||
-		ast->value.command->redir->type != TOKEN_APPEND ||
-		ft_strncmp(ast->value.command->redir->filename, "output.txt", 10) != 0 ||
-		ast->value.command->redir->next != NULL)
+	if (ast->node_type != TOKEN_WORD || ast->value.cmd->cmd[0] == NULL ||
+		ft_strncmp(ast->value.cmd->cmd[0], "echo", 4) != 0 ||
+		ast->value.cmd->cmd[1] == NULL ||
+		ft_strncmp(ast->value.cmd->cmd[1], "'hello'", 7) != 0 ||
+		ast->value.cmd->cmd[2] != NULL ||
+		ast->value.cmd->redir == NULL ||
+		ast->value.cmd->redir->type != TOKEN_APPEND ||
+		ft_strncmp(ast->value.cmd->redir->filename, "output.txt", 10) != 0 ||
+		ast->value.cmd->redir->next != NULL)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -136,24 +136,24 @@ int should_create_multiple_pipe_ast_node(void)
 	if (ast->node_type != TOKEN_PIPE)
 		return (EXIT_FAILURE);
 	if (ast->value.pipe->left->node_type != TOKEN_WORD ||
-		ft_strncmp(ast->value.pipe->left->value.command->cmd[0], "ls", 2) != 0 ||
-		ast->value.pipe->left->value.command->cmd[1] != NULL ||
-		ast->value.pipe->left->value.command->redir != NULL)
+		ft_strncmp(ast->value.pipe->left->value.cmd->cmd[0], "ls", 2) != 0 ||
+		ast->value.pipe->left->value.cmd->cmd[1] != NULL ||
+		ast->value.pipe->left->value.cmd->redir != NULL)
 		return (EXIT_FAILURE);
 	t_ast_node *inner_pipe = ast->value.pipe->right;
 	if (inner_pipe->node_type != TOKEN_PIPE)
 		return (EXIT_FAILURE);
 	if (inner_pipe->value.pipe->left->node_type != TOKEN_WORD ||
-		ft_strncmp(inner_pipe->value.pipe->left->value.command->cmd[0], "grep", 4) != 0 ||
-		ft_strncmp(inner_pipe->value.pipe->left->value.command->cmd[1], ".c", 2) != 0 ||
-		inner_pipe->value.pipe->left->value.command->cmd[2] != NULL ||
-		inner_pipe->value.pipe->left->value.command->redir != NULL)
+		ft_strncmp(inner_pipe->value.pipe->left->value.cmd->cmd[0], "grep", 4) != 0 ||
+		ft_strncmp(inner_pipe->value.pipe->left->value.cmd->cmd[1], ".c", 2) != 0 ||
+		inner_pipe->value.pipe->left->value.cmd->cmd[2] != NULL ||
+		inner_pipe->value.pipe->left->value.cmd->redir != NULL)
 		return (EXIT_FAILURE);
 	if (inner_pipe->value.pipe->right->node_type != TOKEN_WORD ||
-		ft_strncmp(inner_pipe->value.pipe->right->value.command->cmd[0], "wc", 2) != 0 ||
-		ft_strncmp(inner_pipe->value.pipe->right->value.command->cmd[1], "-l", 2) != 0 ||
-		inner_pipe->value.pipe->right->value.command->cmd[2] != NULL ||
-		inner_pipe->value.pipe->right->value.command->redir != NULL)
+		ft_strncmp(inner_pipe->value.pipe->right->value.cmd->cmd[0], "wc", 2) != 0 ||
+		ft_strncmp(inner_pipe->value.pipe->right->value.cmd->cmd[1], "-l", 2) != 0 ||
+		inner_pipe->value.pipe->right->value.cmd->cmd[2] != NULL ||
+		inner_pipe->value.pipe->right->value.cmd->redir != NULL)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -170,24 +170,24 @@ int should_create_complex_pipe_and_redirections(void)
 
 	t_ast_node *left_cmd = ast->value.pipe->left;
 	if (left_cmd->node_type != TOKEN_WORD ||
-		ft_strncmp(left_cmd->value.command->cmd[0], "grep", 4) != 0 ||
-		ft_strncmp(left_cmd->value.command->cmd[1], "'test'", 6) != 0 ||
-		left_cmd->value.command->cmd[2] != NULL ||
-		left_cmd->value.command->redir == NULL ||
-		left_cmd->value.command->redir->type != TOKEN_REDIR_IN ||
-		ft_strncmp(left_cmd->value.command->redir->filename, "input.txt", 9) != 0 ||
-		left_cmd->value.command->redir->next != NULL)
+		ft_strncmp(left_cmd->value.cmd->cmd[0], "grep", 4) != 0 ||
+		ft_strncmp(left_cmd->value.cmd->cmd[1], "'test'", 6) != 0 ||
+		left_cmd->value.cmd->cmd[2] != NULL ||
+		left_cmd->value.cmd->redir == NULL ||
+		left_cmd->value.cmd->redir->type != TOKEN_REDIR_IN ||
+		ft_strncmp(left_cmd->value.cmd->redir->filename, "input.txt", 9) != 0 ||
+		left_cmd->value.cmd->redir->next != NULL)
 		return (EXIT_FAILURE);
 
 	t_ast_node *right_cmd = ast->value.pipe->right;
 	if (right_cmd->node_type != TOKEN_WORD ||
-		ft_strncmp(right_cmd->value.command->cmd[0], "wc", 2) != 0 ||
-		ft_strncmp(right_cmd->value.command->cmd[1], "-l", 2) != 0 ||
-		right_cmd->value.command->cmd[2] != NULL ||
-		right_cmd->value.command->redir == NULL ||
-		right_cmd->value.command->redir->type != TOKEN_APPEND ||
-		ft_strncmp(right_cmd->value.command->redir->filename, "output.txt", 10) != 0 ||
-		right_cmd->value.command->redir->next != NULL)
+		ft_strncmp(right_cmd->value.cmd->cmd[0], "wc", 2) != 0 ||
+		ft_strncmp(right_cmd->value.cmd->cmd[1], "-l", 2) != 0 ||
+		right_cmd->value.cmd->cmd[2] != NULL ||
+		right_cmd->value.cmd->redir == NULL ||
+		right_cmd->value.cmd->redir->type != TOKEN_APPEND ||
+		ft_strncmp(right_cmd->value.cmd->redir->filename, "output.txt", 10) != 0 ||
+		right_cmd->value.cmd->redir->next != NULL)
 		return (EXIT_FAILURE);
 
 	return (EXIT_SUCCESS);

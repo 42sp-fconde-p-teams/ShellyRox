@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free-parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csilva-s <csilva-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 15:33:48 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/18 22:32:56 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/05/23 15:27:44 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ void	free_tree(t_ast_node *ast)
 	}
 	else
 	{
-		free_redir(ast->value.command->redir);
-		free(ast->value.command->cmd);
-		free(ast->value.command);
+		free_redir(ast->value.cmd->redir);
+		free(ast->value.cmd->cmd);
+		free(ast->value.cmd);
 	}
 	free(ast);
 }
