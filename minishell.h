@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/12 22:42:02 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/23 15:19:10 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ char		*search_cmd_path(char *cmd, t_shelly *shelly);
 int			handle_error(char *command_line, int heredoc);
 int			get_status_code(pid_t pid);
 void		exec_command_in_child(t_ast_node *ast, t_shelly *shelly);
+int			exec_builtin_parent(t_ast_node *ast, t_shelly *shelly);
 
 // pipe functions
 void		execute_pipes(t_ast_node *ast);
