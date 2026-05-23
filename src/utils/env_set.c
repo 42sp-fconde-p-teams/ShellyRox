@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   env_set.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 21:00:00 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/12 21:00:00 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/23 20:49:04 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+t_env	*set_new_node(char *key, char *value)
+{
+	t_env	*new_node;
+
+	new_node = NULL;
+	new_node = malloc(sizeof(t_env));
+	if (!new_node)
+		return (0);
+	new_node->key = ft_strdup(key);
+	new_node->value = ft_strdup(value ? value : "");
+	new_node->next = NULL;
+	return (new_node);
+}
 
 int	set_env_var(t_shelly *shell, char *key, char *value)
 {
@@ -35,12 +49,7 @@ int	set_env_var(t_shelly *shell, char *key, char *value)
 		last = curr;
 		curr = curr->next;
 	}
-	new_node = malloc(sizeof(t_env));
-	if (!new_node)
-		return (0);
-	new_node->key = ft_strdup(key);
-	new_node->value = ft_strdup(value ? value : "");
-	new_node->next = NULL;
+	new_node = set_new_node(key, value);
 	if (!last)
 		shell->env_list = new_node;
 	else
