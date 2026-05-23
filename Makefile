@@ -13,6 +13,7 @@ LIBFT_DIR	= lib/libft
 # Source files
 SRC_FILES	= main.c \
 			  parsing/parser.c \
+			  parsing/parser_utils.c \
 			  parsing/expander/expander.c \
 			  parsing/expander/remove_quotes.c \
 			  parsing/expander/variable_expansion.c \
