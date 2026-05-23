@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csilva-s <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:40:58 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/22 21:45:40 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/05/23 15:27:44 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,24 @@ int	get_status_code(pid_t pid)
 	return (status);
 }
 
+int	exec_builtin_parent(t_ast_node *ast, t_shelly *shelly)
+{
+	int	saved_fd[2];
+	int	builtin_ret;
+
+	saved_fd[0] = dup(STDIN_FILENO);
+	saved_fd[1] = dup(STDOUT_FILENO);
+	if (ast->value.cmd->redir != NULL)
+		setup_redirections(ast->value.cmd->redir);
+	builtin_ret = execute_builtin(ast->value.cmd->cmd[0],
+			ast->value.cmd->cmd, shelly);
+	dup2(saved_fd[0], STDIN_FILENO);
+	dup2(saved_fd[1], STDOUT_FILENO);
+	close(saved_fd[0]);
+	close(saved_fd[1]);
+	return (builtin_ret);
+}
+
 void	exec_command_in_child(t_ast_node *ast, t_shelly *shelly)
 {
 	int		builtin_ret;
@@ -63,14 +81,14 @@ void	exec_command_in_child(t_ast_node *ast, t_shelly *shelly)
 	char	*command_line;
 	char	**env_arr;
 
-	if (ast->value.command->cmd[0])
+	if (ast->value.cmd->cmd[0])
 	{
-		builtin_ret = execute_builtin(ast->value.command->cmd[0],
-				ast->value.command->cmd, shelly);
+		builtin_ret = execute_builtin(ast->value.cmd->cmd[0],
+				ast->value.cmd->cmd, shelly);
 		if (builtin_ret != -1)
 			exit(builtin_ret);
-		heredoc = check_here_doc(ast->value.command->redir);
-		command_line = find_command(shelly, ast->value.command->cmd[0]);
+		heredoc = check_here_doc(ast->value.cmd->redir);
+		command_line = find_command(shelly, ast->value.cmd->cmd[0]);
 		if (heredoc == -1 || !command_line)
 			exit(handle_error(command_line, heredoc));
 		env_arr = get_env_array(shelly);

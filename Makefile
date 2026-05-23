@@ -13,6 +13,7 @@ LIBFT_DIR	= lib/libft
 # Source files
 SRC_FILES	= main.c \
 			  parsing/parser.c \
+			  parsing/parser_utils.c \
 			  parsing/expander/expander.c \
 			  parsing/expander/remove_quotes.c \
 			  parsing/expander/variable_expansion.c \
@@ -42,7 +43,6 @@ SRC_FILES	= main.c \
 			  utils/env_array.c \
 			  utils/validate_env_identifier.c \
 			  utils/setup_signals.c \
-			  utils/cleanup.c \
 			  utils/has_meaningful_content.c \
 			  free/free-parser.c \
 			  free/free_env_list.c

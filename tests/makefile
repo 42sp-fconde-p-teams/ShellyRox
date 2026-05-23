@@ -5,6 +5,7 @@ LIBFT       = $(LIBFT_DIR)/libft.a
 
 # IMPORTANTE: Garanta que nenhum desses arquivos tenha uma função main()
 C_FILES     = ../src/parsing/parser.c \
+              ../src/parsing/parser_utils.c \
               ../src/parsing/expander/expander.c \
               ../src/parsing/expander/remove_quotes.c \
               ../src/parsing/expander/variable_expansion.c \
@@ -20,7 +21,6 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/execution/heredoc.c \
               ../src/execution/execute_builtin.c \
               ../src/utils/get_env_value.c \
-              ../src/utils/cleanup.c \
               ../src/utils/setup_signals.c \
               ../src/utils/has_meaningful_content.c \
               ../src/utils/env_set.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:50 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/23 22:51:31 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/05/23 15:27:44 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@ void	exec_pipe_command(t_ast_node *ast, t_shelly *shelly)
 	int		builtin_ret;
 	char	**env_arr;
 
-	if (ast->value.command->cmd[0])
+	if (ast->value.cmd->cmd[0])
 	{
-		builtin_ret = execute_builtin(ast->value.command->cmd[0],
-				ast->value.command->cmd, shelly);
+		builtin_ret = execute_builtin(ast->value.cmd->cmd[0],
+				ast->value.cmd->cmd, shelly);
 		if (builtin_ret != -1)
 			exit(builtin_ret);
 	}
-	here_doc = check_here_doc(ast->value.command->redir);
-	cmd_line = find_command(shelly, ast->value.command->cmd[0]);
+	here_doc = check_here_doc(ast->value.cmd->redir);
+	cmd_line = find_command(shelly, ast->value.cmd->cmd[0]);
 	if (here_doc == -1 || !cmd_line)
 		exit(handle_error(cmd_line, here_doc));
 	env_arr = get_env_array(shelly);
