@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 18:18:08 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/23 15:06:00 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/23 15:07:57 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ static t_bool	is_numeric(char *str)
 	return (BOOL_TRUE);
 }
 
-int	too_many_args()
+int	too_many_args(void)
 {
 	ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 	return (255);
 }
 
-int	num_arg_required()
+int	num_arg_required(void)
 {
 	ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
 	return (255);
