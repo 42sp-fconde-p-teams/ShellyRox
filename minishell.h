@@ -161,6 +161,7 @@ char		**get_env_array(t_shelly *shell);
 char		*get_env_value(char *name, t_shelly *shell);
 int			set_env_var(t_shelly *shell, char *key, char *value);
 int			validate_env_identifier(char *str);
+int			find_var_end(char *value, int start);
 
 // free functions
 void		free_tree(t_ast_node *ast);
@@ -171,6 +172,5 @@ void		ft_free_array(char **array);
 // utils
 int			has_meaningful_content(char *line);
 void		setup_signals(t_sig_state state);
-
 
 #endif
