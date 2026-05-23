@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:39:09 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/03/21 23:39:11 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/05/23 15:27:44 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 int	count_words_token(t_token *token)
 {
-	int count = 0;
-	t_token *tmp = token;
+	int		count;
+	t_token	*tmp;
+
+	count = 0;
+	tmp = token;
 	while (tmp && tmp->type != TOKEN_PIPE)
 	{
 		if (tmp->type == TOKEN_REDIR_IN || tmp->type == TOKEN_REDIR_OUT
@@ -38,7 +41,7 @@ char	*get_redir_filename(t_token *token)
 
 t_redir	*add_node_linked(t_redir *redir, t_redir *redir_node)
 {
-	t_redir *tmp;
+	t_redir	*tmp;
 
 	tmp = redir;
 	if (redir == NULL)
@@ -51,13 +54,13 @@ t_redir	*add_node_linked(t_redir *redir, t_redir *redir_node)
 
 void	add_redir_command(t_ast_node **node, t_token **token)
 {
-	t_redir *redir;
+	t_redir	*redir;
 
 	redir = malloc(sizeof(t_redir));
 	redir->type = (*token)->type;
 	redir->next = NULL;
 	redir->filename = get_redir_filename(*token);
-	(*node)->value.command->redir = add_node_linked((*node)->value.command->redir, redir);
+	(*node)->value.cmd->redir = add_node_linked((*node)->value.cmd->redir, redir);
 	*token = (*token)->next;
 	if (*token && (*token)->type == TOKEN_WORD)
 		*token = (*token)->next;
@@ -66,8 +69,8 @@ void	add_redir_command(t_ast_node **node, t_token **token)
 t_ast_node	*parse_command(t_token	**token)
 {
 	t_ast_node	*node;
-	t_token	*tmp;
-	int	i;
+	t_token		*tmp;
+	int			i;
 
 	node = malloc(sizeof(t_ast_node));
 	tmp = *token;
@@ -75,9 +78,9 @@ t_ast_node	*parse_command(t_token	**token)
 	if((*token)->type != TOKEN_PIPE)
 	{
 		node->node_type = (*token)->type;
-		node->value.command = malloc(sizeof(t_command));
-		node->value.command->redir = NULL;
-		node->value.command->cmd = malloc(sizeof(char *) * (count_words_token(tmp) + 1));
+		node->value.cmd = malloc(sizeof(t_command));
+		node->value.cmd->redir = NULL;
+		node->value.cmd->cmd = malloc(sizeof(char *) * (count_words_token(tmp) + 1));
 		while (tmp && tmp->type != TOKEN_PIPE)
 		{
 			if (tmp->type == TOKEN_REDIR_IN || tmp->type == TOKEN_REDIR_OUT
@@ -87,11 +90,11 @@ t_ast_node	*parse_command(t_token	**token)
 				continue ;
 			}
 			else
-				node->value.command->cmd[i++] = tmp->value;
+				node->value.cmd->cmd[i++] = tmp->value;
 			if (tmp)
 				tmp = tmp->next;
 		}
-		node->value.command->cmd[i] = NULL;
+		node->value.cmd->cmd[i] = NULL;
 	}
 	*token = tmp;
 	return (node);

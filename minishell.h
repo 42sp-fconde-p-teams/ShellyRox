@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/23 15:19:10 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/23 15:27:44 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ typedef struct s_pipe
 
 union u_node_value
 {
-	t_command	*command;
+	t_command	*cmd;
 	t_pipe		*pipe;
 };
 
