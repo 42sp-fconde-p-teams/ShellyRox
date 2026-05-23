@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 18:18:08 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/04/12 19:43:10 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/23 15:06:00 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,23 @@ static t_bool	is_numeric(char *str)
 	return (BOOL_TRUE);
 }
 
+int	too_many_args()
+{
+	ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+	return (255);
+}
+
+int	num_arg_required()
+{
+	ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
+	return (255);
+}
+
 int	ft_exit(t_shelly *shell, char **args)
 {
 	int	status;
 
+	status = 0;
 	if (!args || !args[0])
 	{
 		free_env_list(shell->env_list);
@@ -44,19 +57,13 @@ int	ft_exit(t_shelly *shell, char **args)
 	if (!args[1])
 		status = shell->last_exit_status;
 	else if (args[2])
-	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		status = 255;
-	}
+		status = too_many_args();
 	else
 	{
 		if (is_numeric(args[1]))
 			status = ft_atoi(args[1]) & 255;
 		else
-		{
-			ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
-			status = 255;
-		}
+			status = num_arg_required();
 	}
 	free_env_list(shell->env_list);
 	exit(status);
