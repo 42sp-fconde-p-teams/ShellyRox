@@ -1,26 +1,38 @@
 #include "./tests.h"
 #include "../minishell.h"
 
+// static int	run_exit_test(char **args, int expected_status, int initial_last_status)
+// {
+// 	t_shelly	shell = {0};
+// 	pid_t		pid;
+// 	int			status;
+
+// 	shell.last_exit_status = initial_last_status;
+// 	pid = fork();
+// 	if (pid == 0)
+// 	{
+// 		ft_exit(&shell, args);
+// 		exit((expected_status + 1) & 255); // Fallback: must differ from expected_status
+// 	}
+// 	waitpid(pid, &status, 0);
+// 	if (WIFEXITED(status))
+// 	{
+// 		if (WEXITSTATUS(status) == expected_status)
+// 			return (EXIT_SUCCESS);
+// 	}
+// 	return (EXIT_FAILURE);
+// }
+
 static int	run_exit_test(char **args, int expected_status, int initial_last_status)
 {
 	t_shelly	shell = {0};
-	pid_t		pid;
-	int			status;
 
 	shell.last_exit_status = initial_last_status;
-	pid = fork();
-	if (pid == 0)
-	{
-		ft_exit(&shell, args);
-		exit((expected_status + 1) & 255); // Fallback: must differ from expected_status
-	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-	{
-		if (WEXITSTATUS(status) == expected_status)
-			return (EXIT_SUCCESS);
-	}
-	return (EXIT_FAILURE);
+	// ft_exit(&shell, args);
+	if (ft_exit(&shell, args) == expected_status)
+		return (EXIT_SUCCESS);
+	else
+		return (EXIT_FAILURE);
 }
 
 int	should_exit_with_last_status_when_no_args(void)
