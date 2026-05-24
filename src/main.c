@@ -24,10 +24,10 @@ static void	process_line(char *line, t_shelly *shelly)
 	tokens = expander(tokens, shelly);
 	ast = parser(&tokens);
 	find_heredoc(ast, shelly);
-	clear_token_list(&token_head);
 	shelly->last_exit_status = executor(ast, shelly);
-	shelly->ast = ast;
 	free_tree(ast);
+	clear_token_list(&token_head);
+	shelly->ast = NULL;
 	add_history(line);
 	free(line);
 }
