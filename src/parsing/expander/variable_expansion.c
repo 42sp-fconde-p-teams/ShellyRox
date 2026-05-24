@@ -19,7 +19,7 @@ static char	*get_var_value(char *var_name, t_shelly *shelly)
 	return (get_env_value(var_name, shelly));
 }
 
-static int	find_var_end(char *value, int start)
+int	find_var_end(char *value, int start)
 {
 	if (value[start] == '?')
 		return (start + 1);

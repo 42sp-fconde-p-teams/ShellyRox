@@ -63,7 +63,9 @@ static void	process_export_arg(char *arg, t_shelly *shell)
 
 	eq = ft_strchr(arg, '=');
 	if (eq)
-	{
+
+
+{
 		key = ft_substr(arg, 0, eq - arg);
 		value = eq + 1;
 	}

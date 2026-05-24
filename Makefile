@@ -92,6 +92,11 @@ tester: CFLAGS += -DTESTER
 tester: re
 	@echo "$(GREEN)✓ Shelly compiled for tester mode!$(RESET)"
 
+val:
+	@valgrind -q --leak-check=full --track-origins=yes \
+	--track-fds=yes --show-leak-kinds=all \
+	--suppressions=ignore_readline.supp ./$(NAME)
+
 re: fclean all
 
 .PHONY: all clean fclean re sanitize tester

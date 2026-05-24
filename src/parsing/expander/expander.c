@@ -49,6 +49,8 @@ t_token	*expander(t_token *tokens, t_shelly *shelly)
 	{
 		if (current->type == TOKEN_WORD)
 			handle_word_expansion(current, shelly, &tokens);
+		if (current->type == TOKEN_HEREDOC && current->next->type == TOKEN_WORD)
+			current = current->next;
 		current = current->next;
 	}
 	return (tokens);

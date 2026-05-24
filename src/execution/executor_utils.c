@@ -87,7 +87,7 @@ void	exec_command_in_child(t_ast_node *ast, t_shelly *shelly)
 				ast->value.cmd->cmd, shelly);
 		if (builtin_ret != -1)
 			exit(builtin_ret);
-		heredoc = check_here_doc(ast->value.cmd->redir);
+		heredoc = check_here_doc(ast->value.cmd->redir, shelly);
 		command_line = find_command(shelly, ast->value.cmd->cmd[0]);
 		if (heredoc == -1 || !command_line)
 			exit(handle_error(command_line, heredoc));

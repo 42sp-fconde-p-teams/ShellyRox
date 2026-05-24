@@ -1,5 +1,7 @@
 #include "./tests.h"
 
+extern char **environ;
+
 static t_redir	*make_redir(t_token_type type, char *filename)
 {
 	t_redir	*redir;
@@ -32,8 +34,12 @@ static void	restore_stdin(int saved_stdin)
 int	should_return_no_error_when_redir_is_null(void)
 {
 	int	result;
+	t_shelly	shelly = {0};
 
-	result = check_here_doc(NULL);
+	shelly.env_list = NULL;
+	init_env_list(&shelly, environ);
+	shelly.last_exit_status = 0;
+	result = check_here_doc(NULL, &shelly);
 	return (result != -1 ? EXIT_SUCCESS : EXIT_FAILURE);
 }
 
@@ -41,9 +47,13 @@ int	should_return_no_error_with_non_heredoc_redir(void)
 {
 	t_redir	*redir;
 	int		result;
+	t_shelly	shelly = {0};
 
+	shelly.env_list = NULL;
+	init_env_list(&shelly, environ);
+	shelly.last_exit_status = 0;
 	redir = make_redir(TOKEN_REDIR_OUT, "out.txt");
-	result = check_here_doc(redir);
+	result = check_here_doc(NULL, &shelly);
 	free(redir);
 	return (result != -1 ? EXIT_SUCCESS : EXIT_FAILURE);
 }
@@ -55,7 +65,11 @@ int	should_write_content_up_to_delimiter(void)
 	int		fd;
 	char	buf[64];
 	ssize_t	n;
+	t_shelly	shelly = {0};
 
+	shelly.env_list = NULL;
+	init_env_list(&shelly, environ);
+	shelly.last_exit_status = 0;
 	redir.type = TOKEN_HEREDOC;
 	redir.filename = "EOF";
 	redir.next = NULL;
@@ -66,7 +80,7 @@ int	should_write_content_up_to_delimiter(void)
 		restore_stdin(saved_stdin);
 		return (EXIT_FAILURE);
 	}
-	read_and_write_here_doc(fd, &redir);
+	read_and_write_here_doc(fd, &redir, &shelly);
 	restore_stdin(saved_stdin);
 	fd = open("/tmp/.test_heredoc_write", O_RDONLY);
 	if (fd == -1)
@@ -89,6 +103,11 @@ int	should_not_write_delimiter_line(void)
 	int		fd;
 	char	buf[64];
 	ssize_t	n;
+	t_shelly	shelly = {0};
+
+	shelly.env_list = NULL;
+	init_env_list(&shelly, environ);
+	shelly.last_exit_status = 0;
 
 	redir.type = TOKEN_HEREDOC;
 	redir.filename = "STOP";
@@ -100,7 +119,7 @@ int	should_not_write_delimiter_line(void)
 		restore_stdin(saved_stdin);
 		return (EXIT_FAILURE);
 	}
-	read_and_write_here_doc(fd, &redir);
+	read_and_write_here_doc(fd, &redir, &shelly);
 	restore_stdin(saved_stdin);
 	fd = open("/tmp/.test_heredoc_delim", O_RDONLY);
 	if (fd == -1)
@@ -122,6 +141,11 @@ int	should_redirect_heredoc_file_to_stdin(void)
 	int		saved_stdin;
 	char	buf[32];
 	ssize_t	n;
+	t_shelly	shelly = {0};
+
+	shelly.env_list = NULL;
+	init_env_list(&shelly, environ);
+	shelly.last_exit_status = 0;
 
 	fd = open("/tmp/.shelly_heredoc", O_WRONLY | O_CREAT | O_TRUNC, 0600);
 	if (fd == -1)
@@ -146,10 +170,15 @@ int	should_create_temp_file_when_heredoc_found(void)
 	t_redir	*redir;
 	int		saved_stdin;
 	int		result;
+	t_shelly	shelly = {0};
+
+	shelly.env_list = NULL;
+	init_env_list(&shelly, environ);
+	shelly.last_exit_status = 0;
 
 	redir = make_redir(TOKEN_HEREDOC, "EOF");
 	pipe_stdin("content\nEOF\n", &saved_stdin);
-	result = check_here_doc(redir);
+	result = check_here_doc(redir, &shelly);
 	restore_stdin(saved_stdin);
 	free(redir);
 	if (result == -1)
