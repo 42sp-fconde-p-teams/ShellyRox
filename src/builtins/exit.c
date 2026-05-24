@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 18:18:08 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/24 14:49:38 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/24 15:14:12 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,14 @@ int	num_arg_required(void)
 	return (255);
 }
 
+static void	clear_attributes(t_shelly *shell)
+{
+	free_env_list(shell->env_list);
+	free_tree(shell->ast);
+	close(shell->saved_fd[0]);
+	close(shell->saved_fd[1]);
+}
+
 int	ft_exit(t_shelly *shell, char **args)
 {
 	int	status;
@@ -51,10 +59,7 @@ int	ft_exit(t_shelly *shell, char **args)
 	status = 0;
 	if (!args || !args[0])
 	{
-		free_env_list(shell->env_list);
-		free_tree(shell->ast);
-		close(shell->saved_fd[0]);
-		close(shell->saved_fd[1]);
+		clear_attributes(shell);
 		exit(0);
 	}
 	if (!args[1])
@@ -68,9 +73,6 @@ int	ft_exit(t_shelly *shell, char **args)
 		else
 			status = num_arg_required();
 	}
-	free_env_list(shell->env_list);
-	free_tree(shell->ast);
-	close(shell->saved_fd[0]);
-	close(shell->saved_fd[1]);
+	clear_attributes(shell);
 	exit(status);
 }
