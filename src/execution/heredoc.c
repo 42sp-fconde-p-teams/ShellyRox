@@ -48,7 +48,8 @@ void	read_and_write_here_doc(int fd, t_redir *redir, t_shelly *shelly)
 			free(line);
 			break ;
 		}
-		line = expand_variables(line, shelly, BOOL_FALSE);
+		if (!ft_strchr(redir->filename, '\"') || !ft_strchr(redir->filename, '\''))
+			line = expand_variables(line, shelly, BOOL_FALSE);
 		ft_putstr_fd(line, fd);
 		ft_putstr_fd("> ", 0);
 		line = get_next_line(0);
@@ -63,4 +64,26 @@ void	set_here_doc_fd(void)
 	fd = open("/tmp/.shelly_heredoc", O_RDONLY);
 	dup2(fd, STDIN_FILENO);
 	close(fd);
+}
+
+void	find_heredoc(t_ast_node *ast, t_shelly *shelly)
+{
+	int heredoc;
+
+	if (!ast)
+		return ;
+	if (ast->node_type == TOKEN_PIPE)
+	{
+		find_heredoc(ast->value.pipe->left, shelly);
+		find_heredoc(ast->value.pipe->right, shelly);
+	}
+	else
+	{
+		if (ast->value.cmd && ast->node_type == TOKEN_HEREDOC)
+		{
+			heredoc = check_here_doc(ast->value.cmd->redir, shelly);
+			if (heredoc == -1)
+				return ;
+		}
+	}
 }

@@ -14,6 +14,8 @@
 
 int	is_builtin(char *cmd)
 {
+	if (!cmd)
+		return (0);
 	if (ft_strncmp(cmd, "env", 3) == 0 && cmd[3] == '\0')
 		return (1);
 	if (ft_strncmp(cmd, "pwd", 3) == 0 && cmd[3] == '\0')
