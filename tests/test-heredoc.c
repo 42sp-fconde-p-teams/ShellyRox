@@ -2,7 +2,6 @@
 
 extern char **environ;
 
-/*
 static t_redir	*make_redir(t_token_type type, char *filename)
 {
 	t_redir	*redir;
@@ -13,7 +12,7 @@ static t_redir	*make_redir(t_token_type type, char *filename)
 	redir->next = NULL;
 	return (redir);
 }
-
+/*
 static void	pipe_stdin(const char *content, int *saved_stdin)
 {
 	int	pipefd[2];
@@ -43,18 +42,22 @@ int	should_return_no_error_when_redir_is_null(void)
 	result = check_here_doc(NULL, &shelly);
 	return (result != -1 ? EXIT_SUCCESS : EXIT_FAILURE);
 }
-/*
+
 int	should_return_no_error_with_non_heredoc_redir(void)
 {
 	t_redir	*redir;
 	int		result;
+	t_shelly	shelly = {0};
 
+	shelly.env_list = NULL;
+	init_env_list(&shelly, environ);
+	shelly.last_exit_status = 0;
 	redir = make_redir(TOKEN_REDIR_OUT, "out.txt");
-	result = check_here_doc(redir);
+	result = check_here_doc(NULL, &shelly);
 	free(redir);
 	return (result != -1 ? EXIT_SUCCESS : EXIT_FAILURE);
 }
-
+/*
 int	should_write_content_up_to_delimiter(void)
 {
 	t_redir	redir;
@@ -169,8 +172,8 @@ int	should_create_temp_file_when_heredoc_found(void)
 */
 int	main(void)
 {
-	RUN_TEST(should_return_no_error_when_redir_is_null);/*
-	RUN_TEST(should_return_no_error_with_non_heredoc_redir);
+	RUN_TEST(should_return_no_error_when_redir_is_null);
+	RUN_TEST(should_return_no_error_with_non_heredoc_redir);/*
 	RUN_TEST(should_write_content_up_to_delimiter);
 	RUN_TEST(should_not_write_delimiter_line);
 	RUN_TEST(should_redirect_heredoc_file_to_stdin);
