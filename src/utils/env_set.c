@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 21:00:00 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/23 21:20:58 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/23 21:51:29 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ t_env	*set_new_node(char *key, char *value)
 	if (!new_node)
 		return (0);
 	new_node->key = ft_strdup(key);
-	new_node->value = ft_strdup(value ? value : "");
+	if (value)
+		new_node->value = ft_strdup(value);
+	else
+		new_node->value = ft_strdup("");
 	new_node->next = NULL;
 	return (new_node);
 }
@@ -41,6 +44,7 @@ int	set_env_var(t_shelly *shell, char *key, char *value)
 	t_env	*new_node;
 	size_t	len;
 
+	new_node = NULL;
 	if (!shell || !key)
 		return (0);
 	len = ft_strlen(key);
@@ -51,7 +55,10 @@ int	set_env_var(t_shelly *shell, char *key, char *value)
 		if (ft_strlen(curr->key) == len && ft_strncmp(curr->key, key, len) == 0)
 		{
 			free(curr->value);
-			curr->value = ft_strdup(value ? value : "");
+			if (value)
+				curr->value = ft_strdup(value);
+			else
+				curr->value = ft_strdup("");
 			return (1);
 		}
 		last = curr;
