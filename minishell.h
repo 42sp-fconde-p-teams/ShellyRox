@@ -143,8 +143,8 @@ void		exec_simple_pipe_left(t_ast_node *ast, t_shelly *shelly,
 				int fd_in, int *fd);
 
 //	heredoc functions
-int			check_here_doc(t_redir *redir);
-void		read_and_write_here_doc(int fd, t_redir *redir);
+int			check_here_doc(t_redir *redir, t_shelly *shelly);
+void		read_and_write_here_doc(int fd, t_redir *redir, t_shelly *shelly);
 void		set_here_doc_fd(void);
 
 // built-in functions

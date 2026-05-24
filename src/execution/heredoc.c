@@ -12,7 +12,7 @@
 
 #include "../../minishell.h"
 
-int	check_here_doc(t_redir *redir)
+int	check_here_doc(t_redir *redir, t_shelly *shelly)
 {
 	int		fd;
 	t_redir	*tmp;
@@ -27,14 +27,14 @@ int	check_here_doc(t_redir *redir)
 					O_WRONLY | O_CREAT | O_TRUNC, 0600);
 			if (fd == -1)
 				return (-1);
-			read_and_write_here_doc(fd, tmp);
+			read_and_write_here_doc(fd, tmp, shelly);
 		}
 		tmp = tmp->next;
 	}
 	return (fd);
 }
 
-void	read_and_write_here_doc(int fd, t_redir *redir)
+void	read_and_write_here_doc(int fd, t_redir *redir, t_shelly *shelly)
 {
 	char	*line;
 
@@ -48,36 +48,12 @@ void	read_and_write_here_doc(int fd, t_redir *redir)
 			free(line);
 			break ;
 		}
-		// Tenho checar se preciso expandir antes de colocar no arquivo
-		line = ft_filter(line);
+		line = expand_variables(line, shelly, BOOL_FALSE);
 		ft_putstr_fd(line, fd);
 		ft_putstr_fd("> ", 0);
 		line = get_next_line(0);
 	}
 	close (fd);
-}
-
-static char	*get_var_envp(char *line)
-{
-	int 	i;
-	int 	len_name;
-	char	*name_var;
-	char	lstr; // vai pra funcao que junta o valor na linha
-	char	rstr; // vai pra funcao que junta o valor na linha
-
-	name_var = NULL;
-	lstr = NULL;
-	i = 0;
-	len_name = 0;
-	while (line[i])
-	{
-		if (line[i] == '$')
-		{
-			len_name = find_var_end(&line[i], len_name);
-			// Juntar as três strings e encontrar o valor da env com o nome alocado em uma string
-		}
-
-	}
 }
 
 void	set_here_doc_fd(void)
