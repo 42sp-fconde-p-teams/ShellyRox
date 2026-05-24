@@ -164,16 +164,21 @@ int	should_redirect_heredoc_file_to_stdin(void)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
-/*
+
 int	should_create_temp_file_when_heredoc_found(void)
 {
 	t_redir	*redir;
 	int		saved_stdin;
 	int		result;
+	t_shelly	shelly = {0};
+
+	shelly.env_list = NULL;
+	init_env_list(&shelly, environ);
+	shelly.last_exit_status = 0;
 
 	redir = make_redir(TOKEN_HEREDOC, "EOF");
 	pipe_stdin("content\nEOF\n", &saved_stdin);
-	result = check_here_doc(redir);
+	result = check_here_doc(redir, &shelly);
 	restore_stdin(saved_stdin);
 	free(redir);
 	if (result == -1)
@@ -183,14 +188,14 @@ int	should_create_temp_file_when_heredoc_found(void)
 	unlink("/tmp/.shelly_heredoc");
 	return (EXIT_SUCCESS);
 }
-*/
+
 int	main(void)
 {
 	RUN_TEST(should_return_no_error_when_redir_is_null);
 	RUN_TEST(should_return_no_error_with_non_heredoc_redir);
 	RUN_TEST(should_write_content_up_to_delimiter);
 	RUN_TEST(should_not_write_delimiter_line);
-	RUN_TEST(should_redirect_heredoc_file_to_stdin);/*
-	RUN_TEST(should_create_temp_file_when_heredoc_found);*/
+	RUN_TEST(should_redirect_heredoc_file_to_stdin);
+	RUN_TEST(should_create_temp_file_when_heredoc_found);
 	return (0);
 }
