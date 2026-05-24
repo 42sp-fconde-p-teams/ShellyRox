@@ -93,9 +93,9 @@ tester: re
 	@echo "$(GREEN)✓ Shelly compiled for tester mode!$(RESET)"
 
 val:
-	@valgrind -q --leak-check=full --track-origins=yes \
+	@valgrind --leak-check=full --track-origins=yes \
 	--track-fds=yes --show-leak-kinds=all \
-	--suppressions=ignore_readline.supp ./$(NAME)
+	--suppressions=shelly.supp ./$(NAME)
 
 re: fclean all
 

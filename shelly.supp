@@ -1,0 +1,61 @@
+{
+   tinfo_all
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:/libtinfo.so.
+}
+
+{
+   readline_indirect
+   Memcheck:Leak
+   ...
+   obj:/libreadline.so.
+}
+
+{
+   tinfo_indirect
+   Memcheck:Leak
+   ...
+   obj:/libtinfo.so.
+}
+
+{
+   suppress_execved_usr_bin
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   obj:/usr/bin/*
+}
+
+{
+   suppress_execved_bin
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   obj:/bin/*
+}
+
+{
+	readline_internal_leaks
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	obj:*libreadline*
+}
+
+{
+	history_internal_leaks
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	obj:*libhistory*
+}
+
+{
+	tinfo_ncurses_leaks
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	obj:*libtinfo*
+}
