@@ -6,13 +6,13 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 21:00:00 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/23 21:51:29 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/23 22:03:59 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_env	*set_new_node(char *key, char *value)
+static t_env	*set_new_node(char *key, char *value)
 {
 	t_env	*new_node;
 
@@ -29,7 +29,7 @@ t_env	*set_new_node(char *key, char *value)
 	return (new_node);
 }
 
-void	set_last_node(t_env *last, t_shelly *shell, t_env *new_node)
+static void	set_last_node(t_env *last, t_shelly *shell, t_env *new_node)
 {
 	if (!last)
 		shell->env_list = new_node;
@@ -37,34 +37,38 @@ void	set_last_node(t_env *last, t_shelly *shell, t_env *new_node)
 		last->next = new_node;
 }
 
+static int	update_env_var(t_env *curr, char *key, char *value)
+{
+	size_t	len;
+
+	len = ft_strlen(key);
+	if (ft_strlen(curr->key) == len && ft_strncmp(curr->key, key, len) == 0)
+	{
+		free(curr->value);
+		if (value)
+			curr->value = ft_strdup(value);
+		else
+			curr->value = ft_strdup("");
+		return (1);
+	}
+	return (0);
+}
+
 int	set_env_var(t_shelly *shell, char *key, char *value)
 {
 	t_env	*curr;
 	t_env	*last;
-	t_env	*new_node;
-	size_t	len;
 
-	new_node = NULL;
 	if (!shell || !key)
 		return (0);
-	len = ft_strlen(key);
 	curr = shell->env_list;
 	last = NULL;
 	while (curr)
 	{
-		if (ft_strlen(curr->key) == len && ft_strncmp(curr->key, key, len) == 0)
-		{
-			free(curr->value);
-			if (value)
-				curr->value = ft_strdup(value);
-			else
-				curr->value = ft_strdup("");
+		if (update_env_var(curr, key, value))
 			return (1);
-		}
 		last = curr;
 		curr = curr->next;
 	}
-	new_node = set_new_node(key, value);
-	set_last_node(last, shell, new_node);
-	return (1);
+	return (set_last_node(last, shell, set_new_node(key, value)), 1);
 }
