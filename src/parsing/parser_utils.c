@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/23 15:39:44 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/23 15:40:13 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/24 12:05:22 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ static t_ast_node	*init_cmd_node(t_token *token)
 	node->value.cmd->cmd = malloc(sizeof(char *)
 			* (count_words_token(token) + 1));
 	if (!node->value.cmd->cmd)
-		return (free(node->value.cmd), free(node), NULL);
+	{
+		free(node->value.cmd);
+		free(node);
+		return (NULL);
+	}
 	return (node);
 }
 
