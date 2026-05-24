@@ -48,7 +48,8 @@ void	read_and_write_here_doc(int fd, t_redir *redir, t_shelly *shelly)
 			free(line);
 			break ;
 		}
-		line = expand_variables(line, shelly, BOOL_FALSE);
+		if (!ft_strchr(redir->filename, '\"') || !ft_strchr(redir->filename, '\''))
+			line = expand_variables(line, shelly, BOOL_FALSE);
 		ft_putstr_fd(line, fd);
 		ft_putstr_fd("> ", 0);
 		line = get_next_line(0);
