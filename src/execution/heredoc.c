@@ -64,3 +64,25 @@ void	set_here_doc_fd(void)
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 }
+
+void	find_heredoc(t_ast_node *ast, t_shelly *shelly)
+{
+	int heredoc;
+
+	if (!ast)
+		return ;
+	if (ast->node_type == TOKEN_PIPE)
+	{
+		find_heredoc(ast->value.pipe->left, shelly);
+		find_heredoc(ast->value.pipe->right, shelly);
+	}
+	else
+	{
+		if (ast->value.cmd && ast->node_type == TOKEN_HEREDOC)
+		{
+			heredoc = check_here_doc(ast->value.cmd->redir, shelly);
+			if (heredoc == -1)
+				return ;
+		}
+	}
+}
