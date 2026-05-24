@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 21:00:00 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/23 20:49:04 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/23 21:20:58 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ t_env	*set_new_node(char *key, char *value)
 	new_node->value = ft_strdup(value ? value : "");
 	new_node->next = NULL;
 	return (new_node);
+}
+
+void	set_last_node(t_env *last, t_shelly *shell, t_env *new_node)
+{
+	if (!last)
+		shell->env_list = new_node;
+	else
+		last->next = new_node;
 }
 
 int	set_env_var(t_shelly *shell, char *key, char *value)
@@ -50,9 +58,6 @@ int	set_env_var(t_shelly *shell, char *key, char *value)
 		curr = curr->next;
 	}
 	new_node = set_new_node(key, value);
-	if (!last)
-		shell->env_list = new_node;
-	else
-		last->next = new_node;
+	set_last_node(last, shell, new_node);
 	return (1);
 }
