@@ -57,10 +57,11 @@ int	ft_exit(t_shelly *shell, char **args)
 	int	status;
 
 	status = 0;
+	shell->should_close = BOOL_TRUE;
 	if (!args || !args[0])
 	{
 		clear_attributes(shell);
-		exit(0);
+		return (0);
 	}
 	if (!args[1])
 		status = shell->last_exit_status;
@@ -74,5 +75,5 @@ int	ft_exit(t_shelly *shell, char **args)
 			status = num_arg_required();
 	}
 	clear_attributes(shell);
-	exit(status);
+	return (status);
 }

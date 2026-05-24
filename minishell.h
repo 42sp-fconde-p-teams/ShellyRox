@@ -101,6 +101,7 @@ typedef struct s_shelly
 	t_bool		suppress_output;
 	t_ast_node	*ast;
 	int			saved_fd[2];
+	t_bool		should_close;
 }	t_shelly;
 
 // lexer functions

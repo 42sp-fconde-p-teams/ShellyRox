@@ -50,6 +50,8 @@ void	do_shelly(t_shelly *shelly)
 			continue ;
 		}
 		process_line(line, shelly);
+		if (shelly->should_close == BOOL_TRUE)
+			exit(shelly->last_exit_status);
 	}
 }
 
