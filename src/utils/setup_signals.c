@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_signals.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/12 22:48:39 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/23 21:40:00 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ static void	handle_sigint(int sig)
 
 void	setup_signals(t_sig_state state)
 {
-	(void)state;
 	struct sigaction	sa;
 
+	(void)state;
 	ft_bzero(&sa, sizeof(struct sigaction));
 	if (state == SIG_STATE_INTERACTIVE)
 	{
@@ -38,12 +38,14 @@ void	setup_signals(t_sig_state state)
 		sigaction(SIGINT, &sa, NULL);
 		sa.sa_handler = SIG_IGN;
 		sigaction(SIGQUIT, &sa, NULL);
-	} else if (state == SIG_STATE_CHILD)
+	}
+	else if (state == SIG_STATE_CHILD)
 	{
 		sa.sa_handler = SIG_DFL;
 		sigaction(SIGINT, &sa, NULL);
 		sigaction(SIGQUIT, &sa, NULL);
-	} else if (state == SIG_STATE_IGNORE)
+	}
+	else if (state == SIG_STATE_IGNORE)
 	{
 		sa.sa_handler = SIG_IGN;
 		sigaction(SIGINT, &sa, NULL);

@@ -6,15 +6,15 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 21:00:00 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/23 19:00:33 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/23 21:41:50 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static char **set_env_var_array(t_env *curr, char *temp_val, int count)
+static char	**set_env_var_array(t_env *curr, char *temp_val, int count)
 {
-	int i;
+	int		i;
 	char	**array;
 
 	i = 0;
