@@ -22,6 +22,7 @@ static void	process_line(char *line, t_shelly *shelly)
 	token_head = tokens;
 	tokens = expander(tokens, shelly);
 	ast = parser(&tokens);
+	find_heredoc(ast, shelly);
 	shelly->last_exit_status = executor(ast, shelly);
 	free_tree(ast);
 	clear_token_list(&token_head);

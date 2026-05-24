@@ -26,9 +26,9 @@ void	exec_pipe_command(t_ast_node *ast, t_shelly *shelly)
 		if (builtin_ret != -1)
 			exit(builtin_ret);
 	}
-	here_doc = check_here_doc(ast->value.cmd->redir, shelly);
+	here_doc = 0;
 	cmd_line = find_command(shelly, ast->value.cmd->cmd[0]);
-	if (here_doc == -1 || !cmd_line)
+	if (here_doc == -1|| !cmd_line)
 		exit(handle_error(cmd_line, here_doc));
 	env_arr = get_env_array(shelly);
 	simple_command_routine(ast, cmd_line, env_arr, here_doc);
