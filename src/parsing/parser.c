@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:39:09 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/23 15:40:38 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/24 14:03:53 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,64 +66,6 @@ void	add_redir_command(t_ast_node **node, t_token **token)
 	if (*token && (*token)->type == TOKEN_WORD)
 		*token = (*token)->next;
 }
-
-/*
-
-static t_ast_node	*init_cmd_node(t_token *token)
-{
-	t_ast_node	*node;
-
-	node = malloc(sizeof(t_ast_node));
-	if (!node)
-		return (NULL);
-	node->node_type = token->type;
-	node->value.cmd = malloc(sizeof(t_command));
-	if (!node->value.cmd)
-		return (free(node), NULL);
-	node->value.cmd->redir = NULL;
-	node->value.cmd->cmd = malloc(sizeof(char *)
-			* (count_words_token(token) + 1));
-	if (!node->value.cmd->cmd)
-		return (free(node->value.cmd), free(node), NULL);
-	return (node);
-}
-
-static void	extract_cmd_tokens(t_ast_node *node, t_token **tmp)
-{
-	int	i;
-
-	i = 0;
-	while (*tmp && (*tmp)->type != TOKEN_PIPE)
-	{
-		if ((*tmp)->type == TOKEN_REDIR_IN || (*tmp)->type == TOKEN_REDIR_OUT
-			|| (*tmp)->type == TOKEN_HEREDOC || (*tmp)->type == TOKEN_APPEND)
-		{
-			add_redir_command(&node, tmp);
-			continue ;
-		}
-		node->value.cmd->cmd[i++] = (*tmp)->value;
-		*tmp = (*tmp)->next;
-	}
-	node->value.cmd->cmd[i] = NULL;
-}
-
-t_ast_node	*parse_command(t_token **token)
-{
-	t_ast_node	*node;
-	t_token		*tmp;
-
-	if (!token || !*token || (*token)->type == TOKEN_PIPE)
-		return (NULL);
-	node = init_cmd_node(*token);
-	if (!node)
-		return (NULL);
-	tmp = *token;
-	extract_cmd_tokens(node, &tmp);
-	*token = tmp;
-	return (node);
-}
-
-*/
 
 t_ast_node	*parser(t_token **tokens)
 {
