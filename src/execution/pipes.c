@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:50 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/23 15:27:44 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/24 11:32:40 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	exec_pipe_command(t_ast_node *ast, t_shelly *shelly)
 		builtin_ret = execute_builtin(ast->value.cmd->cmd[0],
 				ast->value.cmd->cmd, shelly);
 		if (builtin_ret != -1)
-			exit(builtin_ret);
+			ft_exit(shelly, NULL);
 	}
 	here_doc = check_here_doc(ast->value.cmd->redir, shelly);
 	cmd_line = find_command(shelly, ast->value.cmd->cmd[0]);

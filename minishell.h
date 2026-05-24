@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/23 15:42:11 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/24 11:48:19 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,6 @@ typedef struct s_env
 	char			*value;
 	struct s_env	*next;
 }	t_env;
-
-typedef struct s_shelly
-{
-	t_env	*env_list;
-	char	**argv;
-	int		last_exit_status;
-	t_bool	suppress_output;
-}	t_shelly;
 
 typedef enum e_token_type
 {
@@ -100,6 +92,15 @@ typedef struct s_ast_node
 	t_token_type		node_type;
 	union u_node_value	value;
 }	t_ast_node;
+
+typedef struct s_shelly
+{
+	t_env		*env_list;
+	char		**argv;
+	int			last_exit_status;
+	t_bool		suppress_output;
+	t_ast_node	*ast;
+}	t_shelly;
 
 // lexer functions
 t_token		*set_tokens(char *s);

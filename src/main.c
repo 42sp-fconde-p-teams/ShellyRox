@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:39:21 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/23 13:26:40 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/24 11:45:18 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	process_line(char *line, t_shelly *shelly)
 	tokens = expander(tokens, shelly);
 	ast = parser(&tokens);
 	shelly->last_exit_status = executor(ast, shelly);
+	shelly->ast = ast;
 	free_tree(ast);
 	clear_token_list(&token_head);
 	add_history(line);

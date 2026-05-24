@@ -37,7 +37,8 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/builtins/export.c \
               ../src/builtins/unset.c \
               ../src/builtins/echo.c \
-              ../src/free/free_env_list.c
+              ../src/free/free_env_list.c \
+              ../src/free/free-parser.c
               
 LIBS        = $(LIBFT) -lreadline # -ldl -glfw -pthread -lm
 HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR) -I..

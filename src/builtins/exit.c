@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 18:18:08 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/23 15:07:57 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/24 11:45:56 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	ft_exit(t_shelly *shell, char **args)
 	if (!args || !args[0])
 	{
 		free_env_list(shell->env_list);
+		free_tree(shell->ast);
 		exit(0);
 	}
 	if (!args[1])
@@ -66,5 +67,6 @@ int	ft_exit(t_shelly *shell, char **args)
 			status = num_arg_required();
 	}
 	free_env_list(shell->env_list);
+	free_tree(shell->ast);
 	exit(status);
 }
