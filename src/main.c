@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:39:21 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/24 11:45:18 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/24 11:56:32 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	process_line(char *line, t_shelly *shelly)
 	t_token		*token_head;
 	t_ast_node	*ast;
 
+	shelly->ast = NULL;
 	tokens = set_tokens(line);
 	token_head = tokens;
 	tokens = expander(tokens, shelly);
