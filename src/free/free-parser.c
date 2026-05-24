@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 15:33:48 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/23 15:27:44 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/23 22:06:30 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	free_redir(t_redir *redir)
 		redir = next;
 	}
 }
+
 void	free_tree(t_ast_node *ast)
 {
 	if (!ast)
@@ -41,6 +42,7 @@ void	free_tree(t_ast_node *ast)
 	}
 	free(ast);
 }
+
 void	ft_free_array(char **array)
 {
 	int	i;
