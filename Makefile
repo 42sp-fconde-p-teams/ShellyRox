@@ -23,6 +23,7 @@ SRC_FILES	= main.c \
 			  parsing/fsm/check_assignment_operator.c \
 			  parsing/fsm/clear_token_list.c \
 			  parsing/fsm/set_tokens.c \
+			  parsing/fsm/input_checker.c \
 			  execution/executor.c \
 			  execution/executor_utils.c \
 			  execution/execute_builtin.c \

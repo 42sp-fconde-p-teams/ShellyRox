@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/24 14:46:21 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/28 10:54:11 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ t_token		*set_tokens(char *s);
 int			get_token_len(char *str);
 int			check_assignment_operator(char *str, int i);
 void		clear_token_list(t_token **head);
+int	input_checker(t_token *tokens);
 
 // expander functions
 t_token		*expander(t_token *tokens, t_shelly *shelly);
