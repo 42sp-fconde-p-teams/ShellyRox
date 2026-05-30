@@ -48,7 +48,7 @@ static void	extract_cmd_tokens(t_ast_node *node, t_token **tmp)
 			add_redir_command(&node, tmp);
 			continue ;
 		}
-		node->value.cmd->cmd[i++] = (*tmp)->value;
+		node->value.cmd->cmd[i++] = ft_strdup((*tmp)->value);
 		*tmp = (*tmp)->next;
 	}
 	node->value.cmd->cmd[i] = NULL;
