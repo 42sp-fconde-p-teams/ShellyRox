@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:39:21 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/24 17:00:43 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/30 16:58:13 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@ static void	process_line(char *line, t_shelly *shelly)
 	tokens = set_tokens(line);
 	token_head = tokens;
 	tokens = expander(tokens, shelly);
+	if (input_checker(tokens) == EXIT_FAILURE)
+	{
+		clear_token_list(&token_head);
+		free(line);
+		return ;
+	}
 	ast = parser(&tokens);
 	find_heredoc(ast, shelly);
 	shelly->last_exit_status = executor(ast, shelly);
