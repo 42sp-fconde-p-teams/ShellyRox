@@ -12,6 +12,12 @@
 
 #include "../../../minishell.h"
 
+static int	is_redir(t_token_type type)
+{
+	return (type == TOKEN_REDIR_OUT || type == TOKEN_REDIR_IN || \
+		type == TOKEN_HEREDOC || type == TOKEN_APPEND);
+}
+
 int	input_checker(t_token *tokens)
 {
 	t_token	*curr;
@@ -26,16 +32,18 @@ int	input_checker(t_token *tokens)
 	curr = tokens;
 	while (curr)
 	{
-		if (curr->type == TOKEN_PIPE)
+		if (curr->type == TOKEN_PIPE && (!curr->next || curr->next->type == TOKEN_PIPE))
 		{
-			if (!curr->next || curr->next->type == TOKEN_PIPE)
-			{
-				printf("syntax error near unexpected token `%s'\n", 
-					curr->value);
-				return (EXIT_FAILURE);
-			}
+			printf("syntax error near unexpected token `%s'\n", curr->value);
+			return (EXIT_FAILURE);
+		}
+		if (is_redir(curr->type) && (!curr->next || curr->next->type != TOKEN_WORD))
+		{
+			printf("syntax error near unexpected token `%s'\n", curr->value);
+			return (EXIT_FAILURE);
 		}
 		curr = curr->next;
 	}
 	return (EXIT_SUCCESS);
 }
+
