@@ -130,6 +130,58 @@ int	should_pass_for_valid_redir(void)
 	return (EXIT_FAILURE);
 }
 
+int	should_pass_for_empty_command_redir(void)
+{
+	t_token t1 = {">", TOKEN_REDIR_OUT, BOOL_FALSE, NULL, NULL};
+	t_token t2 = {"file", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
+
+	t1.next = &t2;
+	t2.prev = &t1;
+	if (input_checker(&t1) == EXIT_SUCCESS)
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
+}
+
+int	should_pass_for_multiple_redirs(void)
+{
+	t_token t1 = {"ls", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
+	t_token t2 = {">", TOKEN_REDIR_OUT, BOOL_FALSE, NULL, NULL};
+	t_token t3 = {"file1", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
+	t_token t4 = {">", TOKEN_REDIR_OUT, BOOL_FALSE, NULL, NULL};
+	t_token t5 = {"file2", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
+
+	t1.next = &t2; t2.prev = &t1;
+	t2.next = &t3; t3.prev = &t2;
+	t3.next = &t4; t4.prev = &t3;
+	t4.next = &t5; t5.prev = &t4;
+	if (input_checker(&t1) == EXIT_SUCCESS)
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
+}
+
+int	should_pass_for_complex_pipeline(void)
+{
+	t_token t1 = {"cat", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
+	t_token t2 = {"<", TOKEN_REDIR_IN, BOOL_FALSE, NULL, NULL};
+	t_token t3 = {"file", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
+	t_token t4 = {"|", TOKEN_PIPE, BOOL_FALSE, NULL, NULL};
+	t_token t5 = {"grep", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
+	t_token t6 = {"foo", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
+	t_token t7 = {">", TOKEN_REDIR_OUT, BOOL_FALSE, NULL, NULL};
+	t_token t8 = {"out", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
+
+	t1.next = &t2; t2.prev = &t1;
+	t2.next = &t3; t3.prev = &t2;
+	t3.next = &t4; t4.prev = &t3;
+	t4.next = &t5; t5.prev = &t4;
+	t5.next = &t6; t6.prev = &t5;
+	t6.next = &t7; t7.prev = &t6;
+	t7.next = &t8; t8.prev = &t7;
+	if (input_checker(&t1) == EXIT_SUCCESS)
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
+}
+
 int	main(void)
 {
 	RUN_TEST(shoud_fail_for_pipe_only_prompt);
@@ -141,5 +193,8 @@ int	main(void)
 	RUN_TEST(should_fail_for_redir_before_pipe);
 	RUN_TEST(should_fail_for_consecutive_redirs);
 	RUN_TEST(should_pass_for_valid_redir);
+	RUN_TEST(should_pass_for_empty_command_redir);
+	RUN_TEST(should_pass_for_multiple_redirs);
+	RUN_TEST(should_pass_for_complex_pipeline);
 	return (0);
 }
