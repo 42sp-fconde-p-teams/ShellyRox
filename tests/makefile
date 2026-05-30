@@ -13,6 +13,7 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/parsing/expander/token_insertion.c \
               ../src/parsing/fsm/set_tokens.c \
               ../src/parsing/fsm/get_token_len.c \
+              ../src/parsing/fsm/input_checker.c \
               ../src/parsing/fsm/check_assignment_operator.c \
               ../src/execution/redirections.c \
               ../src/execution/executor.c \
@@ -37,7 +38,8 @@ C_FILES     = ../src/parsing/parser.c \
               ../src/builtins/export.c \
               ../src/builtins/unset.c \
               ../src/builtins/echo.c \
-              ../src/free/free_env_list.c
+              ../src/free/free_env_list.c \
+              ../src/free/free-parser.c
               
 LIBS        = $(LIBFT) -lreadline # -ldl -glfw -pthread -lm
 HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR) -I..
@@ -60,7 +62,8 @@ HEADERS     = -I. -I$(LIBFT_DIR) -I$(TEST_DIR) -I..
               $(TEST_DIR)/test-export.c \
               $(TEST_DIR)/test-unset.c \
               $(TEST_DIR)/test-has_meaningful_content.c \
-              $(TEST_DIR)/test-echo.c
+              $(TEST_DIR)/test-echo.c \
+              $(TEST_DIR)/test-input_checker.c
 TEST_BINS   = $(TEST_SRCS:.c=.out)
 REPORT_LOG  = test_report.log
 

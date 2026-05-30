@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:39:21 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/23 13:26:40 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/30 16:58:13 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,22 @@ static void	process_line(char *line, t_shelly *shelly)
 	t_token		*token_head;
 	t_ast_node	*ast;
 
+	shelly->ast = NULL;
 	tokens = set_tokens(line);
 	token_head = tokens;
 	tokens = expander(tokens, shelly);
+	if (input_checker(tokens) == EXIT_FAILURE)
+	{
+		clear_token_list(&token_head);
+		free(line);
+		return ;
+	}
 	ast = parser(&tokens);
 	find_heredoc(ast, shelly);
 	shelly->last_exit_status = executor(ast, shelly);
 	free_tree(ast);
 	clear_token_list(&token_head);
+	shelly->ast = NULL;
 	add_history(line);
 	free(line);
 }
@@ -48,6 +56,8 @@ void	do_shelly(t_shelly *shelly)
 			continue ;
 		}
 		process_line(line, shelly);
+		if (shelly->should_close == BOOL_TRUE)
+			exit(shelly->last_exit_status);
 	}
 }
 
@@ -58,7 +68,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc < 1)
 		return (1);
 	(void)*argv;
-	shelly.env_list = NULL;
+	shelly = (t_shelly){0};
 	init_env_list(&shelly, envp);
 	setup_signals(SIG_STATE_INTERACTIVE);
 	do_shelly(&shelly);

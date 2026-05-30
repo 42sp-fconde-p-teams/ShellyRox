@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:40:58 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/23 15:27:44 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/24 14:47:33 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,19 @@ int	get_status_code(pid_t pid)
 
 int	exec_builtin_parent(t_ast_node *ast, t_shelly *shelly)
 {
-	int	saved_fd[2];
+	// int	saved_fd[2];
 	int	builtin_ret;
 
-	saved_fd[0] = dup(STDIN_FILENO);
-	saved_fd[1] = dup(STDOUT_FILENO);
+	shelly->saved_fd[0] = dup(STDIN_FILENO);
+	shelly->saved_fd[1] = dup(STDOUT_FILENO);
 	if (ast->value.cmd->redir != NULL)
 		setup_redirections(ast->value.cmd->redir);
 	builtin_ret = execute_builtin(ast->value.cmd->cmd[0],
 			ast->value.cmd->cmd, shelly);
-	dup2(saved_fd[0], STDIN_FILENO);
-	dup2(saved_fd[1], STDOUT_FILENO);
-	close(saved_fd[0]);
-	close(saved_fd[1]);
+	dup2(shelly->saved_fd[0], STDIN_FILENO);
+	dup2(shelly->saved_fd[1], STDOUT_FILENO);
+	close(shelly->saved_fd[0]);
+	close(shelly->saved_fd[1]);
 	return (builtin_ret);
 }
 
