@@ -66,8 +66,6 @@ void	simple_command_routine(t_ast_node *ast, char *command_line,
 	{
 		if (here_doc > 0)
 			set_here_doc_fd();
-		if (setup_redirections(ast->value.cmd->redir) != 0)
-			exit (1);
 	}
 	execve(command_line, ast->value.cmd->cmd, envp);
 	perror("Failed");
