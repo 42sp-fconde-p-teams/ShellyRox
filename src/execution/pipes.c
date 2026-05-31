@@ -19,20 +19,23 @@ void	exec_pipe_command(t_ast_node *ast, t_shelly *shelly)
 	int		builtin_ret;
 	char	**env_arr;
 
-	if (ast->value.cmd->cmd[0])
+	if (ast->value.cmd->redir)
 	{
-		builtin_ret = execute_builtin(ast->value.cmd->cmd[0],
-				ast->value.cmd->cmd, shelly);
-		if (builtin_ret != -1)
-			exit(builtin_ret);
+		if (setup_redirections(ast->value.cmd->redir) != 0)
+			exit(1);
 	}
+	if (!ast->value.cmd->cmd[0])
+		exit(0);
+	builtin_ret = execute_builtin(ast->value.cmd->cmd[0],
+			ast->value.cmd->cmd, shelly);
+	if (builtin_ret != -1)
+		exit(builtin_ret);
 	here_doc = 0;
 	cmd_line = find_command(shelly, ast->value.cmd->cmd[0]);
 	if (here_doc == -1|| !cmd_line)
 		exit(handle_error(cmd_line, here_doc));
 	env_arr = get_env_array(shelly);
 	simple_command_routine(ast, cmd_line, env_arr, here_doc);
-	// If execve in simple_command_routine fails, we reach here.
 	ft_free_array(env_arr);
 	free(cmd_line);
 	return ;
