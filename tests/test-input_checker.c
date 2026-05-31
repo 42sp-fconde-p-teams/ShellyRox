@@ -159,6 +159,53 @@ int	should_pass_for_multiple_redirs(void)
 	return (EXIT_FAILURE);
 }
 
+int	should_pass_for_redir_at_start_followed_by_pipe(void)
+{
+	t_token t1 = {">", TOKEN_REDIR_OUT, BOOL_FALSE, NULL, NULL};
+	t_token t2 = {"file", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
+	t_token t3 = {"|", TOKEN_PIPE, BOOL_FALSE, NULL, NULL};
+	t_token t4 = {"ls", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
+
+	t1.next = &t2; t2.prev = &t1;
+	t2.next = &t3; t3.prev = &t2;
+	t3.next = &t4; t4.prev = &t3;
+	if (input_checker(&t1) == EXIT_SUCCESS)
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
+}
+
+int	should_fail_for_redir_followed_by_pipe_no_file(void)
+{
+	t_token t1 = {"ls", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
+	t_token t2 = {">", TOKEN_REDIR_OUT, BOOL_FALSE, NULL, NULL};
+	t_token t3 = {"|", TOKEN_PIPE, BOOL_FALSE, NULL, NULL};
+	t_token t4 = {"grep", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
+
+	t1.next = &t2; t2.prev = &t1;
+	t2.next = &t3; t3.prev = &t2;
+	t3.next = &t4; t4.prev = &t3;
+	if (input_checker(&t1) == EXIT_FAILURE)
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
+}
+
+int	should_pass_for_multiple_interleaved_redirs(void)
+{
+	t_token t1 = {"ls", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
+	t_token t2 = {">", TOKEN_REDIR_OUT, BOOL_FALSE, NULL, NULL};
+	t_token t3 = {"f1", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
+	t_token t4 = {"<", TOKEN_REDIR_IN, BOOL_FALSE, NULL, NULL};
+	t_token t5 = {"f2", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
+
+	t1.next = &t2; t2.prev = &t1;
+	t2.next = &t3; t3.prev = &t2;
+	t3.next = &t4; t4.prev = &t3;
+	t4.next = &t5; t5.prev = &t4;
+	if (input_checker(&t1) == EXIT_SUCCESS)
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
+}
+
 int	should_pass_for_complex_pipeline(void)
 {
 	t_token t1 = {"cat", TOKEN_WORD, BOOL_FALSE, NULL, NULL};
@@ -195,6 +242,9 @@ int	main(void)
 	RUN_TEST(should_pass_for_valid_redir);
 	RUN_TEST(should_pass_for_empty_command_redir);
 	RUN_TEST(should_pass_for_multiple_redirs);
+	RUN_TEST(should_pass_for_redir_at_start_followed_by_pipe);
+	RUN_TEST(should_fail_for_redir_followed_by_pipe_no_file);
+	RUN_TEST(should_pass_for_multiple_interleaved_redirs);
 	RUN_TEST(should_pass_for_complex_pipeline);
 	return (0);
 }
