@@ -3,32 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   env_array.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 21:00:00 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/23 21:41:50 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/30 20:46:41 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static char	**set_env_var_array(t_env *curr, char *temp_val, int count)
+static char	**set_env_var_array(t_env *curr, int count)
 {
 	int		i;
 	char	**array;
+	char	*s1;
+	char	*s2;
 
 	i = 0;
-	array = NULL;
 	array = malloc(sizeof(char *) * (count + 1));
 	if (!array)
 		return (NULL);
 	while (curr)
 	{
-		temp_val = ft_strjoin("=", curr->value);
-		if (!temp_val)
-			return (NULL);
-		array[i++] = ft_strjoin(curr->key, temp_val);
-		free(temp_val);
+		s1 = ft_strjoin("=", curr->value);
+		if (!s1)
+			return (ft_free_array(array), NULL);
+		s2 = ft_strjoin(curr->key, s1);
+		free(s1);
+		if (!s2)
+			return (ft_free_array(array), NULL);
+		array[i++] = s2;
 		curr = curr->next;
 	}
 	array[count] = NULL;
@@ -40,10 +44,8 @@ char	**get_env_array(t_shelly *shell)
 	t_env	*curr;
 	int		count;
 	char	**array;
-	char	*temp_val;
 
 	count = 0;
-	temp_val = NULL;
 	curr = shell->env_list;
 	while (curr)
 	{
@@ -51,7 +53,7 @@ char	**get_env_array(t_shelly *shell)
 		curr = curr->next;
 	}
 	curr = shell->env_list;
-	array = set_env_var_array(curr, temp_val, count);
+	array = set_env_var_array(curr, count);
 	if (!array)
 		return (NULL);
 	return (array);

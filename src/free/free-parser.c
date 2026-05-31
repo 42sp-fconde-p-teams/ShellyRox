@@ -26,6 +26,8 @@ void	free_redir(t_redir *redir)
 
 void	free_tree(t_ast_node *ast)
 {
+	int	i;
+
 	if (!ast)
 		return ;
 	if (ast->node_type == TOKEN_PIPE)
@@ -37,6 +39,11 @@ void	free_tree(t_ast_node *ast)
 	else
 	{
 		free_redir(ast->value.cmd->redir);
+		i = 0;
+		while (ast->value.cmd->cmd && ast->value.cmd->cmd[i])
+		{
+			free(ast->value.cmd->cmd[i++]);
+		}
 		free(ast->value.cmd->cmd);
 		free(ast->value.cmd);
 	}
