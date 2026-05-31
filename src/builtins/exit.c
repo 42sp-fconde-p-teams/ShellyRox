@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/12 18:18:08 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/24 15:19:16 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/31 19:52:39 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,6 @@ int	num_arg_required(void)
 	return (255);
 }
 
-static void	clear_attributes(t_shelly *shell)
-{
-	free_env_list(shell->env_list);
-	free_tree(shell->ast);
-	close(shell->saved_fd[0]);
-	close(shell->saved_fd[1]);
-}
-
 int	ft_exit(t_shelly *shell, char **args)
 {
 	int	status;
@@ -60,7 +52,6 @@ int	ft_exit(t_shelly *shell, char **args)
 	shell->should_close = BOOL_TRUE;
 	if (!args || !args[0])
 	{
-		clear_attributes(shell);
 		return (0);
 	}
 	if (!args[1])
@@ -74,6 +65,5 @@ int	ft_exit(t_shelly *shell, char **args)
 		else
 			status = num_arg_required();
 	}
-	clear_attributes(shell);
 	return (status);
 }

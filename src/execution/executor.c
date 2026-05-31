@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 23:38:29 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/23 15:27:44 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/05/31 18:26:45 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,10 @@ int	executor(t_ast_node *ast, t_shelly *shelly)
 
 	status = 0;
 	if (ast->node_type == TOKEN_PIPE)
+	{
 		exec_pipe(ast, shelly, 0);
+		status = shelly->last_exit_status;
+	}
 	else
 		status = exec_simple_command(ast, shelly);
 	return (status);
