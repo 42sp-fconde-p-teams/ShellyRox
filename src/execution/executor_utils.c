@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:40:58 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/05/24 14:47:33 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/06/01 19:05:05 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	get_status_code(pid_t pid)
 
 int	exec_builtin_parent(t_ast_node *ast, t_shelly *shelly)
 {
-	// int	saved_fd[2];
 	int	builtin_ret;
 
 	shelly->saved_fd[0] = dup(STDIN_FILENO);
@@ -94,7 +93,7 @@ void	exec_command_in_child(t_ast_node *ast, t_shelly *shelly)
 		exit(builtin_ret);
 	heredoc = 0;
 	command_line = find_command(shelly, ast->value.cmd->cmd[0]);
-	if (heredoc == -1||!command_line)
+	if (heredoc == -1 || !command_line)
 		exit(handle_error(command_line, heredoc));
 	env_arr = get_env_array(shelly);
 	simple_command_routine(ast, command_line, env_arr, heredoc);

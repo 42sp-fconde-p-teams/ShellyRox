@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 00:00:00 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/14 23:58:11 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/06/01 18:59:30 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,7 @@ static void	process_export_arg(char *arg, t_shelly *shell)
 
 	eq = ft_strchr(arg, '=');
 	if (eq)
-
-
-{
+	{
 		key = ft_substr(arg, 0, eq - arg);
 		value = eq + 1;
 	}
