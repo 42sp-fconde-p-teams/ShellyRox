@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/24 18:28:49 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/30 17:38:38 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/06/01 19:06:26 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	is_redir(t_token_type type)
 {
-	return (type == TOKEN_REDIR_OUT || type == TOKEN_REDIR_IN ||
-		type == TOKEN_HEREDOC || type == TOKEN_APPEND);
+	return (type == TOKEN_REDIR_OUT || type == TOKEN_REDIR_IN
+		|| type == TOKEN_HEREDOC || type == TOKEN_APPEND);
 }
 
 static int	print_syntax_error(t_token *token)

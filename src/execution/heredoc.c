@@ -6,7 +6,7 @@
 /*   By: csilva-s <csilva-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 21:44:52 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/04/18 22:37:13 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/06/01 19:03:59 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void	read_and_write_here_doc(int fd, t_redir *redir, t_shelly *shelly)
 			free(line);
 			break ;
 		}
-		if (!ft_strchr(redir->filename, '\"') || !ft_strchr(redir->filename, '\''))
+		if (!ft_strchr(redir->filename, '\"')
+			|| !ft_strchr(redir->filename, '\''))
 			line = expand_variables(line, shelly, BOOL_FALSE);
 		ft_putstr_fd(line, fd);
 		ft_putstr_fd("> ", 0);
@@ -68,7 +69,7 @@ void	set_here_doc_fd(void)
 
 void	find_heredoc(t_ast_node *ast, t_shelly *shelly)
 {
-	int heredoc;
+	int	heredoc;
 
 	if (!ast)
 		return ;
