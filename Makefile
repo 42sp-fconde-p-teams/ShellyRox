@@ -94,7 +94,7 @@ tester: re
 	@echo "$(GREEN)✓ Shelly compiled for tester mode!$(RESET)"
 
 val:
-	@valgrind valgrind \
+	@valgrind \
 			--leak-check=full \
 			--show-leak-kinds=all \
 			--track-origins=yes \

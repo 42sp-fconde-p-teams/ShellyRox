@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "./lib/libft/libft.h"
+# include <stdio.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -67,6 +68,7 @@ typedef struct s_redir
 	t_token_type	type;
 	char			*filename;
 	struct s_redir	*next;
+	t_bool			quoted;
 }	t_redir;
 
 typedef struct s_command
@@ -109,7 +111,7 @@ t_token		*set_tokens(char *s);
 int			get_token_len(char *str);
 int			check_assignment_operator(char *str, int i);
 void		clear_token_list(t_token **head);
-int	input_checker(t_token *tokens);
+int			input_checker(t_token *tokens);
 
 // expander functions
 t_token		*expander(t_token *tokens, t_shelly *shelly);
@@ -131,7 +133,7 @@ char		**find_path(t_shelly *shelly);
 char		*find_command(t_shelly *shelly, char *cmd);
 int			exec_simple_command(t_ast_node *ast, t_shelly *shelly);
 void		simple_command_routine(t_ast_node *ast, char *command_line,
-				char **envp, int here_doc);
+				char **envp);
 int			execute_builtin(char *cmd, char **args, t_shelly *shelly);
 int			is_builtin(char *cmd);
 char		*search_cmd_path(char *cmd, t_shelly *shelly);

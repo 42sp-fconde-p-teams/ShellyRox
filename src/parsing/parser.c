@@ -58,6 +58,9 @@ void	add_redir_command(t_ast_node **node, t_token **token)
 
 	redir = malloc(sizeof(t_redir));
 	redir->type = (*token)->type;
+	redir->quoted = BOOL_FALSE;
+	if ((*token)->next && (*token)->next->type == TOKEN_WORD)
+		redir->quoted = (*token)->next->quoted;
 	redir->next = NULL;
 	redir->filename = get_redir_filename(*token);
 	(*node)->value.cmd

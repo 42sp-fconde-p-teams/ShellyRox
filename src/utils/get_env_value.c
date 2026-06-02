@@ -21,8 +21,8 @@ char	*get_env_value(char *name, t_shelly *shell)
 	curr = shell->env_list;
 	while (curr)
 	{
-		if (ft_strncmp(curr->key, name, ft_strlen(name)) == 0 && \
-			curr->key[ft_strlen(name)] == '\0')
+		if (ft_strncmp(curr->key, name, ft_strlen(name)) == 0
+			&& curr->key[ft_strlen(name)] == '\0')
 			return (ft_strdup(curr->value));
 		curr = curr->next;
 	}

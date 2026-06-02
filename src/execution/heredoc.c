@@ -34,27 +34,39 @@ int	check_here_doc(t_redir *redir, t_shelly *shelly)
 	return (fd);
 }
 
+static char	*expand_heredoc_line(char *line, t_redir *redir, t_shelly *shelly)
+{
+	char	*expand;
+
+	if (redir->quoted)
+		return (line);
+	expand = expand_variables(line, shelly, BOOL_FALSE);
+	free(line);
+	return (expand);
+}
+
 void	read_and_write_here_doc(int fd, t_redir *redir, t_shelly *shelly)
 {
 	char	*line;
+	char	*limiter;
 
-	ft_putstr_fd("> ", 0);
+	ft_putstr_fd("> ", 2);
 	line = get_next_line(0);
+	limiter = ft_strjoin(redir->filename, "\n");
 	while (line)
 	{
-		if (ft_strncmp(line, ft_strjoin(redir->filename, "\n\0"),
-				ft_strlen(redir->filename) + 2) == 0)
+		if (ft_strncmp(line, limiter, ft_strlen(redir->filename) + 2) == 0)
 		{
 			free(line);
 			break ;
 		}
-		if (!ft_strchr(redir->filename, '\"')
-			|| !ft_strchr(redir->filename, '\''))
-			line = expand_variables(line, shelly, BOOL_FALSE);
+		line = expand_heredoc_line(line, redir, shelly);
 		ft_putstr_fd(line, fd);
-		ft_putstr_fd("> ", 0);
+		free(line);
+		ft_putstr_fd("> ", 2);
 		line = get_next_line(0);
 	}
+	free(limiter);
 	close (fd);
 }
 
@@ -63,6 +75,8 @@ void	set_here_doc_fd(void)
 	int	fd;
 
 	fd = open("/tmp/.shelly_heredoc", O_RDONLY);
+	if (fd < 0)
+		return ;
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 }
@@ -80,7 +94,7 @@ void	find_heredoc(t_ast_node *ast, t_shelly *shelly)
 	}
 	else
 	{
-		if (ast->value.cmd && ast->node_type == TOKEN_HEREDOC)
+		if (ast->value.cmd)
 		{
 			heredoc = check_here_doc(ast->value.cmd->redir, shelly);
 			if (heredoc == -1)

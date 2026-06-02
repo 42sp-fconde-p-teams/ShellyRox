@@ -14,8 +14,6 @@
 
 int	g_sig_status;
 
-// g_sig_status = 0;
-
 static void	handle_sigint(int sig)
 {
 	(void)sig;

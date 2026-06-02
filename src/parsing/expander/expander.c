@@ -40,6 +40,14 @@ static void	handle_word_expansion(t_token *curr,
 	curr->value = temp_value;
 }
 
+static void	clean_delimiter(t_token *delim)
+{
+	t_bool	quoted_flag;
+
+	delim->value = remove_quotes(delim->value, &quoted_flag);
+	delim->quoted = quoted_flag;
+}
+
 t_token	*expander(t_token *tokens, t_shelly *shelly)
 {
 	t_token	*current;
@@ -47,10 +55,15 @@ t_token	*expander(t_token *tokens, t_shelly *shelly)
 	current = tokens;
 	while (current)
 	{
+		if (current->type == TOKEN_HEREDOC && current->next
+			&& current->next->type == TOKEN_WORD)
+		{
+			clean_delimiter(current->next);
+			current = current->next->next;
+			continue ;
+		}
 		if (current->type == TOKEN_WORD)
 			handle_word_expansion(current, shelly, &tokens);
-		if (current->type == TOKEN_HEREDOC && current->next->type == TOKEN_WORD)
-			current = current->next;
 		current = current->next;
 	}
 	return (tokens);

@@ -6,7 +6,7 @@
 /*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 15:40:58 by csilva-s          #+#    #+#             */
-/*   Updated: 2026/06/01 19:05:05 by csilva-s         ###   ########.fr       */
+/*   Updated: 2026/05/24 14:47:33 by fconde-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	exec_command_in_child(t_ast_node *ast, t_shelly *shelly)
 	if (heredoc == -1 || !command_line)
 		exit(handle_error(command_line, heredoc));
 	env_arr = get_env_array(shelly);
-	simple_command_routine(ast, command_line, env_arr, heredoc);
+	simple_command_routine(ast, command_line, env_arr);
 	ft_free_array(env_arr);
 	free(command_line);
 }
