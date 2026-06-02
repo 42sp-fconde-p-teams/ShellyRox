@@ -49,9 +49,7 @@ void	read_and_write_here_doc(int fd, t_redir *redir, t_shelly *shelly)
 {
 	char	*line;
 	char	*limiter;
-	char	*expand;
 
-	expand = NULL;
 	ft_putstr_fd("> ", 2);
 	line = get_next_line(0);
 	limiter = ft_strjoin(redir->filename, "\n");
