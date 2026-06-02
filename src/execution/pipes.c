@@ -35,7 +35,7 @@ void	exec_pipe_command(t_ast_node *ast, t_shelly *shelly)
 	if (here_doc == -1 || !cmd_line)
 		exit(handle_error(cmd_line, here_doc));
 	env_arr = get_env_array(shelly);
-	simple_command_routine(ast, cmd_line, env_arr, here_doc);
+	simple_command_routine(ast, cmd_line, env_arr);
 	ft_free_array(env_arr);
 	free(cmd_line);
 	return ;
