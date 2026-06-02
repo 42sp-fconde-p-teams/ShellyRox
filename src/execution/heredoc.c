@@ -34,6 +34,17 @@ int	check_here_doc(t_redir *redir, t_shelly *shelly)
 	return (fd);
 }
 
+static char	*expand_heredoc_line(char *line, t_redir *redir, t_shelly *shelly)
+{
+	char	*expand;
+
+	if (redir->quoted)
+		return (line);
+	expand = expand_variables(line, shelly, BOOL_FALSE);
+	free(line);
+	return (expand);
+}
+
 void	read_and_write_here_doc(int fd, t_redir *redir, t_shelly *shelly)
 {
 	char	*line;
@@ -51,12 +62,7 @@ void	read_and_write_here_doc(int fd, t_redir *redir, t_shelly *shelly)
 			free(line);
 			break ;
 		}
-		if (!redir->quoted)
-		{
-			expand = expand_variables(line, shelly, BOOL_FALSE);
-			free(line);
-			line = expand;
-		}
+		line = expand_heredoc_line(line, redir, shelly);
 		ft_putstr_fd(line, fd);
 		free(line);
 		ft_putstr_fd("> ", 2);

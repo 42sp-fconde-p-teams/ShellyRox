@@ -21,21 +21,6 @@ static int	is_token_delimiter(char c)
 	return (EXIT_FAILURE);
 }
 
-// static int	handle_quotes_len(char *str)
-// {
-// 	int		i;
-// 	char	quote;
-//
-// 	i = 0;
-// 	quote = str[i];
-// 	i++;
-// 	while (str[i] != '\0' && str[i] != quote)
-// 		i++;
-// 	if (str[i] == quote)
-// 		i++;
-// 	return (i);
-// }
-
 static int	handle_operator_len(char *str)
 {
 	if (str[0] == '|')
