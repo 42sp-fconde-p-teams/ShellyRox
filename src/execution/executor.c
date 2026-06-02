@@ -60,13 +60,10 @@ char	*find_command(t_shelly *shelly, char *cmd)
 }
 
 void	simple_command_routine(t_ast_node *ast, char *command_line,
-		char **envp, int here_doc)
+		char **envp)
 {
 	if (ast->value.cmd->redir)
-	{
-		if (here_doc > 0)
-			set_here_doc_fd();
-	}
+		set_here_doc_fd();
 	execve(command_line, ast->value.cmd->cmd, envp);
 	perror("Failed");
 	exit(EXIT_FAILURE);

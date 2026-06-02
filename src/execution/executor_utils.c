@@ -58,7 +58,6 @@ int	get_status_code(pid_t pid)
 
 int	exec_builtin_parent(t_ast_node *ast, t_shelly *shelly)
 {
-	// int	saved_fd[2];
 	int	builtin_ret;
 
 	shelly->saved_fd[0] = dup(STDIN_FILENO);
@@ -94,10 +93,10 @@ void	exec_command_in_child(t_ast_node *ast, t_shelly *shelly)
 		exit(builtin_ret);
 	heredoc = 0;
 	command_line = find_command(shelly, ast->value.cmd->cmd[0]);
-	if (heredoc == -1||!command_line)
+	if (heredoc == -1 || !command_line)
 		exit(handle_error(command_line, heredoc));
 	env_arr = get_env_array(shelly);
-	simple_command_routine(ast, command_line, env_arr, heredoc);
+	simple_command_routine(ast, command_line, env_arr);
 	ft_free_array(env_arr);
 	free(command_line);
 }
