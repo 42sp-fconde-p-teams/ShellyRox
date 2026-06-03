@@ -63,6 +63,6 @@ So we used
 
 - Gemini Gem (Shelly): to conduct the concepts understanding and _tough love_;
 - Gemini CLI (Filipe): mostly with the model gemma 4 (31B), opensource and unlimited for use;
-- Claude Code (Carlos): 
+- Claude Code (Carlos): Claude Code was used as an assistant for bug analysis and critical toppics on this project, aiming for robusts fixes and without rework;
 
 Besides the AI usage, we kept track of all the development and architectural decisions (for the best and for the worst).
