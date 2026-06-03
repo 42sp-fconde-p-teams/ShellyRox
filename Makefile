@@ -5,12 +5,10 @@ CFLAGS		= -Wall -Wextra -Werror -g
 INCLUDES	= -I./includes -I./lib/libft
 LIBS		= -L./lib/libft -lft -lreadline
 
-# Directories
 SRC_DIR		= src
 OBJ_DIR		= obj
 LIBFT_DIR	= lib/libft
 
-# Source files
 SRC_FILES	= main.c \
 			  parsing/parser.c \
 			  parsing/parser_utils.c \
@@ -28,7 +26,7 @@ SRC_FILES	= main.c \
 			  execution/executor_utils.c \
 			  execution/execute_builtin.c \
 			  execution/redirections.c \
-			  execution/heredoc.c	\
+			  execution/heredoc.c \
 			  execution/pipes.c \
 			  builtins/cd.c \
 			  builtins/echo.c \
@@ -52,7 +50,6 @@ SRC_FILES	= main.c \
 SRCS		= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS		= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
-# Colors
 GREEN		= \033[0;32m
 RED			= \033[0;31m
 RESET		= \033[0m
@@ -99,7 +96,7 @@ val:
 			--show-leak-kinds=all \
 			--track-origins=yes \
 			--trace-children=yes \
-			--track-fds=yes		\
+			--track-fds=yes \
 			--trace-children-skip='/bin/,/sbin/,/usr/bin/*' \
 			--suppressions=shelly.supp ./$(NAME)
 
