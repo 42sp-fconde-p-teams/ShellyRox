@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fconde-p <fconde-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: csilva-s <csilva-s@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 16:55:46 by fconde-p          #+#    #+#             */
-/*   Updated: 2026/05/28 10:54:11 by fconde-p         ###   ########.fr       */
+/*   Updated: 2026/06/03 22:01:27 by csilva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+// atestes
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
